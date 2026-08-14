@@ -1,0 +1,110 @@
+<?php
+
+declare(strict_types=1);
+
+use Worldly\Support\Format;
+
+/** @var string $title */
+/** @var string $content */
+/** @var string $nav */
+/** @var string $assetVersion */
+
+$links = [
+    ['href' => '/', 'key' => 'explore', 'label' => 'Explore', 'icon' => '🌍'],
+    ['href' => '/continents', 'key' => 'continents', 'label' => 'Continents', 'icon' => '🗺'],
+    ['href' => '/countries', 'key' => 'countries', 'label' => 'Countries', 'icon' => '🏳'],
+    ['href' => '/mountains', 'key' => 'mountains', 'label' => 'Mountains', 'icon' => '🏔'],
+    ['href' => '/travel', 'key' => 'travel', 'label' => 'Travel', 'icon' => '🧭'],
+    ['href' => '/clocks', 'key' => 'clocks', 'label' => 'Clocks', 'icon' => '⏱'],
+    ['href' => '/converter', 'key' => 'converter', 'label' => 'Converter', 'icon' => '🔁'],
+];
+?>
+<!doctype html>
+<html lang="en" data-theme="night">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title><?= Format::e($title) ?></title>
+<meta name="description" content="Worldly is an interactive atlas: a live world map, world clocks, a time converter, continents, countries, mountains and travel places.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌍</text></svg>">
+<link rel="stylesheet" href="/assets/css/app.css?v=<?= Format::e($assetVersion) ?>">
+</head>
+<body>
+
+<div class="sky" aria-hidden="true">
+  <div class="sky__aurora sky__aurora--a"></div>
+  <div class="sky__aurora sky__aurora--b"></div>
+  <div class="sky__aurora sky__aurora--c"></div>
+  <canvas class="sky__stars" id="starfield"></canvas>
+  <div class="sky__grain"></div>
+</div>
+
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="topbar">
+  <a class="brand" href="/">
+    <span class="brand__globe" aria-hidden="true">
+      <svg viewBox="0 0 48 48" width="34" height="34">
+        <defs>
+          <linearGradient id="brandGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#7ef0d0"/><stop offset="55%" stop-color="#5aa9ff"/><stop offset="100%" stop-color="#b47cff"/>
+          </linearGradient>
+        </defs>
+        <circle cx="24" cy="24" r="21" fill="none" stroke="url(#brandGrad)" stroke-width="2.5"/>
+        <ellipse cx="24" cy="24" rx="9" ry="21" fill="none" stroke="url(#brandGrad)" stroke-width="1.6" opacity=".8"/>
+        <path d="M3.6 17.5h40.8M3.6 30.5h40.8" stroke="url(#brandGrad)" stroke-width="1.6" opacity=".8"/>
+      </svg>
+    </span>
+    <span class="brand__text">
+      <strong>Worldly</strong>
+      <small>interactive atlas</small>
+    </span>
+  </a>
+
+  <nav class="nav" aria-label="Primary">
+    <?php foreach ($links as $link): ?>
+      <a class="nav__link<?= $nav === $link['key'] ? ' is-active' : '' ?>" href="<?= Format::e($link['href']) ?>">
+        <span class="nav__icon" aria-hidden="true"><?= $link['icon'] ?></span><?= Format::e($link['label']) ?>
+      </a>
+    <?php endforeach; ?>
+  </nav>
+
+  <div class="topbar__right">
+    <div class="utc-badge" id="utcBadge" title="Current Coordinated Universal Time">
+      <span class="utc-badge__dot" aria-hidden="true"></span>
+      <span class="utc-badge__time" data-utc-clock>--:--:--</span>
+      <span class="utc-badge__label">UTC</span>
+    </div>
+    <button class="ghost-btn" type="button" data-theme-toggle aria-label="Switch colour theme">
+      <span data-theme-icon>◐</span>
+    </button>
+  </div>
+</header>
+
+<main id="main"><?= $content ?></main>
+
+<footer class="footer">
+  <div class="footer__inner">
+    <p class="footer__brand">🌍 <strong>Worldly</strong> — an interactive atlas built in plain PHP, with no framework and no third-party JavaScript.</p>
+    <p class="footer__meta">
+      Country outlines and city points derive from <a href="https://www.naturalearthdata.com/" rel="noopener">Natural Earth</a> (public domain),
+      drawn in a Robinson projection computed server-side. Time zone data comes from PHP's bundled IANA database.
+    </p>
+    <nav class="footer__links" aria-label="Footer">
+      <?php foreach ($links as $link): ?>
+        <a href="<?= Format::e($link['href']) ?>"><?= Format::e($link['label']) ?></a>
+      <?php endforeach; ?>
+    </nav>
+  </div>
+</footer>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="/assets/js/projection.js?v=<?= Format::e($assetVersion) ?>"></script>
+<script src="/assets/js/worldmap.js?v=<?= Format::e($assetVersion) ?>"></script>
+<script src="/assets/js/app.js?v=<?= Format::e($assetVersion) ?>"></script>
+<?php if (in_array($nav, ['clocks', 'converter'], true)): ?>
+<script src="/assets/js/time.js?v=<?= Format::e($assetVersion) ?>"></script>
+<?php endif; ?>
+</body>
+</html>
