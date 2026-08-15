@@ -224,6 +224,20 @@ function geometryCentroid(array $geometry): array
     return [round($lon / count($best), 3), round($lat / count($best), 3)];
 }
 
+/**
+ * Natural Earth writes a double space after abbreviations ("Washington,  D.C.",
+ * "Amu  Darya"). Collapse runs of whitespace so names read correctly wherever
+ * they end up — page copy, tooltips and meta descriptions alike.
+ */
+function cleanName(?string $name): ?string
+{
+    if ($name === null) {
+        return null;
+    }
+
+    return trim((string) preg_replace('/\s+/u', ' ', $name));
+}
+
 function flagEmoji(string $iso2): string
 {
     if (strlen($iso2) !== 2 || !ctype_alpha($iso2)) {

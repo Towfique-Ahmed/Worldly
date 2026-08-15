@@ -2751,7 +2751,7 @@ return array (
     1 => 'Population is about 328,239,523 people, the 3rd largest of the 242 countries mapped here — roughly 4.28 per cent of everyone alive.',
     2 => 'Covers 9,372,610 km², making it the 5th largest country here — about 9.3 times the size of Egypt.',
     3 => 'Population density is about 35 people per km².',
-    4 => 'The capital is Washington,  D.C., at 38.90° N, 77.01° W, with a metropolitan population of about 4,338,000.',
+    4 => 'The capital is Washington, D.C., at 38.90° N, 77.01° W, with a metropolitan population of about 4,338,000.',
     5 => 'Shares land borders with 2 countries: Canada and Mexico.',
     6 => 'Has its own coastline and direct access to the open sea.',
     7 => 'Spans 29 time zones, from America/Adak to Pacific/Honolulu.',

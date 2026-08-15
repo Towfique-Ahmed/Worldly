@@ -719,7 +719,7 @@ return array (
     'lon' => 151.1832,
   ),
   59 => array (
-    'name' => 'St.  Petersburg',
+    'name' => 'St. Petersburg',
     'country' => 'Russia',
     'iso3' => 'RUS',
     'iso2' => 'RU',
@@ -815,7 +815,7 @@ return array (
     'lon' => 105.8481,
   ),
   67 => array (
-    'name' => 'Washington,  D.C.',
+    'name' => 'Washington, D.C.',
     'country' => 'United States of America',
     'iso3' => 'USA',
     'iso2' => 'US',
@@ -3335,7 +3335,7 @@ return array (
     'lon' => 7.4381,
   ),
   277 => array (
-    'name' => 'Ft.  Worth',
+    'name' => 'Ft. Worth',
     'country' => 'United States of America',
     'iso3' => 'USA',
     'iso2' => 'US',
@@ -6107,7 +6107,7 @@ return array (
     'lon' => 18.64,
   ),
   508 => array (
-    'name' => 'St.  Paul',
+    'name' => 'St. Paul',
     'country' => 'United States of America',
     'iso3' => 'USA',
     'iso2' => 'US',
@@ -12311,7 +12311,7 @@ return array (
     'lon' => -69.9553,
   ),
   1025 => array (
-    'name' => 'Mt.  Hagen',
+    'name' => 'Mt. Hagen',
     'country' => 'Papua New Guinea',
     'iso3' => 'PNG',
     'iso2' => 'PG',

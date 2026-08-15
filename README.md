@@ -109,9 +109,36 @@ files, so it only moves when the content actually changes rather than on every
 deploy. `/bookmarks` is excluded and carries `noindex, follow`, because it is
 personal to the visitor and empty for a crawler.
 
+### Titles and descriptions
+
+`src/Support/Seo.php` owns the meta title and description for every page. All
+261 are **unique** and sit inside the budgets search results truncate at —
+roughly 60 characters for a title and 160 for a description:
+
+- **Section pages** are hand-written and keyword-led: *"Longest Rivers, Biggest
+  Lakes & Deepest Oceans | Worldly"*.
+- **Country and continent pages** are built from their own figures, so no two
+  match: *"Bangladesh in Asia: capital Dhaka, population 163 million, 147,570 km².
+  Ten facts, an interactive map, languages, currency and local time."*
+- The brand suffix is appended **only when it fits**, so a long name like *United
+  States of America* keeps its keywords instead of losing them to " | Worldly".
+
+Verify it any time:
+
+```bash
+php tools/audit_seo.php            # summary, exits non-zero on any problem
+php tools/audit_seo.php --verbose  # every page with its lengths
+```
+
+The audit fails the build on an empty, over-long, under-length or duplicated
+title or description — the three things Search Console would otherwise report
+back at you. It reads the `Seo` class directly, so it needs no running server.
+
+There is deliberately no `<meta name="keywords">`: Google has ignored it since
+2009, and it only adds noise.
+
 Every page also emits a `<link rel="canonical">` with the query string stripped,
-plus Open Graph and Twitter card tags, and each section and country page has its
-own written meta description.
+plus Open Graph and Twitter card tags.
 
 ---
 
@@ -200,13 +227,15 @@ src/
   Router.php             pattern router, HTML or JSON
   View.php               template renderer
   bootstrap.php          autoloader and asset versioning
-  Support/               Projection, Format, Timezones
+  Support/               Projection, Format, Timezones, Seo, Site
+  Sitemap.php            /sitemap.xml and /robots.txt
   Data/                  countries, cities, rivers, lakes, oceans, facts (generated)
     geometry/            country paths, globe rings, terrain (generated)
   View/                  layout, partials, pages
 tools/
   build_geodata.php      Natural Earth + mledoze → src/Data
   build_facts.php        the ten-facts generator
+  audit_seo.php          checks every meta title and description
   data/                  curated river, lake, ocean and country facts
 ```
 
