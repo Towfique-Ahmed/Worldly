@@ -77,6 +77,17 @@ final class Router
         }
 
         http_response_code($result['status'] ?? 200);
+
+        // A `raw` body is emitted verbatim under its own content type, which is
+        // how the sitemap and robots.txt are served.
+        if (isset($result['raw'])) {
+            header('Content-Type: ' . ($result['contentType'] ?? 'text/plain') . '; charset=utf-8');
+            header('Cache-Control: ' . (($result['cache'] ?? false) ? 'public, max-age=3600' : 'no-store'));
+            echo $result['raw'];
+
+            return;
+        }
+
         header('Content-Type: application/json; charset=utf-8');
         // Static geometry is worth caching; everything else changes per request.
         header('Cache-Control: ' . (($result['cache'] ?? false) ? 'public, max-age=86400' : 'no-store'));

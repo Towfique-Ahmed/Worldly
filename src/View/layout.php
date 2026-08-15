@@ -3,11 +3,19 @@
 declare(strict_types=1);
 
 use Worldly\Support\Format;
+use Worldly\Support\Site;
 
 /** @var string $title */
 /** @var string $content */
 /** @var string $nav */
 /** @var string $assetVersion */
+/** @var string|null $description */
+
+$canonical = Site::canonical();
+$description ??= 'Worldly is an interactive atlas: a live physical world map and 3D globe, ten facts for every country, rivers, lakes and oceans, mountains, travel places, world clocks and a time converter.';
+
+// The bookmarks page is personal to the visitor and has nothing to index.
+$indexable = $nav !== 'bookmarks';
 
 $links = [
     ['href' => '/', 'key' => 'explore', 'label' => 'Explore', 'icon' => '🌍'],
@@ -32,7 +40,21 @@ $moreLinks = [
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title><?= Format::e($title) ?></title>
-<meta name="description" content="Worldly is an interactive atlas: a live world map and globe, ten facts for every country, rivers, lakes and oceans, mountains, travel places, world clocks and a time converter.">
+<meta name="description" content="<?= Format::e($description) ?>">
+<link rel="canonical" href="<?= Format::e($canonical) ?>">
+<?php if (!$indexable): ?>
+<meta name="robots" content="noindex, follow">
+<?php endif; ?>
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Worldly">
+<meta property="og:title" content="<?= Format::e($title) ?>">
+<meta property="og:description" content="<?= Format::e($description) ?>">
+<meta property="og:url" content="<?= Format::e($canonical) ?>">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="<?= Format::e($title) ?>">
+<meta name="twitter:description" content="<?= Format::e($description) ?>">
+
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌍</text></svg>">
 <link rel="stylesheet" href="/assets/css/app.css?v=<?= Format::e($assetVersion) ?>">
 </head>

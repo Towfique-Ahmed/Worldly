@@ -40,6 +40,7 @@ $router = new Router();
 $router->get('/', static fn (): string => $view->render('explore', [
     'title' => 'Worldly — an interactive atlas of everywhere',
     'nav' => 'explore',
+    'description' => 'A live physical world map and spinning 3D globe with rivers, lakes, terrain, a real day-night terminator and ten facts for every country. Built in plain PHP, with no map tiles and no tracking.',
     'mapPayload' => $atlas->mapPayload(),
     'continents' => $atlas->continents(),
     'featuredZones' => array_slice(Timezones::featured(), 0, 8),
@@ -48,6 +49,7 @@ $router->get('/', static fn (): string => $view->render('explore', [
 $router->get('/continents', static fn (): string => $view->render('continents', [
     'title' => 'Continents — Worldly',
     'nav' => 'continents',
+    'description' => 'All seven continents compared by land area, population and country count, each with its highest and lowest points and a map that flies to it.',
     'continents' => $atlas->continents(),
     'totals' => $atlas->continentTotals(),
     'mapPayload' => $atlas->mapPayload(),
@@ -62,6 +64,7 @@ $router->get('/continent/{name}', static function (array $params) use ($atlas, $
     return $view->render('continent', [
         'title' => $continent['name'] . ' — Worldly',
         'nav' => 'continents',
+        'description' => $continent['blurb'],
         'continent' => $continent,
         'countries' => $atlas->countriesIn($continent['name']),
         'mountains' => array_values(array_filter(
@@ -79,6 +82,7 @@ $router->get('/continent/{name}', static function (array $params) use ($atlas, $
 $router->get('/countries', static fn (): string => $view->render('countries', [
     'title' => 'Countries & regions — Worldly',
     'nav' => 'countries',
+    'description' => 'Every country and territory on the map, filterable by continent and sortable by population, area or GDP per person. Each opens a full profile with ten facts.',
     'countries' => $atlas->countries(),
     'continents' => $atlas->continents(),
 ]));
@@ -92,6 +96,13 @@ $router->get('/country/{iso3}', static function (array $params) use ($atlas, $vi
     return $view->render('country', [
         'title' => $country['name'] . ' — 10 facts, map and profile — Worldly',
         'nav' => 'countries',
+        'description' => sprintf(
+            'Ten facts about %s: population %s, capital %s, in %s. Plus its map, languages, currency, time zones, largest cities and land neighbours.',
+            $country['name'],
+            Format::number($country['population']),
+            $atlas->capitalOf($country['iso3'])['name'] ?? 'not recorded',
+            $country['continent'],
+        ),
         'country' => $country,
         'facts' => $atlas->factsFor($country['iso3']),
         'continent' => $atlas->continent($country['continent']),
@@ -107,6 +118,7 @@ $router->get('/country/{iso3}', static function (array $params) use ($atlas, $vi
 $router->get('/mountains', static fn (): string => $view->render('mountains', [
     'title' => 'Mountains — Worldly',
     'nav' => 'mountains',
+    'description' => 'The highest ground on Earth drawn to scale, including all fourteen eight-thousanders and the Seven Summits, with elevation, prominence and first ascent for each.',
     'mountains' => $atlas->mountains(),
     'continents' => $atlas->continents(),
     'mapPayload' => $atlas->mapPayload(),
@@ -115,6 +127,7 @@ $router->get('/mountains', static fn (): string => $view->render('mountains', [
 $router->get('/waters', static fn (): string => $view->render('waters', [
     'title' => 'Rivers, lakes & oceans — Worldly',
     'nav' => 'waters',
+    'description' => 'The world\'s great rivers, lakes and oceans drawn as real geometry on the map, with length, basin, discharge, area and depth, plus a to-scale ocean depth chart.',
     'rivers' => $atlas->rivers(),
     'lakes' => $atlas->lakes(),
     'oceans' => $atlas->oceans(),
@@ -124,6 +137,7 @@ $router->get('/waters', static fn (): string => $view->render('waters', [
 $router->get('/travel', static fn (): string => $view->render('travel', [
     'title' => 'Travel places — Worldly',
     'nav' => 'travel',
+    'description' => 'Ancient wonders, reefs, deserts and cities worth crossing an ocean for, each pinned on the world map with the season that actually suits it.',
     'places' => $atlas->places(),
     'continents' => $atlas->continents(),
     'mapPayload' => $atlas->mapPayload(),
@@ -132,23 +146,27 @@ $router->get('/travel', static fn (): string => $view->render('travel', [
 $router->get('/compare', static fn (): string => $view->render('compare', [
     'title' => 'Compare countries — Worldly',
     'nav' => 'compare',
+    'description' => 'Put any two countries side by side and compare population, area, density, GDP, borders, time zones, languages and currency, plus the distance between them.',
     'countries' => $atlas->countries(),
 ]));
 
 $router->get('/quiz', static fn (): string => $view->render('quiz', [
     'title' => 'Atlas quiz — Worldly',
     'nav' => 'quiz',
+    'description' => 'Test your geography: guess the flag, the capital, or find the country on the map. Eight questions, streaks, and a real fact after every answer.',
     'mapPayload' => $atlas->mapPayload(),
 ]));
 
 $router->get('/bookmarks', static fn (): string => $view->render('bookmarks', [
     'title' => 'Your bookmarks — Worldly',
     'nav' => 'bookmarks',
+    'description' => 'Countries, peaks, rivers, lakes and destinations you have starred, kept in this browser.',
 ]));
 
 $router->get('/clocks', static fn (): string => $view->render('clocks', [
     'title' => 'World clock, timer & stopwatch — Worldly',
     'nav' => 'clocks',
+    'description' => 'A wall of analog world clocks that tint with the local hour, plus a countdown timer that rings and a stopwatch with laps.',
     'zones' => Timezones::featured(),
     'wall' => Timezones::defaultWall(),
 ]));
@@ -156,9 +174,30 @@ $router->get('/clocks', static fn (): string => $view->render('clocks', [
 $router->get('/converter', static fn (): string => $view->render('converter', [
     'title' => 'Time converter — Worldly',
     'nav' => 'converter',
+    'description' => 'Convert any moment between any two time zones, with daylight saving handled automatically and the same instant shown across twelve cities.',
     'zones' => Timezones::featured(),
     'grouped' => Timezones::grouped(),
 ]));
+
+// ---------------------------------------------------------------------------
+// Search engine files
+// ---------------------------------------------------------------------------
+
+$sitemap = new Worldly\Sitemap($atlas, __DIR__ . '/../src/Data');
+
+$router->get('/sitemap.xml', static fn (): array => [
+    'status' => 200,
+    'cache' => true,
+    'contentType' => 'application/xml',
+    'raw' => $sitemap->xml(),
+]);
+
+$router->get('/robots.txt', static fn (): array => [
+    'status' => 200,
+    'cache' => true,
+    'contentType' => 'text/plain',
+    'raw' => $sitemap->robots(),
+]);
 
 // ---------------------------------------------------------------------------
 // JSON endpoints
