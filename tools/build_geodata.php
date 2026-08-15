@@ -111,10 +111,10 @@ foreach ($geo['features'] as $feature) {
     $countries[] = [
         'iso3' => $iso3,
         'iso2' => $iso2,
-        'name' => $props['NAME'] ?? $props['ADMIN'],
-        'longName' => $props['NAME_LONG'] ?? $props['NAME'],
-        'formalName' => $extra['name']['official'] ?? $props['FORMAL_EN'] ?? null,
-        'nativeName' => nativeName($extra),
+        'name' => cleanName($props['NAME'] ?? $props['ADMIN']),
+        'longName' => cleanName($props['NAME_LONG'] ?? $props['NAME']),
+        'formalName' => cleanName($extra['name']['official'] ?? $props['FORMAL_EN'] ?? null),
+        'nativeName' => cleanName(nativeName($extra)),
         'continent' => $props['CONTINENT'] ?? 'Unknown',
         'region' => $props['REGION_UN'] ?? 'Unknown',
         'subregion' => $props['SUBREGION'] ?? 'Unknown',
@@ -196,11 +196,11 @@ foreach ($placesGeo['features'] as $feature) {
     $props = $feature['properties'];
 
     $cities[] = [
-        'name' => $props['name'],
-        'country' => $props['adm0name'],
+        'name' => cleanName($props['name']),
+        'country' => cleanName($props['adm0name']),
         'iso3' => $props['adm0_a3'],
         'iso2' => strtoupper((string) ($props['iso_a2'] ?? '')),
-        'admin' => $props['adm1name'] ?? null,
+        'admin' => cleanName($props['adm1name'] ?? null),
         'capital' => (int) ($props['adm0cap'] ?? 0) === 1,
         'megacity' => (int) ($props['megacity'] ?? 0) === 1,
         'population' => (int) ($props['pop_max'] ?? 0),
@@ -224,8 +224,8 @@ $rivers = [];
 
 foreach ($riverGeo['features'] as $feature) {
     $props = $feature['properties'];
-    $name = $props['name_en'] ?? $props['name'] ?? null;
-    if ($name === null || (int) ($props['scalerank'] ?? 99) > 7) {
+    $name = cleanName($props['name_en'] ?? $props['name'] ?? null);
+    if ($name === null || $name === '' || (int) ($props['scalerank'] ?? 99) > 7) {
         continue;
     }
 
@@ -278,8 +278,8 @@ $lakes = [];
 
 foreach ($lakeGeo['features'] as $feature) {
     $props = $feature['properties'];
-    $name = $props['name_en'] ?? $props['name'] ?? null;
-    if ($name === null || (int) ($props['scalerank'] ?? 99) > 2) {
+    $name = cleanName($props['name_en'] ?? $props['name'] ?? null);
+    if ($name === null || $name === '' || (int) ($props['scalerank'] ?? 99) > 2) {
         continue;
     }
 
@@ -333,8 +333,8 @@ $oceans = [];
 
 foreach ($marineGeo['features'] as $feature) {
     $props = $feature['properties'];
-    $name = $props['name_en'] ?? $props['name'] ?? null;
-    if ($name === null || (int) ($props['scalerank'] ?? 99) > 1) {
+    $name = cleanName($props['name_en'] ?? $props['name'] ?? null);
+    if ($name === null || $name === '' || (int) ($props['scalerank'] ?? 99) > 1) {
         continue;
     }
 
@@ -343,7 +343,7 @@ foreach ($marineGeo['features'] as $feature) {
 
     $oceans[] = [
         'name' => $name,
-        'label' => $props['label'] ?? strtoupper($name),
+        'label' => cleanName($props['label'] ?? strtoupper($name)),
         'kind' => ucfirst((string) ($props['featurecla'] ?? 'sea')),
         'rank' => (int) ($props['scalerank'] ?? 9),
         'lon' => $centroid[0],
@@ -403,7 +403,7 @@ foreach ($regionGeo['features'] as $feature) {
     $centroid = geometryCentroid($feature['geometry']);
 
     $terrain[] = [
-        'name' => $props['NAME_EN'] ?? $props['NAME'] ?? '',
+        'name' => cleanName($props['NAME_EN'] ?? $props['NAME'] ?? '') ?? '',
         'kind' => $class,
         'region' => $props['REGION'] ?? null,
         'rank' => (int) ($props['SCALERANK'] ?? 5),

@@ -21,6 +21,7 @@ require __DIR__ . '/../src/bootstrap.php';
 use Worldly\Atlas;
 use Worldly\Router;
 use Worldly\Support\Format;
+use Worldly\Support\Seo;
 use Worldly\Support\Timezones;
 use Worldly\View;
 
@@ -38,18 +39,16 @@ $router = new Router();
 // ---------------------------------------------------------------------------
 
 $router->get('/', static fn (): string => $view->render('explore', [
-    'title' => 'Worldly — an interactive atlas of everywhere',
     'nav' => 'explore',
-    'description' => 'A live physical world map and spinning 3D globe with rivers, lakes, terrain, a real day-night terminator and ten facts for every country. Built in plain PHP, with no map tiles and no tracking.',
+    ...Seo::page('explore'),
     'mapPayload' => $atlas->mapPayload(),
     'continents' => $atlas->continents(),
     'featuredZones' => array_slice(Timezones::featured(), 0, 8),
 ]));
 
 $router->get('/continents', static fn (): string => $view->render('continents', [
-    'title' => 'Continents — Worldly',
     'nav' => 'continents',
-    'description' => 'All seven continents compared by land area, population and country count, each with its highest and lowest points and a map that flies to it.',
+    ...Seo::page('continents'),
     'continents' => $atlas->continents(),
     'totals' => $atlas->continentTotals(),
     'mapPayload' => $atlas->mapPayload(),
@@ -58,13 +57,16 @@ $router->get('/continents', static fn (): string => $view->render('continents', 
 $router->get('/continent/{name}', static function (array $params) use ($atlas, $view): string {
     $continent = $atlas->continent(str_replace('-', ' ', $params['name']));
     if ($continent === null) {
-        return $view->render('not-found', ['title' => 'Not found — Worldly', 'nav' => '', 'what' => 'continent']);
+        return $view->render('not-found', ['nav' => '', 'what' => 'continent'] + Seo::page('not-found'));
     }
 
     return $view->render('continent', [
-        'title' => $continent['name'] . ' — Worldly',
         'nav' => 'continents',
-        'description' => $continent['blurb'],
+        ...Seo::continent(
+            $continent,
+            count($atlas->countriesIn($continent['name'])),
+            array_sum(array_column($atlas->countriesIn($continent['name']), 'population')),
+        ),
         'continent' => $continent,
         'countries' => $atlas->countriesIn($continent['name']),
         'mountains' => array_values(array_filter(
@@ -80,9 +82,8 @@ $router->get('/continent/{name}', static function (array $params) use ($atlas, $
 });
 
 $router->get('/countries', static fn (): string => $view->render('countries', [
-    'title' => 'Countries & regions — Worldly',
     'nav' => 'countries',
-    'description' => 'Every country and territory on the map, filterable by continent and sortable by population, area or GDP per person. Each opens a full profile with ten facts.',
+    ...Seo::page('countries'),
     'countries' => $atlas->countries(),
     'continents' => $atlas->continents(),
 ]));
@@ -90,19 +91,12 @@ $router->get('/countries', static fn (): string => $view->render('countries', [
 $router->get('/country/{iso3}', static function (array $params) use ($atlas, $view): string {
     $country = $atlas->country($params['iso3']);
     if ($country === null) {
-        return $view->render('not-found', ['title' => 'Not found — Worldly', 'nav' => '', 'what' => 'country']);
+        return $view->render('not-found', ['nav' => '', 'what' => 'country'] + Seo::page('not-found'));
     }
 
     return $view->render('country', [
-        'title' => $country['name'] . ' — 10 facts, map and profile — Worldly',
         'nav' => 'countries',
-        'description' => sprintf(
-            'Ten facts about %s: population %s, capital %s, in %s. Plus its map, languages, currency, time zones, largest cities and land neighbours.',
-            $country['name'],
-            Format::number($country['population']),
-            $atlas->capitalOf($country['iso3'])['name'] ?? 'not recorded',
-            $country['continent'],
-        ),
+        ...Seo::country($country, $atlas->capitalOf($country['iso3'])),
         'country' => $country,
         'facts' => $atlas->factsFor($country['iso3']),
         'continent' => $atlas->continent($country['continent']),
@@ -116,18 +110,16 @@ $router->get('/country/{iso3}', static function (array $params) use ($atlas, $vi
 });
 
 $router->get('/mountains', static fn (): string => $view->render('mountains', [
-    'title' => 'Mountains — Worldly',
     'nav' => 'mountains',
-    'description' => 'The highest ground on Earth drawn to scale, including all fourteen eight-thousanders and the Seven Summits, with elevation, prominence and first ascent for each.',
+    ...Seo::page('mountains'),
     'mountains' => $atlas->mountains(),
     'continents' => $atlas->continents(),
     'mapPayload' => $atlas->mapPayload(),
 ]));
 
 $router->get('/waters', static fn (): string => $view->render('waters', [
-    'title' => 'Rivers, lakes & oceans — Worldly',
     'nav' => 'waters',
-    'description' => 'The world\'s great rivers, lakes and oceans drawn as real geometry on the map, with length, basin, discharge, area and depth, plus a to-scale ocean depth chart.',
+    ...Seo::page('waters'),
     'rivers' => $atlas->rivers(),
     'lakes' => $atlas->lakes(),
     'oceans' => $atlas->oceans(),
@@ -135,46 +127,40 @@ $router->get('/waters', static fn (): string => $view->render('waters', [
 ]));
 
 $router->get('/travel', static fn (): string => $view->render('travel', [
-    'title' => 'Travel places — Worldly',
     'nav' => 'travel',
-    'description' => 'Ancient wonders, reefs, deserts and cities worth crossing an ocean for, each pinned on the world map with the season that actually suits it.',
+    ...Seo::page('travel'),
     'places' => $atlas->places(),
     'continents' => $atlas->continents(),
     'mapPayload' => $atlas->mapPayload(),
 ]));
 
 $router->get('/compare', static fn (): string => $view->render('compare', [
-    'title' => 'Compare countries — Worldly',
     'nav' => 'compare',
-    'description' => 'Put any two countries side by side and compare population, area, density, GDP, borders, time zones, languages and currency, plus the distance between them.',
+    ...Seo::page('compare'),
     'countries' => $atlas->countries(),
 ]));
 
 $router->get('/quiz', static fn (): string => $view->render('quiz', [
-    'title' => 'Atlas quiz — Worldly',
     'nav' => 'quiz',
-    'description' => 'Test your geography: guess the flag, the capital, or find the country on the map. Eight questions, streaks, and a real fact after every answer.',
+    ...Seo::page('quiz'),
     'mapPayload' => $atlas->mapPayload(),
 ]));
 
 $router->get('/bookmarks', static fn (): string => $view->render('bookmarks', [
-    'title' => 'Your bookmarks — Worldly',
     'nav' => 'bookmarks',
-    'description' => 'Countries, peaks, rivers, lakes and destinations you have starred, kept in this browser.',
+    ...Seo::page('bookmarks'),
 ]));
 
 $router->get('/clocks', static fn (): string => $view->render('clocks', [
-    'title' => 'World clock, timer & stopwatch — Worldly',
     'nav' => 'clocks',
-    'description' => 'A wall of analog world clocks that tint with the local hour, plus a countdown timer that rings and a stopwatch with laps.',
+    ...Seo::page('clocks'),
     'zones' => Timezones::featured(),
     'wall' => Timezones::defaultWall(),
 ]));
 
 $router->get('/converter', static fn (): string => $view->render('converter', [
-    'title' => 'Time converter — Worldly',
     'nav' => 'converter',
-    'description' => 'Convert any moment between any two time zones, with daylight saving handled automatically and the same instant shown across twelve cities.',
+    ...Seo::page('converter'),
     'zones' => Timezones::featured(),
     'grouped' => Timezones::grouped(),
 ]));
@@ -437,5 +423,5 @@ $router->get('/api/search', static function () use ($atlas): array {
 $router->dispatch(
     $_SERVER['REQUEST_METHOD'] ?? 'GET',
     parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/',
-    static fn (): string => $view->render('not-found', ['title' => 'Not found — Worldly', 'nav' => '', 'what' => 'page']),
+    static fn (): string => $view->render('not-found', ['nav' => '', 'what' => 'page'] + Seo::page('not-found')),
 );
