@@ -7,8 +7,9 @@ namespace Worldly;
 /**
  * In-memory read model over the generated and curated datasets.
  *
- * Everything is loaded lazily and memoised, so a request that only renders the
- * clock page never touches the 140 KB of country geometry.
+ * Everything is loaded lazily and memoised. Geometry lives in Data/geometry and
+ * is only touched when a page actually draws a map, so the clock pages never
+ * pay to parse a few hundred kilobytes of SVG paths.
  */
 final class Atlas
 {
@@ -18,6 +19,8 @@ final class Atlas
     public function __construct(private readonly string $dataDir)
     {
     }
+
+    // ---------------------------------------------------------------- datasets
 
     /** @return list<array<string, mixed>> */
     public function countries(): array
@@ -43,11 +46,57 @@ final class Atlas
         return $this->load('places');
     }
 
+    /** @return list<array<string, mixed>> */
+    public function rivers(): array
+    {
+        return $this->load('rivers');
+    }
+
+    /** @return list<array<string, mixed>> */
+    public function lakes(): array
+    {
+        return $this->load('lakes');
+    }
+
+    /** @return list<array<string, mixed>> */
+    public function oceans(): array
+    {
+        return $this->load('oceans');
+    }
+
     /** @return array<string, array<string, mixed>> */
     public function continents(): array
     {
         return $this->load('continents');
     }
+
+    /** @return array<string, list<string>> */
+    public function facts(): array
+    {
+        return $this->load('facts');
+    }
+
+    /** @return list<string> */
+    public function factsFor(string $iso3): array
+    {
+        return $this->facts()[strtoupper($iso3)] ?? [];
+    }
+
+    // ---------------------------------------------------------------- geometry
+
+    /** @return array<string, string> ISO3 => SVG path */
+    public function countryPaths(): array
+    {
+        return $this->cache['geometry.countries'] ??= require "{$this->dataDir}/geometry/countries.php";
+    }
+
+    /** @return list<array<string, mixed>> */
+    public function terrain(): array
+    {
+        return $this->cache['geometry.terrain'] ??= require "{$this->dataDir}/geometry/terrain.php";
+    }
+
+    // ----------------------------------------------------------------- lookups
 
     /** @return array<string, mixed>|null */
     public function country(string $iso3): ?array
@@ -91,7 +140,6 @@ final class Atlas
         ));
     }
 
-    /** Capital city record for a country, if we have one. */
     public function capitalOf(string $iso3): ?array
     {
         foreach ($this->cities() as $city) {
@@ -101,6 +149,17 @@ final class Atlas
         }
 
         return null;
+    }
+
+    /** @return list<array<string, mixed>> */
+    public function citiesIn(string $iso3, int $limit = 8): array
+    {
+        $matches = array_values(array_filter(
+            $this->cities(),
+            static fn (array $c): bool => strcasecmp($c['iso3'], $iso3) === 0,
+        ));
+
+        return $limit > 0 ? array_slice($matches, 0, $limit) : $matches;
     }
 
     /** @return list<array<string, mixed>> */
@@ -122,10 +181,26 @@ final class Atlas
     }
 
     /**
-     * Aggregate headline numbers used by the hero counters.
+     * Countries that share a land border, resolved from ISO3 codes to records.
      *
-     * @return array<string, int|float>
+     * @return list<array<string, mixed>>
      */
+    public function neighboursOf(array $country): array
+    {
+        $wanted = array_flip($country['borders'] ?? []);
+        if ($wanted === []) {
+            return [];
+        }
+
+        return array_values(array_filter(
+            $this->countries(),
+            static fn (array $c): bool => isset($wanted[$c['iso3']]),
+        ));
+    }
+
+    // ------------------------------------------------------------- aggregates
+
+    /** @return array<string, int|float> */
     public function summary(): array
     {
         $countries = $this->countries();
@@ -137,20 +212,21 @@ final class Atlas
             'capitals' => count($this->capitals()),
             'mountains' => count($this->mountains()),
             'places' => count($this->places()),
+            'rivers' => count($this->rivers()),
+            'lakes' => count($this->lakes()),
+            'oceans' => count($this->oceans()),
+            'facts' => count($this->facts()) * 10,
             'continents' => count($this->continents()),
             'timezones' => count(\DateTimeZone::listIdentifiers()),
             'land' => array_sum(array_column($this->continents(), 'area')),
         ];
     }
 
-    /**
-     * Continent roll-up: country count, population and land area.
-     *
-     * @return array<string, array{countries: int, population: int, area: int}>
-     */
+    /** @return array<string, array{countries: int, population: int, area: int}> */
     public function continentTotals(): array
     {
         $totals = [];
+
         foreach ($this->continents() as $key => $continent) {
             $members = $this->countriesIn($key);
             $totals[$key] = [
@@ -164,10 +240,8 @@ final class Atlas
     }
 
     /**
-     * Everything the browser needs to drive the interactive map.
-     *
-     * Geometry is kept separate from the profile fields so the client can build
-     * a lightweight search index without carrying the path strings around.
+     * Point data the browser needs to drive the map. Line and polygon geometry
+     * is rendered server-side into the SVG instead, so this stays small.
      *
      * @return array<string, mixed>
      */
@@ -181,6 +255,8 @@ final class Atlas
                 'continent' => $c['continent'],
                 'subregion' => $c['subregion'],
                 'population' => $c['population'],
+                'area' => $c['area'],
+                'density' => $c['density'],
                 'gdpPerCapita' => $c['gdpPerCapita'],
                 'flag' => $c['flag'],
                 'lon' => $c['lon'],
@@ -199,6 +275,21 @@ final class Atlas
                 'lon' => $c['lon'],
             ],
             $this->capitals(),
+        );
+
+        $bigCities = array_map(
+            static fn (array $c): array => [
+                'name' => $c['name'],
+                'iso3' => $c['iso3'],
+                'country' => $c['country'],
+                'population' => $c['population'],
+                'lat' => $c['lat'],
+                'lon' => $c['lon'],
+            ],
+            array_slice(array_values(array_filter(
+                $this->cities(),
+                static fn (array $c): bool => !$c['capital'] && $c['population'] > 1_500_000,
+            )), 0, 180),
         );
 
         $mountains = array_map(
@@ -225,6 +316,17 @@ final class Atlas
             $this->places(),
         );
 
+        $waterLabels = [];
+        foreach ($this->oceans() as $ocean) {
+            $waterLabels[] = [
+                'name' => $ocean['label'],
+                'kind' => $ocean['kind'],
+                'rank' => $ocean['rank'],
+                'lat' => $ocean['lat'],
+                'lon' => $ocean['lon'],
+            ];
+        }
+
         $continents = [];
         foreach ($this->continents() as $key => $continent) {
             $continents[$key] = [
@@ -237,14 +339,15 @@ final class Atlas
         return [
             'countries' => $countries,
             'capitals' => $capitals,
+            'cities' => $bigCities,
             'mountains' => $mountains,
             'places' => $places,
+            'water' => $waterLabels,
             'continents' => $continents,
         ];
     }
 
-    /** @return mixed */
-    private function load(string $name)
+    private function load(string $name): mixed
     {
         return $this->cache[$name] ??= require "{$this->dataDir}/{$name}.php";
     }

@@ -57,7 +57,7 @@ usort($mountains, static fn (array $a, array $b): int => $b['elevation'] <=> $a[
           'mapPayload' => $mapPayload,
           'variant' => 'full',
           'layers' => ['graticule', 'capitals', 'places'],
-          'colorMode' => 'continent',
+          'style' => 'political',
           'focus' => $continent['focus'],
       ]) ?>
       <p style="margin-top:10px;font-size:.82rem;color:var(--text-faint)">Drag to pan, scroll to zoom, click any country for its profile.</p>

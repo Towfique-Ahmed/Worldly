@@ -54,8 +54,7 @@ $router->get('/continents', static fn (): string => $view->render('continents', 
 ]));
 
 $router->get('/continent/{name}', static function (array $params) use ($atlas, $view): string {
-    $name = str_replace('-', ' ', $params['name']);
-    $continent = $atlas->continent($name);
+    $continent = $atlas->continent(str_replace('-', ' ', $params['name']));
     if ($continent === null) {
         return $view->render('not-found', ['title' => 'Not found — Worldly', 'nav' => '', 'what' => 'continent']);
     }
@@ -91,21 +90,16 @@ $router->get('/country/{iso3}', static function (array $params) use ($atlas, $vi
     }
 
     return $view->render('country', [
-        'title' => $country['name'] . ' — Worldly',
+        'title' => $country['name'] . ' — 10 facts, map and profile — Worldly',
         'nav' => 'countries',
         'country' => $country,
+        'facts' => $atlas->factsFor($country['iso3']),
         'continent' => $atlas->continent($country['continent']),
         'capital' => $atlas->capitalOf($country['iso3']),
-        'cities' => array_slice(array_values(array_filter(
-            $atlas->cities(),
-            static fn (array $c): bool => strcasecmp($c['iso3'], $country['iso3']) === 0,
-        )), 0, 8),
+        'cities' => $atlas->citiesIn($country['iso3'], 10),
         'mountains' => $atlas->mountainsIn($country['iso3']),
         'places' => $atlas->placesIn($country['iso3']),
-        'neighbours' => array_slice(array_values(array_filter(
-            $atlas->countriesIn($country['continent']),
-            static fn (array $c): bool => $c['iso3'] !== $country['iso3'] && $c['subregion'] === $country['subregion'],
-        )), 0, 8),
+        'neighbours' => $atlas->neighboursOf($country),
         'mapPayload' => $atlas->mapPayload(),
     ]);
 });
@@ -118,12 +112,38 @@ $router->get('/mountains', static fn (): string => $view->render('mountains', [
     'mapPayload' => $atlas->mapPayload(),
 ]));
 
+$router->get('/waters', static fn (): string => $view->render('waters', [
+    'title' => 'Rivers, lakes & oceans — Worldly',
+    'nav' => 'waters',
+    'rivers' => $atlas->rivers(),
+    'lakes' => $atlas->lakes(),
+    'oceans' => $atlas->oceans(),
+    'mapPayload' => $atlas->mapPayload(),
+]));
+
 $router->get('/travel', static fn (): string => $view->render('travel', [
     'title' => 'Travel places — Worldly',
     'nav' => 'travel',
     'places' => $atlas->places(),
     'continents' => $atlas->continents(),
     'mapPayload' => $atlas->mapPayload(),
+]));
+
+$router->get('/compare', static fn (): string => $view->render('compare', [
+    'title' => 'Compare countries — Worldly',
+    'nav' => 'compare',
+    'countries' => $atlas->countries(),
+]));
+
+$router->get('/quiz', static fn (): string => $view->render('quiz', [
+    'title' => 'Atlas quiz — Worldly',
+    'nav' => 'quiz',
+    'mapPayload' => $atlas->mapPayload(),
+]));
+
+$router->get('/bookmarks', static fn (): string => $view->render('bookmarks', [
+    'title' => 'Your bookmarks — Worldly',
+    'nav' => 'bookmarks',
 ]));
 
 $router->get('/clocks', static fn (): string => $view->render('clocks', [
@@ -144,26 +164,146 @@ $router->get('/converter', static fn (): string => $view->render('converter', [
 // JSON endpoints
 // ---------------------------------------------------------------------------
 
+/** Coarse lon/lat rings, fetched on demand by the canvas globe. */
+$router->get('/api/globe', static function () use ($atlas): array {
+    return ['status' => 200, 'cache' => true, 'body' => [
+        'rings' => require __DIR__ . '/../src/Data/geometry/globe.php',
+    ]];
+});
+
 $router->get('/api/country/{iso3}', static function (array $params) use ($atlas): array {
     $country = $atlas->country($params['iso3']);
     if ($country === null) {
         return ['status' => 404, 'body' => ['error' => 'Unknown country']];
     }
 
-    $capital = $atlas->capitalOf($country['iso3']);
-    unset($country['path']);
-
     return ['status' => 200, 'body' => [
         'country' => $country,
-        'capital' => $capital,
+        'facts' => $atlas->factsFor($country['iso3']),
+        'capital' => $atlas->capitalOf($country['iso3']),
         'continent' => $atlas->continent($country['continent']),
         'mountains' => $atlas->mountainsIn($country['iso3']),
         'places' => $atlas->placesIn($country['iso3']),
-        'cities' => array_slice(array_values(array_filter(
-            $atlas->cities(),
-            static fn (array $c): bool => strcasecmp($c['iso3'], $country['iso3']) === 0,
-        )), 0, 5),
+        'cities' => $atlas->citiesIn($country['iso3'], 5),
+        'neighbours' => array_map(
+            static fn (array $c): array => ['iso3' => $c['iso3'], 'name' => $c['name'], 'flag' => $c['flag']],
+            $atlas->neighboursOf($country),
+        ),
     ]];
+});
+
+/** Bulk lookup used by the bookmarks page to rehydrate saved ids. */
+$router->get('/api/bookmarks', static function () use ($atlas): array {
+    $ids = array_filter(explode(',', (string) ($_GET['ids'] ?? '')));
+    $items = [];
+
+    foreach ($ids as $id) {
+        [$type, $key] = array_pad(explode(':', $id, 2), 2, '');
+
+        if ($type === 'country') {
+            $country = $atlas->country($key);
+            if ($country) {
+                $items[] = [
+                    'id' => $id, 'type' => 'country', 'title' => $country['flag'] . ' ' . $country['name'],
+                    'detail' => $country['continent'] . ' · ' . number_format($country['population']) . ' people',
+                    'href' => '/country/' . $country['iso3'], 'lon' => $country['lon'], 'lat' => $country['lat'],
+                ];
+            }
+        } elseif ($type === 'mountain') {
+            foreach ($atlas->mountains() as $peak) {
+                if (Format::slug($peak['name']) === $key) {
+                    $items[] = [
+                        'id' => $id, 'type' => 'mountain', 'title' => '🏔 ' . $peak['name'],
+                        'detail' => $peak['range'] . ' · ' . number_format($peak['elevation']) . ' m',
+                        'href' => '/mountains#' . $key, 'lon' => $peak['lon'], 'lat' => $peak['lat'],
+                    ];
+                }
+            }
+        } elseif ($type === 'place') {
+            foreach ($atlas->places() as $place) {
+                if (Format::slug($place['name']) === $key) {
+                    $items[] = [
+                        'id' => $id, 'type' => 'place', 'title' => '📍 ' . $place['name'],
+                        'detail' => $place['country'] . ' · ' . $place['category'],
+                        'href' => '/travel#' . $key, 'lon' => $place['lon'], 'lat' => $place['lat'],
+                    ];
+                }
+            }
+        } elseif ($type === 'river' || $type === 'lake') {
+            $source = $type === 'river' ? $atlas->rivers() : $atlas->lakes();
+            foreach ($source as $water) {
+                if (Format::slug($water['name']) === $key) {
+                    $items[] = [
+                        'id' => $id, 'type' => $type,
+                        'title' => ($type === 'river' ? '🏞 ' : '💧 ') . $water['name'],
+                        'detail' => $type === 'river'
+                            ? ($water['length'] ? number_format($water['length']) . ' km' : 'River')
+                            : ($water['area'] ? number_format($water['area']) . ' km²' : 'Lake'),
+                        'href' => '/waters#' . $key, 'lon' => $water['lon'], 'lat' => $water['lat'],
+                    ];
+                }
+            }
+        }
+    }
+
+    return ['status' => 200, 'body' => ['items' => $items]];
+});
+
+/** Question bank for the quiz, built fresh each request. */
+$router->get('/api/quiz', static function () use ($atlas): array {
+    $mode = (string) ($_GET['mode'] ?? 'flag');
+    $pool = array_values(array_filter(
+        $atlas->countries(),
+        static fn (array $c): bool => $c['population'] > 300000 && $c['iso2'] !== '' && $c['unMember'],
+    ));
+
+    shuffle($pool);
+    $questions = [];
+
+    foreach (array_slice($pool, 0, 10) as $answer) {
+        $decoys = array_values(array_filter(
+            $pool,
+            static fn (array $c): bool => $c['iso3'] !== $answer['iso3'] && $c['continent'] === $answer['continent'],
+        ));
+        shuffle($decoys);
+        $decoys = array_slice($decoys, 0, 3);
+
+        while (count($decoys) < 3) {
+            $candidate = $pool[array_rand($pool)];
+            if ($candidate['iso3'] !== $answer['iso3']) {
+                $decoys[] = $candidate;
+            }
+        }
+
+        $options = array_map(static fn (array $c): array => ['iso3' => $c['iso3'], 'label' => $c['name']], $decoys);
+        $options[] = ['iso3' => $answer['iso3'], 'label' => $answer['name']];
+        shuffle($options);
+
+        $capital = $atlas->capitalOf($answer['iso3']);
+
+        $prompt = match ($mode) {
+            'capital' => $capital ? 'Which country has ' . $capital['name'] . ' as its capital?' : null,
+            'map' => 'Which country is highlighted on the map?',
+            default => 'Which country flies this flag?',
+        };
+
+        if ($prompt === null) {
+            continue;
+        }
+
+        $questions[] = [
+            'mode' => $mode,
+            'prompt' => $prompt,
+            'flag' => $answer['flag'],
+            'iso3' => $answer['iso3'],
+            'lon' => $answer['lon'],
+            'lat' => $answer['lat'],
+            'options' => $options,
+            'fact' => $atlas->factsFor($answer['iso3'])[0] ?? '',
+        ];
+    }
+
+    return ['status' => 200, 'body' => ['questions' => array_slice($questions, 0, 8)]];
 });
 
 $router->get('/api/time/{zone:.+}', static function (array $params): array {
@@ -184,7 +324,7 @@ $router->get('/api/time/{zone:.+}', static function (array $params): array {
     ]];
 });
 
-$router->get('/api/convert', static function () use ($atlas): array {
+$router->get('/api/convert', static function (): array {
     $from = (string) ($_GET['from'] ?? 'UTC');
     $to = (string) ($_GET['to'] ?? 'UTC');
     $when = (string) ($_GET['at'] ?? 'now');
@@ -196,18 +336,15 @@ $router->get('/api/convert', static function () use ($atlas): array {
         return ['status' => 400, 'body' => ['error' => 'Could not convert: ' . $e->getMessage()]];
     }
 
-    $difference = ($target->getOffset() - $source->getOffset()) / 3600;
-
     return ['status' => 200, 'body' => [
-        'from' => ['zone' => $from, 'iso' => $source->format(DateTimeInterface::ATOM), 'label' => $source->format('D, j M Y · H:i'), 'abbr' => $source->format('T')],
-        'to' => ['zone' => $to, 'iso' => $target->format(DateTimeInterface::ATOM), 'label' => $target->format('D, j M Y · H:i'), 'abbr' => $target->format('T')],
-        'differenceHours' => round($difference, 2),
-        'dayShift' => (int) $target->format('z') - (int) $source->format('z'),
+        'from' => ['zone' => $from, 'iso' => $source->format(DateTimeInterface::ATOM), 'label' => $source->format('D, j M Y · H:i')],
+        'to' => ['zone' => $to, 'iso' => $target->format(DateTimeInterface::ATOM), 'label' => $target->format('D, j M Y · H:i')],
+        'differenceHours' => round(($target->getOffset() - $source->getOffset()) / 3600, 2),
     ]];
 });
 
 $router->get('/api/search', static function () use ($atlas): array {
-    $query = trim((string) ($_GET['q' ] ?? ''));
+    $query = trim((string) ($_GET['q'] ?? ''));
     if ($query === '') {
         return ['status' => 200, 'body' => ['results' => []]];
     }
@@ -215,31 +352,47 @@ $router->get('/api/search', static function () use ($atlas): array {
     $needle = mb_strtolower($query);
     $results = [];
 
+    $push = static function (array $item) use (&$results): void {
+        $results[] = $item;
+    };
+
     foreach ($atlas->countries() as $country) {
         if (str_contains(mb_strtolower($country['name']), $needle)) {
-            $results[] = ['type' => 'country', 'label' => $country['flag'] . ' ' . $country['name'], 'detail' => $country['continent'], 'href' => '/country/' . $country['iso3'], 'lat' => $country['lat'], 'lon' => $country['lon']];
+            $push(['type' => 'country', 'label' => $country['flag'] . ' ' . $country['name'], 'detail' => $country['continent'], 'href' => '/country/' . $country['iso3'], 'lat' => $country['lat'], 'lon' => $country['lon']]);
         }
     }
 
     foreach ($atlas->cities() as $city) {
         if (str_contains(mb_strtolower($city['name']), $needle)) {
-            $results[] = ['type' => 'city', 'label' => $city['name'], 'detail' => $city['country'], 'href' => '/country/' . $city['iso3'], 'lat' => $city['lat'], 'lon' => $city['lon']];
+            $push(['type' => 'city', 'label' => '🏙 ' . $city['name'], 'detail' => $city['country'], 'href' => '/country/' . $city['iso3'], 'lat' => $city['lat'], 'lon' => $city['lon']]);
         }
     }
 
     foreach ($atlas->mountains() as $mountain) {
         if (str_contains(mb_strtolower($mountain['name']), $needle)) {
-            $results[] = ['type' => 'mountain', 'label' => $mountain['name'], 'detail' => Format::number($mountain['elevation']) . ' m', 'href' => '/mountains#' . Format::slug($mountain['name']), 'lat' => $mountain['lat'], 'lon' => $mountain['lon']];
+            $push(['type' => 'mountain', 'label' => '🏔 ' . $mountain['name'], 'detail' => Format::number($mountain['elevation']) . ' m', 'href' => '/mountains#' . Format::slug($mountain['name']), 'lat' => $mountain['lat'], 'lon' => $mountain['lon']]);
+        }
+    }
+
+    foreach ($atlas->rivers() as $river) {
+        if (str_contains(mb_strtolower($river['name']), $needle)) {
+            $push(['type' => 'river', 'label' => '🏞 ' . $river['name'], 'detail' => $river['length'] ? Format::number($river['length']) . ' km' : 'River', 'href' => '/waters#' . Format::slug($river['name']), 'lat' => $river['lat'], 'lon' => $river['lon']]);
+        }
+    }
+
+    foreach ($atlas->lakes() as $lake) {
+        if (str_contains(mb_strtolower($lake['name']), $needle)) {
+            $push(['type' => 'lake', 'label' => '💧 ' . $lake['name'], 'detail' => $lake['area'] ? Format::number($lake['area']) . ' km²' : 'Lake', 'href' => '/waters#' . Format::slug($lake['name']), 'lat' => $lake['lat'], 'lon' => $lake['lon']]);
         }
     }
 
     foreach ($atlas->places() as $place) {
         if (str_contains(mb_strtolower($place['name']), $needle)) {
-            $results[] = ['type' => 'place', 'label' => $place['name'], 'detail' => $place['country'], 'href' => '/travel#' . Format::slug($place['name']), 'lat' => $place['lat'], 'lon' => $place['lon']];
+            $push(['type' => 'place', 'label' => '📍 ' . $place['name'], 'detail' => $place['country'], 'href' => '/travel#' . Format::slug($place['name']), 'lat' => $place['lat'], 'lon' => $place['lon']]);
         }
     }
 
-    return ['status' => 200, 'body' => ['results' => array_slice($results, 0, 12)]];
+    return ['status' => 200, 'body' => ['results' => array_slice($results, 0, 14)]];
 });
 
 $router->dispatch(

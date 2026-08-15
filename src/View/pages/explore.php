@@ -21,12 +21,13 @@ $trips = array_slice($atlas->places(), 0, 3);
       <span class="eyebrow">🛰 Live · <?= Format::number($summary['countries']) ?> countries mapped</span>
       <h1 class="hero__title">The world, <span class="grad-text">in one moving picture.</span></h1>
       <p class="hero__lede">
-        Drag the map, chase the sunlight around it, and open any country for its people, peaks and places.
-        Every outline is projected server-side from public-domain Natural Earth data — no map tiles, no tracking, no third-party scripts.
+        Drag the map, spin the globe, chase the sunlight around it, and open any country for ten facts about it.
+        Rivers, lakes, deserts and mountain ranges are all drawn from public-domain Natural Earth data at 1:50m and projected
+        server-side — no map tiles, no tracking, no third-party scripts.
       </p>
 
       <div class="searchbox" data-global-search style="margin-top:20px;max-width:460px">
-        <input type="search" placeholder="Search countries, cities, peaks, places…  (press /)" aria-label="Search the atlas" autocomplete="off">
+        <input type="search" placeholder="Search countries, cities, peaks, rivers, lakes, places…  (press /)" aria-label="Search the atlas" autocomplete="off">
         <div class="suggest" data-suggest hidden></div>
       </div>
     </div>
@@ -42,37 +43,51 @@ $trips = array_slice($atlas->places(), 0, 3);
           <span class="stat__label">Countries</span>
         </div>
         <div class="stat">
-          <span class="stat__value" data-count-to="<?= (int) $summary['timezones'] ?>">0</span>
-          <span class="stat__label">Time zones</span>
+          <span class="stat__value" data-count-to="<?= (int) $summary['facts'] ?>">0</span>
+          <span class="stat__label">Country facts</span>
         </div>
         <div class="stat">
-          <span class="stat__value" data-count-to="<?= (int) $summary['land'] ?>" data-count-format="compact">0</span>
-          <span class="stat__label">km² of land</span>
+          <span class="stat__value" data-count-to="<?= (int) $summary['rivers'] + (int) $summary['lakes'] ?>">0</span>
+          <span class="stat__label">Rivers &amp; lakes</span>
         </div>
       </div>
 
       <div class="hero__actions">
         <a class="btn btn--primary" href="/clocks">⏱ World clock &amp; timer</a>
         <a class="btn" href="/travel">🧭 Travel places</a>
-        <a class="btn" href="/continents">🗺 Continents</a>
+        <a class="btn" href="/quiz">🎯 Play the quiz</a>
       </div>
     </div>
   </div>
 
   <div class="maptools" style="margin-top:28px">
+    <div class="chipset" role="group" aria-label="Map style">
+      <button class="chip is-on" type="button" data-map-style="physical">🏔 Physical</button>
+      <button class="chip" type="button" data-map-style="political">🎨 Political</button>
+      <button class="chip" type="button" data-map-style="population">👥 Population</button>
+      <button class="chip" type="button" data-map-style="density">📊 Density</button>
+      <button class="chip" type="button" data-map-style="gdp">💵 GDP / person</button>
+      <button class="chip" type="button" data-map-style="night">🌃 Night lights</button>
+    </div>
+  </div>
+
+  <div class="maptools">
     <div class="chipset" role="group" aria-label="Map layers">
+      <button class="chip is-on" type="button" data-layer-toggle="rivers" aria-pressed="true">Rivers</button>
+      <button class="chip is-on" type="button" data-layer-toggle="lakes" aria-pressed="true">Lakes</button>
+      <button class="chip is-on" type="button" data-layer-toggle="terrain" aria-pressed="true">Terrain</button>
+      <button class="chip is-on" type="button" data-layer-toggle="labels" aria-pressed="true">Sea names</button>
       <button class="chip is-on" type="button" data-layer-toggle="graticule" aria-pressed="true">Grid</button>
       <button class="chip is-on" type="button" data-layer-toggle="daynight" aria-pressed="true">Day &amp; night</button>
       <button class="chip is-on" type="button" data-layer-toggle="capitals" aria-pressed="true">Capitals</button>
+      <button class="chip" type="button" data-layer-toggle="cities" aria-pressed="false">Cities</button>
       <button class="chip" type="button" data-layer-toggle="mountains" aria-pressed="false">Peaks</button>
       <button class="chip" type="button" data-layer-toggle="places" aria-pressed="false">Travel</button>
     </div>
-    <div class="chipset" role="group" aria-label="Colour by">
-      <button class="chip is-on" type="button" data-color-mode="continent">By continent</button>
-      <button class="chip" type="button" data-color-mode="population">By population</button>
-      <button class="chip" type="button" data-color-mode="gdp">By GDP / person</button>
-    </div>
+    <button class="chip" type="button" data-measure-toggle aria-pressed="false">📏 Measure distance</button>
   </div>
+
+  <div class="measure-readout" data-measure-readout hidden style="margin-bottom:12px"></div>
 
   <div class="explore__stage">
     <div>
@@ -80,8 +95,8 @@ $trips = array_slice($atlas->places(), 0, 3);
           'mapId' => 'exploreMap',
           'mapPayload' => $mapPayload,
           'variant' => 'full',
-          'layers' => ['graticule', 'daynight', 'capitals'],
-          'colorMode' => 'continent',
+          'layers' => ['graticule', 'daynight', 'capitals', 'rivers', 'lakes', 'terrain', 'labels'],
+          'style' => 'physical',
       ]) ?>
 
       <div class="chipset" style="margin-top:12px" role="group" aria-label="Jump to a continent">

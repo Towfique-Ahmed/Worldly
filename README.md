@@ -1,7 +1,9 @@
 # 🌍 Worldly
 
-An interactive atlas built in plain PHP — a live world map, world clocks, a time
-converter, continents, countries, mountains and travel destinations.
+An interactive atlas built in plain PHP — a physical world map and a spinning
+3D globe, ten facts for every country, rivers, lakes and oceans, mountains,
+travel destinations, bookmarks, a comparison tool, a quiz, world clocks and a
+time converter.
 
 No framework. No Composer packages. No third-party JavaScript. No map tiles, no
 CDN, no tracking. Everything ships from this repository.
@@ -12,22 +14,33 @@ CDN, no tracking. Everything ships from this repository.
 
 | Page | What it does |
 |---|---|
-| **Explore** (`/`) | Pan/zoom world map with a live day-night terminator, switchable layers (grid, capitals, peaks, travel pins), three colour modes (continent, population, GDP per person), hover tooltips, click-to-open country panel, fuzzy search, and a "surprise me" dice |
-| **Continents** (`/continents`) | Seven continent profiles with comparative meters, plus a map that isolates and flies to each one |
-| **Countries** (`/countries`) | All 177 mapped countries, filterable by continent and sortable by name, population or GDP per person |
-| **Country** (`/country/{iso3}`) | Full profile: flag, population, GDP, capital, largest cities, peaks, destinations, neighbours, and the country highlighted on the map |
+| **Explore** (`/`) | Pan/zoom physical map with rivers, lakes, terrain and sea names; six map styles; a live day-night terminator; a **3D globe** you can spin; layer toggles; a great-circle **distance measure**; hover tooltips; click-to-open country panel |
+| **Continents** (`/continents`) | Seven continent profiles with comparative meters, plus a map that isolates and flies to each |
+| **Countries** (`/countries`) | All 242 mapped countries and territories, filterable by continent and sortable by name, population or GDP per person |
+| **Country** (`/country/{iso3}`) | **Ten facts**, full profile (languages, currency, dial code, domain, density, borders), live local clocks for each of its time zones, largest cities, peaks, destinations and land neighbours |
 | **Mountains** (`/mountains`) | A to-scale elevation ridge of the 26 highest featured peaks, plus 46 profiles covering all fourteen eight-thousanders and the Seven Summits |
+| **Waters** (`/waters`) | 335 rivers and 188 lakes as real drawn geometry, 27 oceans and seas, and a to-scale ocean depth chart with Everest inverted for reference |
 | **Travel** (`/travel`) | 68 destinations pinned by category, with the season that actually suits each one |
+| **Compare** (`/compare`) | Any two countries side by side, with the winning side of each numeric row marked and the distance between them |
+| **Quiz** (`/quiz`) | Flags, capitals or find-it-on-the-map, with streaks, a best score and a real fact after every answer |
+| **Bookmarks** (`/bookmarks`) | Everything you have starred, kept in this browser |
 | **Clocks** (`/clocks`) | Analog clock wall that tints with the local hour, a countdown timer that rings, and a stopwatch with laps |
-| **Converter** (`/converter`) | Convert any moment between any two of PHP's IANA zones, with a day/night bar and the same instant shown across twelve cities |
+| **Converter** (`/converter`) | Convert any moment between any two IANA zones, with a day/night bar and the same instant across twelve cities |
+
+Press <kbd>Ctrl</kbd>/<kbd>⌘</kbd> + <kbd>K</kbd> anywhere for the command
+palette, which searches countries, cities, peaks, rivers, lakes and destinations
+and jumps to any page.
 
 ### JSON endpoints
 
 ```
-GET /api/country/{iso3}      full country record
+GET /api/country/{iso3}      full country record plus its ten facts
+GET /api/globe               coarse lon/lat rings for the canvas globe
+GET /api/quiz?mode=          flag | capital | map question bank
+GET /api/bookmarks?ids=      rehydrates saved bookmark ids
+GET /api/search?q=           countries, cities, peaks, rivers, lakes, places
 GET /api/time/{zone}         current time and offset for an IANA zone
 GET /api/convert?from=&to=&at=
-GET /api/search?q=           countries, cities, peaks and places
 ```
 
 ---
@@ -37,7 +50,7 @@ GET /api/search?q=           countries, cities, peaks and places
 Requires **PHP 8.1+** only.
 
 ```bash
-php -S localhost:8000 -t public public/index.php
+./serve.sh              # or: php -S localhost:8000 -t public public/index.php
 ```
 
 Then open <http://localhost:8000>.
@@ -47,36 +60,71 @@ non-file requests to `public/index.php`.
 
 ---
 
-## How the map works
+## About the map
 
-The world map is **not** an image and **not** a tile layer. Country outlines come
-from [Natural Earth](https://www.naturalearthdata.com/) 1:110m (public domain),
-simplified with Ramer–Douglas–Peucker and projected into a **Robinson
-projection** by PHP at build time, then emitted as SVG paths.
+### Why it is not Google Maps
 
-The same projection is implemented twice — once in
-`src/Support/Projection.php` and once in `public/assets/js/projection.js` — so
-that markers, the terminator and fly-to animations computed in the browser land
-exactly on the coastlines rendered by PHP. Change one and you must change the
-other.
+Google Maps needs a billing-enabled API key and loads Google's own JavaScript
+from Google's servers. That key cannot be committed to a public repository, and
+loading it would break the guarantee that this app has no third-party scripts
+and sends nothing about its visitors anywhere. So the map here is drawn from
+public-domain vector data instead — which also means it works offline, in a
+container, and with no quota.
 
-The day/night shading is a real terminator: the browser computes the subsolar
-point from the date with a low-precision NOAA solar-position algorithm, solves
-the terminator latitude for every longitude, projects the result, and closes the
-polygon around whichever pole is currently in darkness. It refreshes every
-minute.
+### How it is drawn
 
-### Regenerating the geodata
+The map is **not** an image and **not** a tile layer. Coastlines, rivers, lakes
+and terrain regions come from [Natural Earth](https://www.naturalearthdata.com/)
+at **1:50m** (public domain), simplified with Ramer–Douglas–Peucker and
+projected into a **Robinson projection** by PHP at build time, then emitted as
+SVG paths.
 
-`src/Data/countries.php` and `src/Data/cities.php` are generated. To rebuild
-them (for example after changing the simplification tolerance):
+The same projection is implemented twice — in `src/Support/Projection.php` and
+in `public/assets/js/projection.js` — so that markers, the terminator and
+fly-to animations computed in the browser land exactly on the coastlines
+rendered by PHP. **Change one and you must change the other.**
+
+**Physical styling.** Deserts, mountain ranges, plateaus, tundra, plains and
+basins are drawn as their own tinted polygons over the base land, which is what
+makes the map read like a physical atlas rather than a flat political one. Five
+other styles — political, population, density, GDP per person and night lights —
+recolour the same geometry.
+
+**Day and night** is a real terminator: the browser computes the subsolar point
+from the current date with a low-precision NOAA solar-position algorithm, solves
+the terminator latitude for every longitude, projects the result and closes the
+polygon around whichever pole is currently dark. It refreshes every minute.
+
+**The globe** is an orthographic projection drawn to a canvas from coarse
+lon/lat rings fetched from `/api/globe`, with auto-spin, drag-to-rotate, an
+atmosphere halo and the same day/night shading. Double-click to stop the spin.
+
+### Regenerating the data
+
+Everything under `src/Data/` is generated. To rebuild it:
 
 ```bash
 php tools/build_geodata.php
 ```
 
-The script downloads the Natural Earth source files into `storage/raw/` on first
-run and caches them there. Only the generated PHP is tracked in git.
+The script downloads the Natural Earth files and the
+[mledoze/countries](https://github.com/mledoze/countries) attribute set into
+`storage/raw/` on first run and caches them there. Only the generated PHP is
+tracked in git.
+
+### Where the ten facts come from
+
+`tools/build_facts.php` gives every country exactly ten facts. The first one or
+two are hand-written signature facts from `tools/data/country_facts.php`; the
+rest are derived from that country's own figures — population and its world
+rank, area with a size comparison, density, capital and its coordinates, land
+borders by name, time zones (read from PHP's own IANA database), currency,
+languages, dial code and domain, GDP, share of its continent, largest city,
+highest peak, featured destinations, demonym and UN standing.
+
+Nothing is invented: if a fact cannot be derived it is skipped and the next
+candidate fills the slot, and the build fails loudly if any country ends up with
+fewer than ten.
 
 ---
 
@@ -88,8 +136,9 @@ public/
   assets/css/app.css     the whole design system, both themes
   assets/js/
     projection.js        Robinson projection (browser twin of the PHP class)
-    worldmap.js          pan, zoom, layers, terminator, selection
+    worldmap.js          pan, zoom, styles, layers, terminator, globe, measuring
     app.js               backdrop, theme, search, reveals, filters
+    atlas.js             bookmarks, command palette, compare, quiz
     time.js              clock wall, timer, stopwatch, converter
 src/
   Atlas.php              read model over the datasets
@@ -97,9 +146,13 @@ src/
   View.php               template renderer
   bootstrap.php          autoloader and asset versioning
   Support/               Projection, Format, Timezones
-  Data/                  countries + cities (generated), mountains, places, continents
+  Data/                  countries, cities, rivers, lakes, oceans, facts (generated)
+    geometry/            country paths, globe rings, terrain (generated)
   View/                  layout, partials, pages
-tools/build_geodata.php  Natural Earth → src/Data
+tools/
+  build_geodata.php      Natural Earth + mledoze → src/Data
+  build_facts.php        the ten-facts generator
+  data/                  curated river, lake, ocean and country facts
 ```
 
 ---
@@ -108,16 +161,21 @@ tools/build_geodata.php  Natural Earth → src/Data
 
 - **Themes.** Night by default, with a full light theme; the choice is stored in
   `localStorage` and applied before paint.
+- **Bookmarks** live in `localStorage` only. Nothing is sent anywhere, and
+  clearing site data clears them.
 - **Motion.** Every animation is disabled under `prefers-reduced-motion`.
 - **Time.** Zone lists and server-side offsets come from PHP's bundled IANA
   database; browser-side arithmetic goes through `Intl.DateTimeFormat` with an
   explicit `timeZone`, so daylight saving and 45-minute offsets are handled by
   the platform rather than by hand.
 - **Data vintage.** Population and GDP figures are Natural Earth's estimates and
-  are a few years old — good for scale and comparison, not for citation.
+  are a few years old — good for scale and comparison, not for citation. River,
+  lake and ocean statistics are curated in `tools/data/` and rounded to the
+  figures commonly published.
 
 ## Credits
 
-Country and city geometry: [Natural Earth](https://www.naturalearthdata.com/),
-public domain. Mountain and destination datasets are hand-curated in
-`src/Data/`.
+Geometry: [Natural Earth](https://www.naturalearthdata.com/), public domain.
+Country attributes: [mledoze/countries](https://github.com/mledoze/countries).
+Mountain, destination, river, lake and ocean datasets are hand-curated in this
+repository.
