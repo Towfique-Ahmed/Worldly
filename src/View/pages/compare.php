@@ -47,5 +47,7 @@ $defaultB = $_GET['b'] ?? 'JPN';
     </div>
   </div>
 
+  <h2 style="font-size:1.25rem;margin-bottom:14px">The comparison</h2>
+
   <div data-compare-output aria-live="polite"></div>
 </section>

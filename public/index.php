@@ -22,6 +22,7 @@ use Worldly\Atlas;
 use Worldly\Router;
 use Worldly\Support\Format;
 use Worldly\Support\Seo;
+use Worldly\Support\StructuredData;
 use Worldly\Support\Timezones;
 use Worldly\View;
 
@@ -41,6 +42,7 @@ $router = new Router();
 $router->get('/', static fn (): string => $view->render('explore', [
     'nav' => 'explore',
     ...Seo::page('explore'),
+    'jsonLd' => [StructuredData::website()],
     'mapPayload' => $atlas->mapPayload(),
     'continents' => $atlas->continents(),
     'featuredZones' => array_slice(Timezones::featured(), 0, 8),
@@ -49,6 +51,8 @@ $router->get('/', static fn (): string => $view->render('explore', [
 $router->get('/continents', static fn (): string => $view->render('continents', [
     'nav' => 'continents',
     ...Seo::page('continents'),
+    'breadcrumbs' => [['name' => 'Continents', 'path' => '/continents']],
+    'jsonLd' => [StructuredData::collection('Continents', 'The seven continents compared by area, population and country count.', '/continents', 7)],
     'continents' => $atlas->continents(),
     'totals' => $atlas->continentTotals(),
     'mapPayload' => $atlas->mapPayload(),
@@ -62,6 +66,10 @@ $router->get('/continent/{name}', static function (array $params) use ($atlas, $
 
     return $view->render('continent', [
         'nav' => 'continents',
+        'breadcrumbs' => [
+            ['name' => 'Continents', 'path' => '/continents'],
+            ['name' => $continent['name'], 'path' => '/continent/' . Format::slug($continent['name'])],
+        ],
         ...Seo::continent(
             $continent,
             count($atlas->countriesIn($continent['name'])),
@@ -84,6 +92,8 @@ $router->get('/continent/{name}', static function (array $params) use ($atlas, $
 $router->get('/countries', static fn (): string => $view->render('countries', [
     'nav' => 'countries',
     ...Seo::page('countries'),
+    'breadcrumbs' => [['name' => 'Countries', 'path' => '/countries']],
+    'jsonLd' => [StructuredData::collection('Countries of the world', 'Every country and territory, with population, area and GDP.', '/countries', count($atlas->countries()))],
     'countries' => $atlas->countries(),
     'continents' => $atlas->continents(),
 ]));
@@ -97,6 +107,16 @@ $router->get('/country/{iso3}', static function (array $params) use ($atlas, $vi
     return $view->render('country', [
         'nav' => 'countries',
         ...Seo::country($country, $atlas->capitalOf($country['iso3'])),
+        'breadcrumbs' => [
+            ['name' => 'Countries', 'path' => '/countries'],
+            ['name' => $country['continent'], 'path' => '/continent/' . Format::slug($country['continent'])],
+            ['name' => $country['name'], 'path' => '/country/' . $country['iso3']],
+        ],
+        'jsonLd' => [StructuredData::country(
+            $country,
+            $atlas->capitalOf($country['iso3']),
+            $atlas->factsFor($country['iso3']),
+        )],
         'country' => $country,
         'facts' => $atlas->factsFor($country['iso3']),
         'continent' => $atlas->continent($country['continent']),
@@ -112,6 +132,8 @@ $router->get('/country/{iso3}', static function (array $params) use ($atlas, $vi
 $router->get('/mountains', static fn (): string => $view->render('mountains', [
     'nav' => 'mountains',
     ...Seo::page('mountains'),
+    'breadcrumbs' => [['name' => 'Mountains', 'path' => '/mountains']],
+    'jsonLd' => [StructuredData::collection('Mountains of the world', 'The highest peaks on Earth, drawn to scale.', '/mountains', count($atlas->mountains()))],
     'mountains' => $atlas->mountains(),
     'continents' => $atlas->continents(),
     'mapPayload' => $atlas->mapPayload(),
@@ -120,6 +142,8 @@ $router->get('/mountains', static fn (): string => $view->render('mountains', [
 $router->get('/waters', static fn (): string => $view->render('waters', [
     'nav' => 'waters',
     ...Seo::page('waters'),
+    'breadcrumbs' => [['name' => 'Rivers, lakes & oceans', 'path' => '/waters']],
+    'jsonLd' => [StructuredData::collection('Rivers, lakes and oceans', 'The longest rivers, largest lakes and deepest oceans on Earth.', '/waters', count($atlas->rivers()) + count($atlas->lakes()))],
     'rivers' => $atlas->rivers(),
     'lakes' => $atlas->lakes(),
     'oceans' => $atlas->oceans(),
@@ -129,6 +153,8 @@ $router->get('/waters', static fn (): string => $view->render('waters', [
 $router->get('/travel', static fn (): string => $view->render('travel', [
     'nav' => 'travel',
     ...Seo::page('travel'),
+    'breadcrumbs' => [['name' => 'Travel places', 'path' => '/travel']],
+    'jsonLd' => [StructuredData::collection('Travel destinations', 'Destinations worth crossing an ocean for, with the season that suits each.', '/travel', count($atlas->places()))],
     'places' => $atlas->places(),
     'continents' => $atlas->continents(),
     'mapPayload' => $atlas->mapPayload(),
@@ -137,12 +163,14 @@ $router->get('/travel', static fn (): string => $view->render('travel', [
 $router->get('/compare', static fn (): string => $view->render('compare', [
     'nav' => 'compare',
     ...Seo::page('compare'),
+    'breadcrumbs' => [['name' => 'Compare countries', 'path' => '/compare']],
     'countries' => $atlas->countries(),
 ]));
 
 $router->get('/quiz', static fn (): string => $view->render('quiz', [
     'nav' => 'quiz',
     ...Seo::page('quiz'),
+    'breadcrumbs' => [['name' => 'Atlas quiz', 'path' => '/quiz']],
     'mapPayload' => $atlas->mapPayload(),
 ]));
 
@@ -154,6 +182,7 @@ $router->get('/bookmarks', static fn (): string => $view->render('bookmarks', [
 $router->get('/clocks', static fn (): string => $view->render('clocks', [
     'nav' => 'clocks',
     ...Seo::page('clocks'),
+    'breadcrumbs' => [['name' => 'World clock', 'path' => '/clocks']],
     'zones' => Timezones::featured(),
     'wall' => Timezones::defaultWall(),
 ]));
@@ -161,6 +190,7 @@ $router->get('/clocks', static fn (): string => $view->render('clocks', [
 $router->get('/converter', static fn (): string => $view->render('converter', [
     'nav' => 'converter',
     ...Seo::page('converter'),
+    'breadcrumbs' => [['name' => 'Time converter', 'path' => '/converter']],
     'zones' => Timezones::featured(),
     'grouped' => Timezones::grouped(),
 ]));
@@ -188,6 +218,29 @@ $router->get('/robots.txt', static fn (): array => [
 // ---------------------------------------------------------------------------
 // JSON endpoints
 // ---------------------------------------------------------------------------
+
+/**
+ * Rivers, lakes and terrain geometry.
+ *
+ * Roughly 400 KB of path data, none of it indexable text. Serving it here
+ * instead of inlining it in every map page halves the HTML a visitor waits for,
+ * and this response caches for a day.
+ */
+$router->get('/api/mapdetail', static function () use ($atlas): array {
+    $trim = static fn (array $item): array => ['n' => $item['name'], 'd' => $item['path']];
+
+    return ['status' => 200, 'cache' => true, 'body' => [
+        'terrain' => array_map(
+            static fn (array $t): array => ['n' => $t['name'], 'k' => $t['kind'], 'd' => $t['path']],
+            $atlas->terrain(),
+        ),
+        'lakes' => array_map($trim, $atlas->lakes()),
+        'rivers' => array_map(
+            static fn (array $r): array => ['n' => $r['name'], 'r' => min(7, (int) $r['rank']), 'd' => $r['path']],
+            $atlas->rivers(),
+        ),
+    ]];
+});
 
 /** Coarse lon/lat rings, fetched on demand by the canvas globe. */
 $router->get('/api/globe', static function () use ($atlas): array {

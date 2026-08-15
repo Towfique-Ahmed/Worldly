@@ -160,6 +160,7 @@
     this.buildGraticule();
     this.applyStyle(this.style);
     this.syncLayerVisibility();
+    this.loadDetail();
     this.renderLabels();
     this.renderMarkers();
     this.bind();
@@ -296,6 +297,7 @@
 
     if (name === 'graticule' || name === 'rivers' || name === 'lakes' || name === 'terrain') {
       this.syncLayerVisibility();
+      this.loadDetail();
       if (this.globeOn) { this.drawGlobe(); }
       return;
     }
@@ -307,6 +309,71 @@
 
     this.renderMarkers();
     if (!quiet && this.globeOn) { this.drawGlobe(); }
+  };
+
+  /* ------------------------------------------------------- deferred detail */
+
+  var TERRAIN_ORDER = ['plain', 'basin', 'plateau', 'tundra', 'desert', 'range'];
+  var detailPromise = null;
+
+  /**
+   * Rivers, lakes and terrain arrive from /api/mapdetail after first paint.
+   * The fetch is shared across every map on the page and happens at most once.
+   */
+  function fetchDetail() {
+    if (!detailPromise) {
+      detailPromise = fetch('/api/mapdetail')
+        .then(function (response) { return response.json(); })
+        .catch(function () { return { terrain: [], lakes: [], rivers: [] }; });
+    }
+    return detailPromise;
+  }
+
+  WorldMap.prototype.loadDetail = function () {
+    if (this.root.dataset.detail !== '1' || this.detailLoaded) { return; }
+
+    // Nothing to draw until one of these layers is actually switched on.
+    if (!this.layers.rivers && !this.layers.lakes && !this.layers.terrain) { return; }
+
+    this.detailLoaded = true;
+    var self = this;
+
+    fetchDetail().then(function (detail) {
+      var terrainLayer = self.root.querySelector('[data-terrain]');
+      var lakeLayer = self.root.querySelector('[data-lakes]');
+      var riverLayer = self.root.querySelector('[data-rivers]');
+
+      function paint(layer, items, build) {
+        if (!layer || layer.childNodes.length) { return; }
+        var fragment = document.createDocumentFragment();
+        items.forEach(function (item) {
+          var node = build(item);
+          var title = document.createElementNS(SVG_NS, 'title');
+          title.textContent = item.n;
+          node.appendChild(title);
+          fragment.appendChild(node);
+        });
+        layer.appendChild(fragment);
+      }
+
+      var terrain = (detail.terrain || []).slice().sort(function (a, b) {
+        return TERRAIN_ORDER.indexOf(a.k) - TERRAIN_ORDER.indexOf(b.k);
+      });
+
+      paint(terrainLayer, terrain, function (item) {
+        return el('path', { class: 'wm-terrain__area wm-terrain--' + item.k, d: item.d });
+      });
+
+      paint(lakeLayer, detail.lakes || [], function (item) {
+        return el('path', { class: 'wm-lake', d: item.d });
+      });
+
+      paint(riverLayer, detail.rivers || [], function (item) {
+        return el('path', { class: 'wm-river wm-river--r' + item.r, d: item.d });
+      });
+
+      self.root.dispatchEvent(new CustomEvent('worldmap:detail'));
+    });
   };
 
   /* ---------------------------------------------------------- water labels */

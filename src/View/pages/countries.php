@@ -42,6 +42,8 @@ $maxPopulation = max(array_column($countries, 'population'));
     <?php endforeach; ?>
   </div>
 
+  <h2 style="font-size:1.25rem;margin-bottom:14px">Every country, sorted and filtered</h2>
+
   <div class="card table-card">
     <div class="rowlist" data-filter-list>
       <?php foreach ($countries as $country): ?>

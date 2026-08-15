@@ -1316,3 +1316,51 @@ section { padding-block: clamp(38px, 5vw, 70px); }
   font-size: 0.72rem;
   color: var(--text-faint);
 }
+
+/* ---------------------------------------------------------- breadcrumbs */
+
+.crumbs { padding-top: 14px; }
+.crumbs ol {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.82rem;
+  color: var(--text-faint);
+}
+.crumbs li + li::before { content: "›"; margin-right: 6px; opacity: 0.55; }
+.crumbs a { color: var(--text-dim); text-decoration: none; }
+.crumbs a:hover { color: var(--text); text-decoration: underline; }
+.crumbs [aria-current="page"] span { color: var(--text); font-weight: 600; }
+
+/* ------------------------------------------------------- footer rights */
+
+.footer__rights {
+  margin: 18px 0 0;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+  font-size: 0.84rem;
+  color: var(--text-faint);
+}
+.footer__rights a {
+  color: var(--text-dim);
+  font-weight: 600;
+  text-decoration: none;
+  border-bottom: 1px solid color-mix(in srgb, var(--teal) 55%, transparent);
+  transition: color 0.25s, border-color 0.25s;
+}
+.footer__rights a:hover { color: var(--teal); border-color: var(--teal); }
+
+/* --------------------------------------------------------- prose blocks */
+
+.prose { max-width: 68ch; color: var(--text-dim); }
+.prose p { margin: 0 0 1em; }
+.prose a { color: var(--text); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: color-mix(in srgb, var(--teal) 60%, transparent); }
+.prose a:hover { color: var(--teal); }
+
+.prose-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px 34px; }
+.prose-grid h3 { font-size: 1rem; margin: 0 0 6px; }
+.prose-grid p { margin: 0; color: var(--text-dim); font-size: 0.92rem; }

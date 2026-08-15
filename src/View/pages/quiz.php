@@ -29,6 +29,8 @@ declare(strict_types=1);
 
     <div class="quiz__bar" style="margin-bottom:18px"><span data-quiz-bar style="width:0%"></span></div>
 
+    <h2 style="font-size:1.15rem;text-align:center;margin-bottom:12px">Your question</h2>
+
     <div class="quiz__stage" data-quiz-stage aria-live="polite"></div>
 
     <div style="margin-top:24px">
@@ -45,6 +47,33 @@ declare(strict_types=1);
       <p style="margin-top:10px;font-size:.8rem;color:var(--text-faint);text-align:center">
         In map mode the answer is highlighted here in teal.
       </p>
+    </div>
+
+    <div class="card" style="margin-top:26px;padding:26px">
+      <h2 style="font-size:1.15rem">How the quiz works</h2>
+      <div class="prose">
+        <p>
+          Each round draws eight countries at random from the <a href="/countries">242 in the atlas</a>, limited to
+          United Nations member states with a population above 300,000 so the questions stay answerable. The three
+          wrong answers are picked from the same continent wherever possible — guessing Malaysia from a list
+          containing Norway and Chile would not teach you much.
+        </p>
+        <p>
+          <strong>Guess the flag</strong> shows a national flag and asks you to name the country.
+          <strong>Guess the capital</strong> names a capital city and asks the same.
+          <strong>Find it on the map</strong> highlights a country on the world map below, which is the hardest of
+          the three once you get away from the familiar outlines.
+        </p>
+        <p>
+          Every answer, right or wrong, comes back with a real fact about that country — the same facts you will
+          find on its <a href="/countries">country page</a>. Your streak counts consecutive correct answers, and
+          your best score is remembered in this browser. Nothing is uploaded, and there is no account to make.
+        </p>
+        <p>
+          If you want to study first, the <a href="/continents">continents</a> pages group countries by region, and
+          <a href="/compare">compare</a> puts any two side by side.
+        </p>
+      </div>
     </div>
   </div>
 </section>

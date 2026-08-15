@@ -115,6 +115,8 @@ $snowline = $baseline - (4200 / $maxElevation) * 250;
     <?php endforeach; ?>
   </div>
 
+  <h2 style="font-size:1.25rem;margin-bottom:14px">Every peak in the atlas</h2>
+
   <div class="grid grid--3" data-filter-list>
     <?php foreach ($mountains as $peak):
         $facets = [$peak['continent']];
