@@ -39,7 +39,7 @@ sort($categories);
         'mapPayload' => $mapPayload,
         'variant' => 'full',
         'layers' => ['graticule', 'places'],
-        'colorMode' => 'plain',
+        'style' => 'physical',
     ]) ?>
   </div>
 
@@ -88,7 +88,10 @@ sort($categories);
                data-sort-category="<?= Format::e($place['category']) ?>">
         <div class="place-card__top">
           <h3 style="font-size:1.08rem;margin:0"><?= Format::e($place['name']) ?></h3>
-          <span class="place-card__cat" style="background:<?= Format::e($color) ?>"><?= Format::e($place['category']) ?></span>
+          <div style="display:flex;gap:8px;align-items:center;flex-shrink:0">
+            <span class="place-card__cat" style="background:<?= Format::e($color) ?>"><?= Format::e($place['category']) ?></span>
+            <button class="bookmark" type="button" data-bookmark="place:<?= Format::e(Format::slug($place['name'])) ?>" aria-label="Bookmark <?= Format::e($place['name']) ?>">★</button>
+          </div>
         </div>
 
         <p class="place-card__blurb"><?= Format::e($place['blurb']) ?></p>

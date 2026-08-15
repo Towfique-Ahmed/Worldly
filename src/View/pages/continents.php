@@ -26,7 +26,7 @@ $largestPop = max(array_map(static fn (array $t): int => $t['population'], $tota
         'mapPayload' => $mapPayload,
         'variant' => 'full',
         'layers' => ['graticule'],
-        'colorMode' => 'continent',
+        'style' => 'political',
     ]) ?>
     <div class="chipset" style="margin-top:12px" role="group" aria-label="Isolate a continent">
       <?php foreach ($continents as $key => $continent): ?>

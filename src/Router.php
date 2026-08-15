@@ -78,7 +78,8 @@ final class Router
 
         http_response_code($result['status'] ?? 200);
         header('Content-Type: application/json; charset=utf-8');
-        header('Cache-Control: no-store');
+        // Static geometry is worth caching; everything else changes per request.
+        header('Cache-Control: ' . (($result['cache'] ?? false) ? 'public, max-age=86400' : 'no-store'));
         echo json_encode($result['body'] ?? null, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
     }
 }

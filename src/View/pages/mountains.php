@@ -84,7 +84,7 @@ $snowline = $baseline - (4200 / $maxElevation) * 250;
       'mapPayload' => $mapPayload,
       'variant' => 'full',
       'layers' => ['graticule', 'mountains'],
-      'colorMode' => 'plain',
+      'style' => 'physical',
   ]) ?>
 </section>
 
@@ -137,7 +137,10 @@ $snowline = $baseline - (4200 / $maxElevation) * 250;
               <p style="margin:0;font-size:.82rem;color:var(--text-faint)"><?= Format::e($peak['localName']) ?></p>
             <?php endif; ?>
           </div>
-          <button class="wm-btn" type="button" data-fly-to data-lon="<?= $peak['lon'] ?>" data-lat="<?= $peak['lat'] ?>" data-zoom="6.5" title="Show on the map" aria-label="Show <?= Format::e($peak['name']) ?> on the map">◎</button>
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <button class="wm-btn" type="button" data-fly-to data-lon="<?= $peak['lon'] ?>" data-lat="<?= $peak['lat'] ?>" data-zoom="6.5" title="Show on the map" aria-label="Show <?= Format::e($peak['name']) ?> on the map">◎</button>
+            <button class="bookmark" type="button" data-bookmark="mountain:<?= Format::e(Format::slug($peak['name'])) ?>" aria-label="Bookmark <?= Format::e($peak['name']) ?>">★</button>
+          </div>
         </div>
 
         <div style="display:flex;gap:6px;flex-wrap:wrap;margin:10px 0">

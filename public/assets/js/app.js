@@ -384,14 +384,6 @@
       });
     });
 
-    $$('[data-color-mode]').forEach(function (button) {
-      button.addEventListener('click', function () {
-        $$('[data-color-mode]').forEach(function (other) { other.classList.remove('is-on'); });
-        button.classList.add('is-on');
-        map.applyColorMode(button.dataset.colorMode);
-      });
-    });
-
     $$('[data-continent-focus]').forEach(function (button) {
       button.addEventListener('click', function () {
         var name = button.dataset.continentFocus;
