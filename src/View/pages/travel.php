@@ -77,6 +77,8 @@ sort($categories);
     <?php endforeach; ?>
   </div>
 
+  <h2 style="font-size:1.25rem;margin-bottom:14px">Every destination, by category and continent</h2>
+
   <div class="grid grid--3" data-filter-list>
     <?php foreach ($places as $place): $color = $categoryColors[$place['category']] ?? '#5aa9ff'; ?>
       <article class="card place-card reveal" id="<?= Format::e(Format::slug($place['name'])) ?>"

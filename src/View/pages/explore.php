@@ -19,7 +19,7 @@ $trips = array_slice($atlas->places(), 0, 3);
   <div class="hero__intro">
     <div>
       <span class="eyebrow">🛰 Live · <?= Format::number($summary['countries']) ?> countries mapped</span>
-      <h1 class="hero__title">The world, <span class="grad-text">in one moving picture.</span></h1>
+      <h1 class="hero__title">The world map, <span class="grad-text">alive and interactive.</span></h1>
       <p class="hero__lede">
         Drag the map, spin the globe, chase the sunlight around it, and open any country for ten facts about it.
         Rivers, lakes, deserts and mountain ranges are all drawn from public-domain Natural Earth data at 1:50m and projected
@@ -172,6 +172,79 @@ $trips = array_slice($atlas->places(), 0, 3);
         <?php endforeach; ?>
       </div>
       <a class="btn btn--sm" href="/travel" style="margin-top:12px">All <?= count($atlas->places()) ?> destinations →</a>
+    </div>
+  </div>
+</section>
+
+<section class="wrap">
+  <div class="section-head reveal">
+    <div>
+      <h2>What is inside this atlas</h2>
+      <p>Everything below is served from this site itself — no map tiles, no CDN, no analytics.</p>
+    </div>
+  </div>
+
+  <div class="card reveal" style="padding:26px">
+    <div class="prose">
+      <p>
+        Worldly is an interactive world map and reference atlas. The map you can drag above is drawn from
+        public-domain <a href="https://www.naturalearthdata.com/" rel="noopener">Natural Earth</a> vector data
+        at 1:50,000,000 scale, simplified and projected into a Robinson projection on the server, then sent to
+        your browser as plain SVG. Nothing is fetched from a tile service, so the whole thing works offline and
+        nothing about your visit is sent anywhere.
+      </p>
+      <p>
+        Six map styles sit on the same geometry. <strong>Physical</strong> tints deserts, mountain ranges,
+        plateaus and tundra so the map reads like a school atlas; <strong>political</strong> colours countries by
+        continent; and three data styles shade every country by population, population density or GDP per person.
+        <strong>Night lights</strong> darkens the land and lights the cities. The shadow crossing the map is a real
+        terminator, recalculated every minute from the position of the sun, so the line between day and night is
+        where it actually is right now.
+      </p>
+    </div>
+
+    <div class="prose-grid" style="margin-top:26px">
+      <div>
+        <h3><a href="/countries">Countries and territories</a></h3>
+        <p>
+          All <?= Format::number($summary['countries']) ?> of them, each with ten facts, its capital, languages,
+          currency, dialling code, borders and live local time in every zone it keeps.
+        </p>
+      </div>
+      <div>
+        <h3><a href="/continents">Continents</a></h3>
+        <p>
+          Seven profiles comparing land area, population and country count, with the highest and lowest point on each.
+        </p>
+      </div>
+      <div>
+        <h3><a href="/mountains">Mountains</a></h3>
+        <p>
+          All fourteen eight-thousanders and the Seven Summits, drawn to scale, with elevation, prominence,
+          range and first ascent.
+        </p>
+      </div>
+      <div>
+        <h3><a href="/waters">Rivers, lakes and oceans</a></h3>
+        <p>
+          <?= Format::number($summary['rivers']) ?> river centrelines and <?= Format::number($summary['lakes']) ?>
+          lake outlines drawn as real geometry, plus ocean depths to scale.
+        </p>
+      </div>
+      <div>
+        <h3><a href="/travel">Places worth the trip</a></h3>
+        <p>
+          <?= Format::number($summary['places']) ?> destinations pinned by category, each with the season that
+          actually suits it.
+        </p>
+      </div>
+      <div>
+        <h3><a href="/clocks">Time tools</a></h3>
+        <p>
+          A world clock wall, a countdown timer, a stopwatch, and a
+          <a href="/converter">converter</a> covering all <?= Format::number($summary['timezones']) ?> IANA zones.
+        </p>
+      </div>
     </div>
   </div>
 </section>

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Worldly\Support\Format;
 use Worldly\Support\Site;
+use Worldly\Support\StructuredData;
 
 /** @var string $title */
 /** @var string $content */
@@ -16,6 +17,15 @@ $description ??= 'Worldly is an interactive atlas: a live physical world map and
 
 // The bookmarks page is personal to the visitor and has nothing to index.
 $indexable = $nav !== 'bookmarks';
+
+/** @var list<array>|null $jsonLd  extra schema.org blocks from the page */
+$jsonLd ??= [];
+
+/** @var list<array{name: string, path: string}>|null $breadcrumbs */
+$breadcrumbs ??= [];
+if ($breadcrumbs !== []) {
+    $jsonLd[] = StructuredData::breadcrumbs(array_merge([['name' => 'Home', 'path' => '/']], $breadcrumbs));
+}
 
 $links = [
     ['href' => '/', 'key' => 'explore', 'label' => 'Explore', 'icon' => '🌍'],
@@ -51,12 +61,19 @@ $moreLinks = [
 <meta property="og:title" content="<?= Format::e($title) ?>">
 <meta property="og:description" content="<?= Format::e($description) ?>">
 <meta property="og:url" content="<?= Format::e($canonical) ?>">
-<meta name="twitter:card" content="summary">
+<meta property="og:image" content="<?= Format::e(Site::url('/assets/og-cover.png')) ?>">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Worldly — an interactive world map and atlas">
+<meta property="og:locale" content="en">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="<?= Format::e(Site::url('/assets/og-cover.png')) ?>">
 <meta name="twitter:title" content="<?= Format::e($title) ?>">
 <meta name="twitter:description" content="<?= Format::e($description) ?>">
 
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌍</text></svg>">
 <link rel="stylesheet" href="/assets/css/app.css?v=<?= Format::e($assetVersion) ?>">
+<?= StructuredData::render(...$jsonLd) ?>
 </head>
 <body>
 
@@ -117,6 +134,23 @@ $moreLinks = [
   </div>
 </header>
 
+<?php if ($breadcrumbs !== []): ?>
+<nav class="crumbs wrap" aria-label="Breadcrumb">
+  <ol>
+    <li><a href="/">Home</a></li>
+    <?php foreach ($breadcrumbs as $index => $crumb): ?>
+      <li<?= $index === count($breadcrumbs) - 1 ? ' aria-current="page"' : '' ?>>
+        <?php if ($index === count($breadcrumbs) - 1): ?>
+          <span><?= Format::e($crumb['name']) ?></span>
+        <?php else: ?>
+          <a href="<?= Format::e($crumb['path']) ?>"><?= Format::e($crumb['name']) ?></a>
+        <?php endif; ?>
+      </li>
+    <?php endforeach; ?>
+  </ol>
+</nav>
+<?php endif; ?>
+
 <main id="main"><?= $content ?></main>
 
 <footer class="footer">
@@ -133,6 +167,11 @@ $moreLinks = [
         <a href="<?= Format::e($link['href']) ?>"><?= Format::e($link['label']) ?></a>
       <?php endforeach; ?>
     </nav>
+
+    <p class="footer__rights">
+      &copy; <?= date('Y') ?> All rights reserved by
+      <a href="https://towfique.com" rel="noopener">towfique.com</a>
+    </p>
   </div>
 </footer>
 

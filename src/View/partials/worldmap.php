@@ -40,7 +40,6 @@ $height = round(Projection::height($width), 2);
 $continents = $atlas->continents();
 $id = Format::e($mapId);
 
-$terrainOrder = ['plain', 'basin', 'plateau', 'tundra', 'desert', 'range'];
 ?>
 <div class="mapstage mapstage--<?= Format::e($variant) ?>"
      id="<?= $id ?>"
@@ -48,7 +47,8 @@ $terrainOrder = ['plain', 'basin', 'plateau', 'tundra', 'desert', 'range'];
      data-layers="<?= Format::e(implode(',', $layers)) ?>"
      data-style="<?= Format::e($style) ?>"
      <?= $focus ? 'data-focus="' . Format::e(json_encode($focus, JSON_THROW_ON_ERROR)) . '"' : '' ?>
-     <?= $highlight ? 'data-highlight="' . Format::e($highlight) . '"' : '' ?>>
+     <?= $highlight ? 'data-highlight="' . Format::e($highlight) . '"' : '' ?>
+     data-detail="<?= $detail ? '1' : '0' ?>">
 
   <script type="application/json" data-worldmap-payload><?= json_encode($mapPayload, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR) ?></script>
 
@@ -110,26 +110,15 @@ $terrainOrder = ['plain', 'basin', 'plateau', 'tundra', 'desert', 'range'];
       </g>
 
       <?php if ($detail): ?>
-      <g class="wm-terrain" data-terrain aria-hidden="true">
-        <?php
-        $terrain = $atlas->terrain();
-        usort($terrain, static fn (array $a, array $b): int => array_search($a['kind'], $terrainOrder, true) <=> array_search($b['kind'], $terrainOrder, true));
-        foreach ($terrain as $region): ?>
-        <path class="wm-terrain__area wm-terrain--<?= Format::e($region['kind']) ?>" d="<?= $region['path'] ?>"><title><?= Format::e($region['name']) ?></title></path>
-        <?php endforeach; ?>
-      </g>
-
-      <g class="wm-lakes" data-lakes aria-hidden="true">
-        <?php foreach ($atlas->lakes() as $lake): ?>
-        <path class="wm-lake" d="<?= $lake['path'] ?>"><title><?= Format::e($lake['name']) ?></title></path>
-        <?php endforeach; ?>
-      </g>
-
-      <g class="wm-rivers" data-rivers aria-hidden="true">
-        <?php foreach ($atlas->rivers() as $river): ?>
-        <path class="wm-river wm-river--r<?= min(7, (int) $river['rank']) ?>" d="<?= $river['path'] ?>"><title><?= Format::e($river['name']) ?></title></path>
-        <?php endforeach; ?>
-      </g>
+      <!--
+        Rivers, lakes and terrain are fetched from /api/mapdetail after first
+        paint rather than inlined. They are roughly 400 KB of path data, none of
+        it indexable text, and keeping them out of the document halves the HTML
+        a visitor has to download before the page renders.
+      -->
+      <g class="wm-terrain" data-terrain aria-hidden="true"></g>
+      <g class="wm-lakes" data-lakes aria-hidden="true"></g>
+      <g class="wm-rivers" data-rivers aria-hidden="true"></g>
       <?php endif; ?>
 
       <g class="wm-night" data-night aria-hidden="true">
