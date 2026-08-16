@@ -5,8 +5,10 @@ An interactive atlas built in plain PHP — a physical world map and a spinning
 travel destinations, bookmarks, a comparison tool, a quiz, world clocks and a
 time converter.
 
-No framework. No Composer packages. No third-party JavaScript. No map tiles, no
-CDN, no tracking. Everything ships from this repository.
+No framework. No Composer packages. No JavaScript libraries. No map tiles, no
+CDN for assets. Every dataset and every line of application code ships from this
+repository; the only third-party script is Google Analytics, which is
+[configurable and can be switched off](#analytics).
 
 ---
 
@@ -163,6 +165,29 @@ the same Robinson projection the site uses, so it always shows the actual atlas:
 php tools/build_og_image.php
 ```
 
+### Analytics
+
+Google Analytics 4 is wired into every page, immediately after `<head>`, exactly
+as Google's install instructions specify. It is the **only** third-party script
+the site loads.
+
+The measurement ID lives in `src/Support/Site.php` and is overridable:
+
+```bash
+export WORLDLY_GA_ID="G-XXXXXXXXXX"   # use a different property
+export WORLDLY_GA_ID=""               # switch analytics off entirely
+```
+
+Set it to an empty string for local development and staging, so test traffic
+does not land in the production property. When it is empty no script tag is
+emitted at all — nothing to block, nothing to strip.
+
+The footer says plainly that the site uses Google Analytics. Depending on where
+your visitors are, you may also need a cookie consent banner and a privacy
+policy — GA4 sets cookies and processes IP addresses, which brings it inside
+GDPR, the ePrivacy Directive and similar rules. That is a legal decision rather
+than a technical one, so nothing is assumed here.
+
 ### Measured performance
 
 Core Web Vitals on a throttled mobile profile (4× CPU slowdown, ~1.6 Mbps,
@@ -189,12 +214,11 @@ so deferring it costs nothing in search terms.
 
 ### Why it is not Google Maps
 
-Google Maps needs a billing-enabled API key and loads Google's own JavaScript
-from Google's servers. That key cannot be committed to a public repository, and
-loading it would break the guarantee that this app has no third-party scripts
-and sends nothing about its visitors anywhere. So the map here is drawn from
-public-domain vector data instead — which also means it works offline, in a
-container, and with no quota.
+Google Maps needs a billing-enabled API key, and that key cannot be committed to
+a public repository. It would also make the map itself dependent on a metered
+third-party service: no key, no map. The map here is drawn from public-domain
+vector data instead, so it renders in a container, behind a firewall, and with
+no quota to run out of.
 
 ### How it is drawn
 

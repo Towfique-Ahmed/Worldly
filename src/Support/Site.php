@@ -14,6 +14,9 @@ namespace Worldly\Support;
  */
 final class Site
 {
+    /** Overridden with the WORLDLY_GA_ID environment variable. */
+    private const DEFAULT_GA_ID = 'G-5HDW2KGKVC';
+
     private static ?string $baseUrl = null;
 
     /** Origin with no trailing slash, e.g. https://worldly.example. */
@@ -51,6 +54,26 @@ final class Site
         $path = '/' . trim($path, '/');
 
         return self::url($path === '/' ? '' : $path);
+    }
+
+    /**
+     * Google Analytics measurement ID, or null when analytics are switched off.
+     *
+     * Set WORLDLY_GA_ID to use a different property, or to an empty string to
+     * disable the tag entirely — useful for local development and for staging,
+     * where you rarely want traffic landing in the production property.
+     */
+    public static function analyticsId(): ?string
+    {
+        $configured = getenv('WORLDLY_GA_ID');
+
+        if ($configured === false) {
+            return self::DEFAULT_GA_ID;
+        }
+
+        $configured = trim($configured);
+
+        return $configured === '' ? null : $configured;
     }
 
     /**
