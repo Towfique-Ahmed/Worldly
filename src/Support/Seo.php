@@ -70,7 +70,7 @@ final class Seo
         ],
         'bookmarks' => [
             'title' => 'Your Saved Places & Bookmarks',
-            'description' => 'The countries, mountains, rivers, lakes and destinations you have starred, kept privately in this browser and never sent anywhere.',
+            'description' => 'The countries, mountains, rivers, lakes and destinations you have starred, kept in this browser rather than in any account you have to create.',
         ],
         'not-found' => [
             'title' => 'Page Not Found — Off the Edge of the Map',

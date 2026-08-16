@@ -23,7 +23,7 @@ $trips = array_slice($atlas->places(), 0, 3);
       <p class="hero__lede">
         Drag the map, spin the globe, chase the sunlight around it, and open any country for ten facts about it.
         Rivers, lakes, deserts and mountain ranges are all drawn from public-domain Natural Earth data at 1:50m and projected
-        server-side — no map tiles, no tracking, no third-party scripts.
+        server-side — no map tiles, no CDN, no JavaScript libraries.
       </p>
 
       <div class="searchbox" data-global-search style="margin-top:20px;max-width:460px">
@@ -180,7 +180,7 @@ $trips = array_slice($atlas->places(), 0, 3);
   <div class="section-head reveal">
     <div>
       <h2>What is inside this atlas</h2>
-      <p>Everything below is served from this site itself — no map tiles, no CDN, no analytics.</p>
+      <p>Every dataset below is served from this site itself — no map tiles and no CDN.</p>
     </div>
   </div>
 
@@ -190,8 +190,8 @@ $trips = array_slice($atlas->places(), 0, 3);
         Worldly is an interactive world map and reference atlas. The map you can drag above is drawn from
         public-domain <a href="https://www.naturalearthdata.com/" rel="noopener">Natural Earth</a> vector data
         at 1:50,000,000 scale, simplified and projected into a Robinson projection on the server, then sent to
-        your browser as plain SVG. Nothing is fetched from a tile service, so the whole thing works offline and
-        nothing about your visit is sent anywhere.
+        your browser as plain SVG. Nothing is fetched from a tile service, so the map keeps working even where a
+        tile server would not.
       </p>
       <p>
         Six map styles sit on the same geometry. <strong>Physical</strong> tints deserts, mountain ranges,

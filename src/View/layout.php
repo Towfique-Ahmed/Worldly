@@ -47,6 +47,19 @@ $moreLinks = [
 <!doctype html>
 <html lang="en" data-theme="night">
 <head>
+<?php $analyticsId = Site::analyticsId(); ?>
+<?php if ($analyticsId !== null): ?>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=<?= rawurlencode($analyticsId) ?>"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', <?= json_encode($analyticsId, JSON_UNESCAPED_SLASHES) ?>);
+</script>
+<?php endif; ?>
+
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title><?= Format::e($title) ?></title>
@@ -155,13 +168,19 @@ $moreLinks = [
 
 <footer class="footer">
   <div class="footer__inner">
-    <p class="footer__brand">🌍 <strong>Worldly</strong> — an interactive atlas built in plain PHP, with no framework and no third-party JavaScript.</p>
+    <p class="footer__brand">🌍 <strong>Worldly</strong> — an interactive atlas built in plain PHP, with no framework and no JavaScript libraries.</p>
     <p class="footer__meta">
       Coastlines, rivers, lakes and terrain come from <a href="https://www.naturalearthdata.com/" rel="noopener">Natural Earth</a> (public domain) at 1:50m,
       simplified and projected into a Robinson projection server-side. Country attributes come from
       <a href="https://github.com/mledoze/countries" rel="noopener">mledoze/countries</a>, and time zone data from PHP's bundled IANA database.
       Population and GDP figures are estimates a few years old — good for comparison, not for citation.
     </p>
+    <?php if ($analyticsId !== null): ?>
+    <p class="footer__meta">
+      This site uses Google Analytics to count visits. That is the only third-party script it loads, and the only
+      thing that leaves your browser besides the pages themselves.
+    </p>
+    <?php endif; ?>
     <nav class="footer__links" aria-label="Footer">
       <?php foreach (array_merge($links, $moreLinks) as $link): ?>
         <a href="<?= Format::e($link['href']) ?>"><?= Format::e($link['label']) ?></a>
