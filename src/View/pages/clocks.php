@@ -9,11 +9,12 @@ use Worldly\Support\Format;
 ?>
 
 <section class="wrap">
-  <span class="eyebrow">⏱ Live · <?= count(DateTimeZone::listIdentifiers()) ?> IANA zones available</span>
-  <h1 class="hero__title" style="font-size:clamp(1.9rem,4.4vw,3rem)">World clock, timer &amp; stopwatch</h1>
+  <span class="eyebrow">⏱ Live · <?= count(DateTimeZone::listIdentifiers()) ?> IANA time zones</span>
+  <h1 class="hero__title" style="font-size:clamp(1.9rem,4.4vw,3rem)">World Clock, Countdown Timer &amp; Stopwatch</h1>
   <p class="hero__lede">
-    Analog faces that tint with the local hour, a countdown that rings, and a stopwatch with laps.
-    Your clock wall is remembered in this browser.
+    Live analog clocks for any city worldwide, each tinting with the local hour so you can see at a glance
+    who is awake. Add cities to build your own clock wall, set a countdown timer that rings when it hits zero,
+    or use the stopwatch with lap tracking. Your wall is saved in this browser.
   </p>
 
   <script type="application/json" data-zone-catalogue><?= json_encode(array_map(

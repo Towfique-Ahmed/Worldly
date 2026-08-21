@@ -9,11 +9,12 @@ use Worldly\Support\Format;
 ?>
 
 <section class="wrap">
-  <span class="eyebrow">🔁 Time converter</span>
-  <h1 class="hero__title" style="font-size:clamp(1.9rem,4.4vw,3rem)">Convert a time between anywhere</h1>
+  <span class="eyebrow">🔁 Time zone converter · all IANA zones supported</span>
+  <h1 class="hero__title" style="font-size:clamp(1.9rem,4.4vw,3rem)">Time Zone Converter — Any City, Any Date</h1>
   <p class="hero__lede">
-    Pick a moment in one zone and read it everywhere else. Daylight saving is applied from your browser's
-    IANA database, including the awkward half-hour and 45-minute offsets.
+    Pick any date and time in one zone and instantly read it in any other. Daylight saving is handled
+    automatically from your browser's IANA database, including half-hour and 45-minute offsets. Use the city
+    shortcuts below to jump to a destination zone in one tap.
   </p>
 
   <script type="application/json" data-zone-catalogue><?= json_encode(array_map(

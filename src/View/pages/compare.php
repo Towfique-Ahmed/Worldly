@@ -14,11 +14,12 @@ $defaultB = $_GET['b'] ?? 'JPN';
 ?>
 
 <section class="wrap" data-compare>
-  <span class="eyebrow">⚖️ Side by side</span>
-  <h1 class="hero__title" style="font-size:clamp(1.9rem,4.4vw,3rem)">Compare countries</h1>
+  <span class="eyebrow">⚖️ Side by side · <?= count($countries) ?> countries available</span>
+  <h1 class="hero__title" style="font-size:clamp(1.9rem,4.4vw,3rem)">Compare Two Countries Side by Side</h1>
   <p class="hero__lede">
-    Put any two of the <?= count($countries) ?> mapped countries next to each other. The winning side of each
-    numeric row is marked — bigger is better, except for density, where lower means more room.
+    Put any two of the <?= count($countries) ?> mapped countries next to each other and compare population,
+    land area, density, GDP per person, borders, time zones, languages and currency. The winning side of each
+    numeric row is highlighted — bigger is better, except for density, where lower means more room.
   </p>
 
   <div class="compare-pick" style="margin-top:24px">

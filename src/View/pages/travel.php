@@ -26,11 +26,11 @@ sort($categories);
 ?>
 
 <section class="wrap">
-  <span class="eyebrow">🧭 <?= count($places) ?> destinations · <?= count($categories) ?> kinds of trip</span>
-  <h1 class="hero__title" style="font-size:clamp(1.9rem,4.4vw,3rem)">Travel places</h1>
+  <span class="eyebrow">🧭 <?= count($places) ?> destinations · <?= count($categories) ?> categories</span>
+  <h1 class="hero__title" style="font-size:clamp(1.9rem,4.4vw,3rem)">Best Places to Visit in the World</h1>
   <p class="hero__lede">
-    Ruins, reefs, deserts and cities worth crossing an ocean for — each one pinned on the map with the season
-    that actually suits it.
+    Ancient ruins, coral reefs, deserts, cities and wildlife reserves worth crossing an ocean for — each one pinned
+    on the map with the season that actually suits it. Filter by category or continent.
   </p>
 
   <div style="margin:24px 0 6px">

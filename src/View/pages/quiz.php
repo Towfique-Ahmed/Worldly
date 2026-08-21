@@ -8,10 +8,11 @@ declare(strict_types=1);
 <section class="wrap" data-quiz>
   <div class="quiz">
     <div style="text-align:center;margin-bottom:22px">
-      <span class="eyebrow">🎯 Eight questions</span>
-      <h1 class="hero__title" style="font-size:clamp(1.8rem,4vw,2.6rem)">Atlas quiz</h1>
+      <span class="eyebrow">🎯 Eight questions · flags, capitals &amp; map</span>
+      <h1 class="hero__title" style="font-size:clamp(1.8rem,4vw,2.6rem)">World Geography Quiz</h1>
       <p class="hero__lede" style="margin-inline:auto">
-        Flags, capitals or the map itself. Every answer comes back with a real fact about the country.
+        Test your geography in three modes — identify the flag, name the capital, or find the country on the map.
+        Every answer reveals a real fact about the country.
       </p>
     </div>
 

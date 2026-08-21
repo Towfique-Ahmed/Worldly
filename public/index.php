@@ -42,7 +42,7 @@ $router = new Router();
 $router->get('/', static fn (): string => $view->render('explore', [
     'nav' => 'explore',
     ...Seo::page('explore'),
-    'jsonLd' => [StructuredData::website()],
+    'jsonLd' => [StructuredData::website(), StructuredData::organization()],
     'mapPayload' => $atlas->mapPayload(),
     'continents' => $atlas->continents(),
     'featuredZones' => array_slice(Timezones::featured(), 0, 8),
@@ -170,7 +170,13 @@ $router->get('/compare', static fn (): string => $view->render('compare', [
 $router->get('/quiz', static fn (): string => $view->render('quiz', [
     'nav' => 'quiz',
     ...Seo::page('quiz'),
-    'breadcrumbs' => [['name' => 'Atlas quiz', 'path' => '/quiz']],
+    'breadcrumbs' => [['name' => 'World Geography Quiz', 'path' => '/quiz']],
+    'jsonLd' => [StructuredData::faq([
+        ['question' => 'How does the world geography quiz work?', 'answer' => 'Each round draws eight countries at random from the 242 in the atlas, limited to UN member states with a population above 300,000. Wrong answers are picked from the same continent so the questions stay meaningful.'],
+        ['question' => 'What quiz modes are available?', 'answer' => 'There are three modes: Guess the flag (identify a country from its national flag), Guess the capital (name the country given its capital city), and Find it on the map (click the highlighted country on a world map).'],
+        ['question' => 'Are scores saved between sessions?', 'answer' => 'Your best score and streak are stored in your browser\'s local storage. Nothing is uploaded and no account is required.'],
+        ['question' => 'Do I learn anything from playing?', 'answer' => 'Every answer, right or wrong, shows a real fact about that country — the same facts found on its country profile page.'],
+    ])],
     'mapPayload' => $atlas->mapPayload(),
 ]));
 
