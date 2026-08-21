@@ -75,10 +75,12 @@ $moreLinks = [
 <meta property="og:description" content="<?= Format::e($description) ?>">
 <meta property="og:url" content="<?= Format::e($canonical) ?>">
 <meta property="og:image" content="<?= Format::e(Site::url('/assets/og-cover.png')) ?>">
+<meta property="og:image:type" content="image/png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Worldly — an interactive world map and atlas">
 <meta property="og:locale" content="en">
+<meta name="theme-color" content="#0d1117">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="<?= Format::e(Site::url('/assets/og-cover.png')) ?>">
 <meta name="twitter:title" content="<?= Format::e($title) ?>">

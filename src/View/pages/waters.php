@@ -32,9 +32,10 @@ $slot = $deepest ? $chartWidth / count($deepest) : $chartWidth;
 
 <section class="wrap">
   <span class="eyebrow">🌊 <?= count($rivers) ?> rivers · <?= count($lakes) ?> lakes · <?= count($uniqueOceans) ?> oceans &amp; seas</span>
-  <h1 class="hero__title" style="font-size:clamp(1.9rem,4.4vw,3rem)">Rivers, lakes &amp; oceans</h1>
+  <h1 class="hero__title" style="font-size:clamp(1.9rem,4.4vw,3rem)">Longest Rivers, Largest Lakes &amp; Deepest Oceans</h1>
   <p class="hero__lede">
-    Every river centreline and lake outline here is real geometry, drawn straight onto the map.
+    Every river centreline and lake outline drawn as real geometry on the world map — length, basin size, depth and
+    discharge for each. Includes all five oceans and the major seas, with depths drawn to scale.
     Hover any blue line to name it; click a card to fly there.
   </p>
 

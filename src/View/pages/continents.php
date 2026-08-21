@@ -13,11 +13,11 @@ $largestPop = max(array_map(static fn (array $t): int => $t['population'], $tota
 ?>
 
 <section class="wrap">
-  <span class="eyebrow">🗺 Seven landmasses</span>
-  <h1 class="hero__title" style="font-size:clamp(1.9rem,4.4vw,3rem)">Continents</h1>
+  <span class="eyebrow">🗺 Seven landmasses · all continents compared</span>
+  <h1 class="hero__title" style="font-size:clamp(1.9rem,4.4vw,3rem)">The 7 Continents of the World</h1>
   <p class="hero__lede">
-    Every continent, sized against the others and pinned on the map. Tap a card to open it, or use the map's
-    continent chips to isolate one.
+    Every continent sized against the others, with land area, population, country count and the highest and lowest
+    point on each. Tap a card for the full profile, or use the map chips to isolate one.
   </p>
 
   <div style="margin:24px 0 30px">

@@ -21,11 +21,12 @@ $snowline = $baseline - (4200 / $maxElevation) * 250;
 ?>
 
 <section class="wrap">
-  <span class="eyebrow">🏔 <?= count($mountains) ?> peaks · all 14 eight-thousanders</span>
-  <h1 class="hero__title" style="font-size:clamp(1.9rem,4.4vw,3rem)">Mountains</h1>
+  <span class="eyebrow">🏔 <?= count($mountains) ?> peaks · all 14 eight-thousanders · Seven Summits</span>
+  <h1 class="hero__title" style="font-size:clamp(1.9rem,4.4vw,3rem)">Highest Mountains in the World</h1>
   <p class="hero__lede">
-    The highest ground on the planet, drawn to scale. Every triangle below is a real summit —
-    hover for its name, click to fly the map there.
+    The highest ground on the planet, drawn to scale. All 14 eight-thousanders and the Seven Summits — elevation,
+    prominence, mountain range and first ascent for every peak. Hover any triangle for its name, click to fly the
+    map there.
   </p>
 
   <div class="card reveal" style="margin:24px 0 30px;padding:16px">

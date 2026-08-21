@@ -148,6 +148,51 @@ final class StructuredData
         ];
     }
 
+    /**
+     * Site-level organization block — pairs with the WebSite block on the home page.
+     */
+    public static function organization(): array
+    {
+        return [
+            '@context' => 'https://schema.org',
+            '@type' => 'Organization',
+            'name' => 'Worldly',
+            'alternateName' => 'Worldly Interactive Atlas',
+            'url' => Site::url('/'),
+            'logo' => [
+                '@type' => 'ImageObject',
+                'url' => Site::url('/assets/og-cover.png'),
+                'width' => 1200,
+                'height' => 630,
+            ],
+            'description' => 'An interactive world atlas covering every country, continent, mountain range, river, lake and ocean, with world clocks and a time zone converter.',
+        ];
+    }
+
+    /**
+     * FAQ page block for "how it works" style sections.
+     *
+     * @param list<array{question: string, answer: string}> $items
+     */
+    public static function faq(array $items): array
+    {
+        return [
+            '@context' => 'https://schema.org',
+            '@type' => 'FAQPage',
+            'mainEntity' => array_map(
+                static fn (array $item): array => [
+                    '@type' => 'Question',
+                    'name' => $item['question'],
+                    'acceptedAnswer' => [
+                        '@type' => 'Answer',
+                        'text' => $item['answer'],
+                    ],
+                ],
+                $items,
+            ),
+        ];
+    }
+
     /** Render one or more blocks as script tags. */
     public static function render(array ...$blocks): string
     {

@@ -29,48 +29,48 @@ final class Seo
      */
     private const PAGES = [
         'explore' => [
-            'title' => 'Interactive World Map & 3D Globe Atlas',
-            'description' => 'Explore a live physical world map and spinning 3D globe with rivers, lakes, terrain and real-time day and night. Click any country for ten facts about it.',
+            'title' => 'Interactive World Map & Atlas: Explore Countries',
+            'description' => 'Interactive world map and 3D globe with rivers, lakes, terrain and real-time day-night shadow. Click any country for ten facts, capital and local time.',
         ],
         'continents' => [
-            'title' => 'The 7 Continents: Size, Population & Facts',
+            'title' => 'The 7 Continents: Size, Population & Country Count',
             'description' => 'Compare all seven continents by land area, population and country count. See the highest and lowest point on each, and fly the map straight to any of them.',
         ],
         'countries' => [
-            'title' => 'All Countries of the World: Population & Area',
-            'description' => 'Browse every country and territory on Earth, sorted by population, land area or GDP per person, and filtered by continent. Each opens a profile with ten facts.',
+            'title' => 'All Countries of the World: Population, Area & GDP',
+            'description' => 'Browse all 242 countries and territories, sorted by population, land area or GDP per capita, and filtered by continent. Each opens a profile with ten facts.',
         ],
         'mountains' => [
             'title' => 'Highest Mountains in the World, Drawn to Scale',
-            'description' => 'All fourteen eight-thousanders and the Seven Summits, drawn to scale on one chart. Compare elevation, prominence, mountain range and first ascent for 46 peaks.',
+            'description' => 'All 14 eight-thousanders and the Seven Summits drawn to scale on one chart. Elevation, prominence, mountain range and first ascent date for 46 peaks worldwide.',
         ],
         'waters' => [
-            'title' => 'Longest Rivers, Biggest Lakes & Deepest Oceans',
-            'description' => 'The longest rivers, largest lakes and deepest oceans on Earth, drawn as real geometry on the world map, with length, basin, area and depth for each of them.',
+            'title' => 'Longest Rivers, Largest Lakes & Deepest Oceans',
+            'description' => 'The longest rivers, largest lakes and deepest oceans on Earth as real geometry on the world map. Length, basin, area and depth for every river, lake and ocean.',
         ],
         'travel' => [
             'title' => 'Best Places to Visit in the World, by Season',
-            'description' => 'Sixty-eight destinations worth crossing an ocean for: ancient wonders, reefs, deserts and cities, each pinned on the map with the season that suits it.',
+            'description' => '68 destinations worth crossing an ocean for: ancient ruins, reefs, deserts, cities and wildlife reserves, each pinned on the map with the ideal travel season.',
         ],
         'compare' => [
             'title' => 'Compare Two Countries Side by Side',
-            'description' => 'Put any two countries head to head and compare population, land area, density, GDP, borders, time zones, languages and currency, plus the distance between them.',
+            'description' => 'Compare any two countries on population, land area, density, GDP per capita, borders, time zones, languages, currency and the distance between their capitals.',
         ],
         'quiz' => [
             'title' => 'World Geography Quiz: Flags, Capitals & Map',
-            'description' => 'Test your geography in three modes: name the flag, name the capital, or find the country on the world map. Eight questions, streaks, and a real fact each time.',
+            'description' => 'Test your geography: identify the flag, name the capital, or find the country on the map. Eight questions per round with a real country fact after each answer.',
         ],
         'clocks' => [
             'title' => 'World Clock, Countdown Timer & Stopwatch',
-            'description' => 'Live analog clocks for cities worldwide that tint with the local hour, plus a countdown timer that rings and a stopwatch with laps. Build your own clock wall.',
+            'description' => 'Live analog world clocks for any city, a countdown timer that rings and a stopwatch with lap times. Build your own clock wall and save it in your browser.',
         ],
         'converter' => [
-            'title' => 'Time Zone Converter: Any City, Any Date',
-            'description' => 'Convert any date and time between any two time zones on Earth. Daylight saving is handled automatically, and you see the same moment across twelve cities.',
+            'title' => 'Time Zone Converter: Any City, Any Date & Time',
+            'description' => 'Convert any date and time between any two IANA time zones. Daylight saving is handled automatically. See the same moment across multiple cities at once.',
         ],
         'bookmarks' => [
             'title' => 'Your Saved Places & Bookmarks',
-            'description' => 'The countries, mountains, rivers, lakes and destinations you have starred, kept in this browser rather than in any account you have to create.',
+            'description' => 'Countries, mountains, rivers, lakes and travel destinations you have starred, saved in this browser\'s local storage. No account needed, nothing is uploaded.',
         ],
         'not-found' => [
             'title' => 'Page Not Found — Off the Edge of the Map',

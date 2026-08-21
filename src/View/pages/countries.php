@@ -11,9 +11,9 @@ $maxPopulation = max(array_column($countries, 'population'));
 ?>
 
 <section class="wrap" data-filterable>
-  <span class="eyebrow">🏳 <?= count($countries) ?> countries &amp; territories</span>
-  <h1 class="hero__title" style="font-size:clamp(1.9rem,4.4vw,3rem)">Countries &amp; regions</h1>
-  <p class="hero__lede">Search, filter by continent and sort by whatever you care about. Every row opens a full profile.</p>
+  <span class="eyebrow">🏳 <?= count($countries) ?> countries &amp; territories · 7 continents</span>
+  <h1 class="hero__title" style="font-size:clamp(1.9rem,4.4vw,3rem)">All Countries of the World</h1>
+  <p class="hero__lede">Browse every country and territory on Earth. Sort by population, land area or GDP per person, and filter by continent. Every row opens a full profile with ten facts, capital, languages, currency and local time.</p>
 
   <div class="maptools" style="margin-top:22px">
     <div class="searchbox" style="max-width:340px">
