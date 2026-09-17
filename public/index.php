@@ -130,6 +130,58 @@ $router->get('/country/{iso3}', static function (array $params) use ($atlas, $vi
     ]);
 });
 
+$router->get('/richest-countries', static function () use ($atlas, $view): string {
+    $countries = $atlas->richestCountries();
+
+    return $view->render('richest', [
+        'nav' => 'richest',
+        ...Seo::page('richest'),
+        'breadcrumbs' => [['name' => 'Richest countries', 'path' => '/richest-countries']],
+        'jsonLd' => [StructuredData::collection('Richest countries in the world', 'Every country ranked by GDP per person.', '/richest-countries', count($countries))],
+        'countries' => $countries,
+        'continents' => $atlas->continents(),
+    ]);
+});
+
+$router->get('/polluted-countries', static function () use ($atlas, $view): string {
+    $countries = $atlas->countriesWithMetric($atlas->pollutionIndex(), 'pollution');
+
+    return $view->render('polluted', [
+        'nav' => 'polluted',
+        ...Seo::page('polluted'),
+        'breadcrumbs' => [['name' => 'Most polluted countries', 'path' => '/polluted-countries']],
+        'jsonLd' => [StructuredData::collection('Most polluted countries', 'Countries ranked by average PM2.5 air pollution.', '/polluted-countries', count($countries))],
+        'countries' => $countries,
+        'continents' => $atlas->continents(),
+    ]);
+});
+
+$router->get('/safest-countries', static function () use ($atlas, $view): string {
+    $countries = $atlas->countriesWithMetric($atlas->safetyIndex(), 'safety');
+
+    return $view->render('safest', [
+        'nav' => 'safest',
+        ...Seo::page('safest'),
+        'breadcrumbs' => [['name' => 'Safest countries', 'path' => '/safest-countries']],
+        'jsonLd' => [StructuredData::collection('Safest countries in the world', 'Countries ranked by everyday safety from crime.', '/safest-countries', count($countries))],
+        'countries' => $countries,
+        'continents' => $atlas->continents(),
+    ]);
+});
+
+$router->get('/peaceful-countries', static function () use ($atlas, $view): string {
+    $countries = $atlas->countriesWithMetric($atlas->peaceIndex(), 'peace');
+
+    return $view->render('peaceful', [
+        'nav' => 'peaceful',
+        ...Seo::page('peaceful'),
+        'breadcrumbs' => [['name' => 'Most peaceful countries', 'path' => '/peaceful-countries']],
+        'jsonLd' => [StructuredData::collection('Most peaceful countries', 'Countries ranked by peacefulness — conflict, militarization and stability.', '/peaceful-countries', count($countries))],
+        'countries' => $countries,
+        'continents' => $atlas->continents(),
+    ]);
+});
+
 $router->get('/mountains', static fn (): string => $view->render('mountains', [
     'nav' => 'mountains',
     ...Seo::page('mountains'),

@@ -13,6 +13,14 @@ namespace Worldly;
  */
 final class Atlas
 {
+    /**
+     * Natural Earth admin-0 entries with no permanent civilian population —
+     * research stations, a military base, a glacier. Their tiny population
+     * estimate makes GDP per capita a meaningless outlier, so wealth rankings
+     * leave them out rather than crown Antarctica the richest place on Earth.
+     */
+    private const UNINHABITED = ['ATA', 'ATF', 'ATC', 'HMD', 'SGS', 'IOT', 'IOA', 'KAS'];
+
     /** @var array<string, mixed> */
     private array $cache = [];
 
@@ -74,6 +82,24 @@ final class Atlas
     public function facts(): array
     {
         return $this->load('facts');
+    }
+
+    /** @return array<string, float> iso3 => average annual PM2.5, µg/m³ */
+    public function pollutionIndex(): array
+    {
+        return $this->load('pollution');
+    }
+
+    /** @return array<string, float> iso3 => everyday-safety score out of 100 */
+    public function safetyIndex(): array
+    {
+        return $this->load('safety');
+    }
+
+    /** @return array<string, float> iso3 => peacefulness score out of 100 */
+    public function peaceIndex(): array
+    {
+        return $this->load('peace');
     }
 
     /** @return list<string> */
@@ -231,6 +257,48 @@ final class Atlas
             'populationShare' => $country && $worldPopulation > 0 ? $country['population'] / $worldPopulation : 0.0,
             'areaShare' => $country && $worldArea > 0 ? $country['area'] / $worldArea : 0.0,
         ];
+    }
+
+    /**
+     * All countries ranked by GDP per capita, richest first.
+     *
+     * @return list<array<string, mixed>>
+     */
+    public function richestCountries(): array
+    {
+        $countries = array_values(array_filter(
+            $this->countries(),
+            static fn (array $c): bool => $c['gdpPerCapita'] > 0 && !in_array($c['iso3'], self::UNINHABITED, true),
+        ));
+
+        usort($countries, static fn (array $a, array $b): int => $b['gdpPerCapita'] <=> $a['gdpPerCapita']);
+
+        return $countries;
+    }
+
+    /**
+     * Countries carrying a curated metric (pollution, safety, peace…), each
+     * merged with its profile under $field and sorted with the highest value
+     * first. Countries the metric has no entry for are left out.
+     *
+     * @param array<string, float> $metric iso3 => value
+     * @return list<array<string, mixed>>
+     */
+    public function countriesWithMetric(array $metric, string $field): array
+    {
+        $countries = [];
+
+        foreach ($this->countries() as $country) {
+            if (!isset($metric[$country['iso3']])) {
+                continue;
+            }
+
+            $countries[] = [...$country, $field => $metric[$country['iso3']]];
+        }
+
+        usort($countries, static fn (array $a, array $b): float => $b[$field] <=> $a[$field]);
+
+        return $countries;
     }
 
     // ------------------------------------------------------------- aggregates

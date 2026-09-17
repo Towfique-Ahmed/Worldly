@@ -24,10 +24,26 @@ $atlas = new Atlas(__DIR__ . '/../src/Data');
 /** @var list<array{path: string, title: string, description: string}> $pages */
 $pages = [];
 
-foreach (['explore', 'continents', 'countries', 'mountains', 'waters', 'travel',
-          'compare', 'quiz', 'clocks', 'converter', 'bookmarks', 'not-found'] as $key) {
-    $meta = Seo::page($key);
-    $pages[] = ['path' => '/' . ($key === 'explore' ? '' : $key), ...$meta];
+$staticPaths = [
+    'explore' => '/',
+    'continents' => '/continents',
+    'countries' => '/countries',
+    'mountains' => '/mountains',
+    'waters' => '/waters',
+    'travel' => '/travel',
+    'compare' => '/compare',
+    'quiz' => '/quiz',
+    'clocks' => '/clocks',
+    'converter' => '/converter',
+    'bookmarks' => '/bookmarks',
+    'richest' => '/richest-countries',
+    'polluted' => '/polluted-countries',
+    'safest' => '/safest-countries',
+    'peaceful' => '/peaceful-countries',
+];
+
+foreach ($staticPaths as $key => $path) {
+    $pages[] = ['path' => $path, ...Seo::page($key)];
 }
 
 foreach ($atlas->continents() as $name => $continent) {

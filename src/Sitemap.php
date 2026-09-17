@@ -48,6 +48,10 @@ final class Sitemap
         $add('/quiz', 'monthly', '0.6');
         $add('/clocks', 'daily', '0.7');
         $add('/converter', 'monthly', '0.7');
+        $add('/richest-countries', 'monthly', '0.7');
+        $add('/polluted-countries', 'monthly', '0.7');
+        $add('/safest-countries', 'monthly', '0.7');
+        $add('/peaceful-countries', 'monthly', '0.7');
 
         // One page per continent.
         foreach (array_keys($this->atlas->continents()) as $name) {
