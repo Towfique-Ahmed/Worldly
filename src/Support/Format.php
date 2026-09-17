@@ -18,6 +18,7 @@ final class Format
         $abs = abs($value);
 
         return match (true) {
+            $abs >= 1_000_000_000_000 => self::trim($value / 1_000_000_000_000) . 'T',
             $abs >= 1_000_000_000 => self::trim($value / 1_000_000_000) . 'B',
             $abs >= 1_000_000 => self::trim($value / 1_000_000) . 'M',
             $abs >= 1_000 => self::trim($value / 1_000) . 'K',
