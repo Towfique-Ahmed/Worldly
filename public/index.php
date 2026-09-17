@@ -126,6 +126,7 @@ $router->get('/country/{iso3}', static function (array $params) use ($atlas, $vi
         'places' => $atlas->placesIn($country['iso3']),
         'neighbours' => $atlas->neighboursOf($country),
         'mapPayload' => $atlas->mapPayload(),
+        'worldRanks' => $atlas->worldRanks($country['iso3']),
     ]);
 });
 

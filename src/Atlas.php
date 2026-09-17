@@ -198,6 +198,41 @@ final class Atlas
         ));
     }
 
+    /**
+     * Where a country stands against every other mapped country, plus its
+     * share of world totals, for the "By the numbers" panel on its page.
+     *
+     * @return array<string, mixed>
+     */
+    public function worldRanks(string $iso3): array
+    {
+        $countries = $this->countries();
+        $total = count($countries);
+
+        $ranks = [];
+        foreach (['population', 'area', 'gdp', 'gdpPerCapita', 'density'] as $field) {
+            $sorted = $countries;
+            usort($sorted, static fn (array $a, array $b): int => $b[$field] <=> $a[$field]);
+            foreach ($sorted as $index => $c) {
+                if (strcasecmp($c['iso3'], $iso3) === 0) {
+                    $ranks[$field] = $index + 1;
+                    break;
+                }
+            }
+        }
+
+        $country = $this->country($iso3);
+        $worldPopulation = array_sum(array_column($countries, 'population'));
+        $worldArea = array_sum(array_column($countries, 'area'));
+
+        return [
+            'of' => $total,
+            'ranks' => $ranks,
+            'populationShare' => $country && $worldPopulation > 0 ? $country['population'] / $worldPopulation : 0.0,
+            'areaShare' => $country && $worldArea > 0 ? $country['area'] / $worldArea : 0.0,
+        ];
+    }
+
     // ------------------------------------------------------------- aggregates
 
     /** @return array<string, int|float> */
