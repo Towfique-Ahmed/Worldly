@@ -72,6 +72,22 @@ final class Seo
             'title' => 'Your Saved Places & Bookmarks',
             'description' => 'Countries, mountains, rivers, lakes and travel destinations you have starred, saved in this browser\'s local storage. No account needed, nothing is uploaded.',
         ],
+        'richest' => [
+            'title' => 'Richest Countries in the World: GDP per Person',
+            'description' => 'Every country ranked by GDP per person, from the wealthiest by economic output per head to the poorest, filterable by continent and sortable live.',
+        ],
+        'polluted' => [
+            'title' => 'Most Polluted Countries: Air Quality by Country',
+            'description' => 'Countries ranked by average PM2.5 air pollution, from the smoggiest skies to the cleanest air on the planet, filterable by continent and sortable live.',
+        ],
+        'safest' => [
+            'title' => 'Safest Countries in the World by Crime Risk',
+            'description' => 'Countries ranked by everyday safety from crime, from the calmest streets in the world to the highest-risk, filterable by continent and sortable live.',
+        ],
+        'peaceful' => [
+            'title' => 'Most Peaceful Countries in the World',
+            'description' => 'Countries ranked by peacefulness — conflict, militarization and stability — from the calmest nations on Earth to the most war-torn, sortable live.',
+        ],
         'not-found' => [
             'title' => 'Page Not Found — Off the Edge of the Map',
             'description' => 'That page is off the edge of the map. Head back to the interactive world atlas to explore countries, mountains, rivers and travel destinations.',

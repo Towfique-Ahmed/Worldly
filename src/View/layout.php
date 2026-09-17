@@ -42,6 +42,10 @@ $moreLinks = [
     ['href' => '/quiz', 'key' => 'quiz', 'label' => 'Atlas quiz', 'icon' => '🎯'],
     ['href' => '/converter', 'key' => 'converter', 'label' => 'Time converter', 'icon' => '🔁'],
     ['href' => '/bookmarks', 'key' => 'bookmarks', 'label' => 'Bookmarks', 'icon' => '★'],
+    ['href' => '/richest-countries', 'key' => 'richest', 'label' => 'Richest countries', 'icon' => '💰'],
+    ['href' => '/polluted-countries', 'key' => 'polluted', 'label' => 'Most polluted countries', 'icon' => '🏭'],
+    ['href' => '/safest-countries', 'key' => 'safest', 'label' => 'Safest countries', 'icon' => '🛡'],
+    ['href' => '/peaceful-countries', 'key' => 'peaceful', 'label' => 'Most peaceful countries', 'icon' => '🕊'],
 ];
 ?>
 <!doctype html>
