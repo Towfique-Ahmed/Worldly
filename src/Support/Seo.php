@@ -64,6 +64,14 @@ final class Seo
             'title' => 'World Clock, Countdown Timer & Stopwatch',
             'description' => 'Live analog world clocks for any city, a countdown timer that rings and a stopwatch with lap times. Build your own clock wall and save it in your browser.',
         ],
+        'gmt' => [
+            'title' => 'Current GMT Time Now: Greenwich Mean Time',
+            'description' => 'Live GMT time with the date in 12 or 24-hour format. See London right now, GMT vs BST, and every time zone sitting at UTC+00:00 at this moment.',
+        ],
+        'utc' => [
+            'title' => 'Current UTC Time Now: Coordinated Universal Time',
+            'description' => 'Live UTC time with the date, Unix timestamp and ISO 8601 string. Learn how UTC differs from GMT and see time zone offsets from UTC−12 to UTC+14.',
+        ],
         'converter' => [
             'title' => 'Time Zone Converter: Any City, Any Date & Time',
             'description' => 'Convert any date and time between any two IANA time zones. Daylight saving is handled automatically. See the same moment across multiple cities at once.',

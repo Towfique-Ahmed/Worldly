@@ -48,6 +48,8 @@ final class Sitemap
         $add('/quiz', 'monthly', '0.6');
         $add('/clocks', 'daily', '0.7');
         $add('/converter', 'monthly', '0.7');
+        $add('/time-zone/gmt', 'daily', '0.7');
+        $add('/time-zone/utc', 'daily', '0.7');
         $add('/richest-countries', 'monthly', '0.7');
         $add('/polluted-countries', 'monthly', '0.7');
         $add('/safest-countries', 'monthly', '0.7');
