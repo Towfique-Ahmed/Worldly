@@ -14,7 +14,7 @@ $bottom = array_slice($countries, -3);
 <section class="wrap" data-filterable>
   <span class="eyebrow">💰 <?= count($countries) ?> countries ranked</span>
   <h1 class="hero__title" style="font-size:clamp(1.9rem,4.4vw,3rem)">Richest Countries in the World</h1>
-  <p class="hero__lede">Every country ranked by GDP per person — economic output divided by population, the standard way to compare how wealthy an average resident is, rather than how large the whole economy is. Sort by total GDP instead, filter by continent, or search by name.</p>
+  <p class="hero__lede">Every country ranked by GDP per person - economic output divided by population, the standard way to compare how wealthy an average resident is, rather than how large the whole economy is. Sort by total GDP instead, filter by continent, or search by name.</p>
 
   <div class="grid grid--2" style="margin:22px 0">
     <div class="card reveal">
@@ -59,6 +59,6 @@ $bottom = array_slice($countries, -3);
   ]) ?>
 
   <p style="margin-top:14px;font-size:.82rem;color:var(--text-faint)">
-    GDP and population figures are recent estimates, good for comparing countries against each other but a few years old — not for citation.
+    GDP and population figures are recent estimates, good for comparing countries against each other but a few years old - not for citation.
   </p>
 </section>

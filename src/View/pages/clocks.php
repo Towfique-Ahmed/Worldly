@@ -30,14 +30,14 @@ use Worldly\Support\Format;
     <div class="article__main">
       <h2>What is UTC?</h2>
       <p>
-        UTC — Coordinated Universal Time — is the reference every other time zone is measured against. It is the
+        UTC - Coordinated Universal Time - is the reference every other time zone is measured against. It is the
         same everywhere on Earth and never changes for daylight saving. GMT, Greenwich Mean Time, runs at the same
         offset (UTC+00:00) and is the name used in the United Kingdom and much of West Africa in winter.
       </p>
       <h2>How to read a time zone</h2>
       <p>
         Every zone is written as an offset from UTC. Tokyo at UTC+09:00 is nine hours ahead, New York at UTC−05:00
-        is five hours behind, and a few places — India, Nepal, parts of Australia — sit on half-hour or 45-minute
+        is five hours behind, and a few places - India, Nepal, parts of Australia - sit on half-hour or 45-minute
         offsets. The tables below show each zone's offset and abbreviation as of right now, with daylight saving
         already applied.
       </p>
@@ -77,7 +77,7 @@ use Worldly\Support\Format;
       <select id="clockAdd" data-clock-add>
         <option value="">Choose a city…</option>
         <?php foreach ($zones as $zone): ?>
-          <option value="<?= Format::e($zone['zone']) ?>"><?= $zone['flag'] ?> <?= Format::e($zone['city']) ?> — UTC<?= Format::e($zone['offset']) ?></option>
+          <option value="<?= Format::e($zone['zone']) ?>"><?= $zone['flag'] ?> <?= Format::e($zone['city']) ?> - UTC<?= Format::e($zone['offset']) ?></option>
         <?php endforeach; ?>
       </select>
     </div>
@@ -151,7 +151,7 @@ use Worldly\Support\Format;
   <div class="section-head reveal">
     <div>
       <h2>Every featured zone, right now</h2>
-      <p>Ordered east to west — the first row is where tomorrow starts.</p>
+      <p>Ordered east to west - the first row is where tomorrow starts.</p>
     </div>
     <a class="btn btn--sm" href="/converter">Convert a specific time →</a>
   </div>
@@ -179,7 +179,7 @@ use Worldly\Support\Format;
     <div>
       <h2>Time zones at UTC+00:00 right now</h2>
       <p>
-        <?= count($utcZones) ?> IANA zones share UTC's offset at this moment. Some — Iceland, Ghana, Senegal —
+        <?= count($utcZones) ?> IANA zones share UTC's offset at this moment. Some - Iceland, Ghana, Senegal -
         stay on it all year; others, like London and Lisbon, only do in winter.
       </p>
     </div>

@@ -14,7 +14,7 @@ $riskiest = array_slice($countries, -3);
 <section class="wrap" data-filterable>
   <span class="eyebrow">🛡 <?= count($countries) ?> countries scored</span>
   <h1 class="hero__title" style="font-size:clamp(1.9rem,4.4vw,3rem)">Safest Countries in the World</h1>
-  <p class="hero__lede">Countries scored 0–100 on everyday safety from crime — how safe people generally feel walking alone, and how much street crime, theft and violence they actually face. This is about crime, not conflict: see <a href="/peaceful-countries" style="color:inherit;text-decoration:underline">the most peaceful countries</a> for war and militarization instead. Sort, filter by continent, or search by name.</p>
+  <p class="hero__lede">Countries scored 0–100 on everyday safety from crime - how safe people generally feel walking alone, and how much street crime, theft and violence they actually face. This is about crime, not conflict: see <a href="/peaceful-countries" style="color:inherit;text-decoration:underline">the most peaceful countries</a> for war and militarization instead. Sort, filter by continent, or search by name.</p>
 
   <div class="grid grid--2" style="margin:22px 0">
     <div class="card reveal">
@@ -59,6 +59,6 @@ $riskiest = array_slice($countries, -3);
   ]) ?>
 
   <p style="margin-top:14px;font-size:.82rem;color:var(--text-faint)">
-    Scores are a curated, indicative composite of public crime-rate and crime-perception reporting (in the spirit of Numbeo's Safety Index) — good for comparison, not a live feed or a citation-grade source.
+    Scores are a curated, indicative composite of public crime-rate and crime-perception reporting (in the spirit of Numbeo's Safety Index) - good for comparison, not a live feed or a citation-grade source.
   </p>
 </section>

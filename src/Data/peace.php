@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 /**
  * A composite peacefulness score, 0-100 (higher is more peaceful), curated in
- * the spirit of the Institute for Economics & Peace's Global Peace Index —
+ * the spirit of the Institute for Economics & Peace's Global Peace Index -
  * ongoing conflict, militarization and societal safety, folded into one
  * number and rescaled so bigger is better. This looks at war and armed
- * conflict, not everyday street crime — see safety.php for that lens.
+ * conflict, not everyday street crime - see safety.php for that lens.
  * Indicative for ranking and comparison, not a live feed or an
  * authoritative source.
  *

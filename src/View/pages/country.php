@@ -41,30 +41,30 @@ $accent = $continent['accent'] ?? '#5aa9ff';
 
       <div class="hero__stats">
         <div class="stat"><span class="stat__value" data-count-to="<?= (int) $country['population'] ?>" data-count-format="compact">0</span><span class="stat__label">Population</span></div>
-        <div class="stat"><span class="stat__value"><?= $country['area'] ? Format::compact($country['area']) : '—' ?></span><span class="stat__label">km² of land</span></div>
+        <div class="stat"><span class="stat__value"><?= $country['area'] ? Format::compact($country['area']) : '-' ?></span><span class="stat__label">km² of land</span></div>
         <div class="stat"><span class="stat__value">$<?= Format::compact($country['gdpPerCapita']) ?></span><span class="stat__label">GDP / person</span></div>
-        <div class="stat"><span class="stat__value" style="font-size:1.1rem"><?= Format::e($capital['name'] ?? '—') ?></span><span class="stat__label">Capital</span></div>
+        <div class="stat"><span class="stat__value" style="font-size:1.1rem"><?= Format::e($capital['name'] ?? '-') ?></span><span class="stat__label">Capital</span></div>
       </div>
 
       <div class="card" style="margin-top:20px">
         <dl class="kv">
           <dt>ISO codes</dt><dd><?= Format::e($country['iso2']) ?> · <?= Format::e($country['iso3']) ?></dd>
-          <dt>Density</dt><dd><?= $country['density'] ? Format::number($country['density']) . ' /km²' : '—' ?></dd>
-          <dt>Languages</dt><dd style="font-weight:500"><?= Format::e(implode(', ', $country['languages']) ?: '—') ?></dd>
+          <dt>Density</dt><dd><?= $country['density'] ? Format::number($country['density']) . ' /km²' : '-' ?></dd>
+          <dt>Languages</dt><dd style="font-weight:500"><?= Format::e(implode(', ', $country['languages']) ?: '-') ?></dd>
           <dt>Currenc<?= count($country['currencies']) === 1 ? 'y' : 'ies' ?></dt>
           <dd style="font-weight:500"><?= Format::e($country['currencies']
               ? implode(', ', array_map(static fn (array $c): string => $c['name'] . ' (' . $c['code'] . ')', $country['currencies']))
-              : '—') ?></dd>
-          <dt>Dial code</dt><dd><?= Format::e($country['calling'] ?: '—') ?></dd>
-          <dt>Internet domain</dt><dd><?= Format::e($country['tld'] ?: '—') ?></dd>
-          <dt>Time zones</dt><dd><?= count($country['timezones']) ?: '—' ?></dd>
+              : '-') ?></dd>
+          <dt>Dial code</dt><dd><?= Format::e($country['calling'] ?: '-') ?></dd>
+          <dt>Internet domain</dt><dd><?= Format::e($country['tld'] ?: '-') ?></dd>
+          <dt>Time zones</dt><dd><?= count($country['timezones']) ?: '-' ?></dd>
           <dt>Coastline</dt><dd><?= $country['landlocked'] ? 'Landlocked' : 'Has a coast' ?></dd>
           <dt>Map centre</dt><dd><?= Format::e(Format::coords((float) $country['lat'], (float) $country['lon'])) ?></dd>
-          <dt>Demonym</dt><dd><?= Format::e($country['demonym'] ?: '—') ?></dd>
+          <dt>Demonym</dt><dd><?= Format::e($country['demonym'] ?: '-') ?></dd>
           <dt>UN region</dt><dd><?= Format::e($country['region'] !== $country['continent'] ? $country['region'] . ' · ' . $country['subregion'] : $country['subregion']) ?></dd>
-          <dt>Economy</dt><dd style="font-weight:500"><?= Format::e($country['economy'] ?: '—') ?></dd>
-          <dt>Income group</dt><dd style="font-weight:500"><?= Format::e($country['income'] ?: '—') ?></dd>
-          <dt>Total GDP</dt><dd><?= $country['gdp'] ? Format::money($country['gdp'] * 1_000_000) : '—' ?></dd>
+          <dt>Economy</dt><dd style="font-weight:500"><?= Format::e($country['economy'] ?: '-') ?></dd>
+          <dt>Income group</dt><dd style="font-weight:500"><?= Format::e($country['income'] ?: '-') ?></dd>
+          <dt>Total GDP</dt><dd><?= $country['gdp'] ? Format::money($country['gdp'] * 1_000_000) : '-' ?></dd>
           <dt>Sovereignty</dt><dd><?= $country['independent'] ? 'Independent' : 'Not independent' ?><?= $country['unMember'] ? ' · UN member' : ' · not a UN member' ?></dd>
           <dt>Borders</dt><dd><?= count($country['borders']) ?: 'None' ?></dd>
         </dl>

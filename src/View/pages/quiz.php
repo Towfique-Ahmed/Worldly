@@ -11,7 +11,7 @@ declare(strict_types=1);
       <span class="eyebrow">🎯 Eight questions · flags, capitals &amp; map</span>
       <h1 class="hero__title" style="font-size:clamp(1.8rem,4vw,2.6rem)">World Geography Quiz</h1>
       <p class="hero__lede" style="margin-inline:auto">
-        Test your geography in three modes — identify the flag, name the capital, or find the country on the map.
+        Test your geography in three modes - identify the flag, name the capital, or find the country on the map.
         Every answer reveals a real fact about the country.
       </p>
     </div>
@@ -56,7 +56,7 @@ declare(strict_types=1);
         <p>
           Each round draws eight countries at random from the <a href="/countries">242 in the atlas</a>, limited to
           United Nations member states with a population above 300,000 so the questions stay answerable. The three
-          wrong answers are picked from the same continent wherever possible — guessing Malaysia from a list
+          wrong answers are picked from the same continent wherever possible - guessing Malaysia from a list
           containing Norway and Chile would not teach you much.
         </p>
         <p>
@@ -66,7 +66,7 @@ declare(strict_types=1);
           the three once you get away from the familiar outlines.
         </p>
         <p>
-          Every answer, right or wrong, comes back with a real fact about that country — the same facts you will
+          Every answer, right or wrong, comes back with a real fact about that country - the same facts you will
           find on its <a href="/countries">country page</a>. Your streak counts consecutive correct answers, and
           your best score is remembered in this browser. Nothing is uploaded, and there is no account to make.
         </p>

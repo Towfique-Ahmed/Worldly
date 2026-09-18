@@ -23,7 +23,7 @@ $trips = array_slice($atlas->places(), 0, 3);
       <p class="hero__lede">
         Drag the map, spin the globe, chase the sunlight around it, and open any country for ten facts about it.
         Rivers, lakes, deserts and mountain ranges are all drawn from public-domain Natural Earth data at 1:50m and projected
-        server-side — no map tiles, no CDN, no JavaScript libraries.
+        server-side - no map tiles, no CDN, no JavaScript libraries.
       </p>
 
       <div class="searchbox" data-global-search style="margin-top:20px;max-width:460px">
@@ -113,7 +113,7 @@ $trips = array_slice($atlas->places(), 0, 3);
     <aside class="detail" data-detail aria-live="polite">
       <div class="empty-state">
         <span class="empty-state__icon">🌍</span>
-        <p><strong>Pick a country</strong><br>Click any landmass — or hit the dice — to pull up its profile.</p>
+        <p><strong>Pick a country</strong><br>Click any landmass - or hit the dice - to pull up its profile.</p>
       </div>
     </aside>
   </div>
@@ -182,7 +182,7 @@ $trips = array_slice($atlas->places(), 0, 3);
   <div class="section-head reveal">
     <div>
       <h2>What is inside this atlas</h2>
-      <p>Every dataset below is served from this site itself — no map tiles and no CDN.</p>
+      <p>Every dataset below is served from this site itself - no map tiles and no CDN.</p>
     </div>
   </div>
 

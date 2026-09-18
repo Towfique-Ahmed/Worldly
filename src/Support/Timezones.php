@@ -78,7 +78,7 @@ final class Timezones
 
     /**
      * IANA identifiers whose offset from UTC is exactly $seconds right now,
-     * with the abbreviation each currently uses — the "zones observing GMT"
+     * with the abbreviation each currently uses - the "zones observing GMT"
      * style reference table.
      *
      * @return list<array{zone: string, abbr: string}>

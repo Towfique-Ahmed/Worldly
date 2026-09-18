@@ -8,8 +8,8 @@ namespace Worldly\Support;
  * Absolute-URL helpers for canonical tags, Open Graph and the sitemap.
  *
  * Search engines need absolute URLs, but the app has no idea what domain it is
- * deployed on. The origin is read from WORLDLY_BASE_URL when set — do set it in
- * production, since it is the only reliable value behind a proxy — and inferred
+ * deployed on. The origin is read from WORLDLY_BASE_URL when set - do set it in
+ * production, since it is the only reliable value behind a proxy - and inferred
  * from the current request otherwise.
  */
 final class Site
@@ -60,7 +60,7 @@ final class Site
      * Google Analytics measurement ID, or null when analytics are switched off.
      *
      * Set WORLDLY_GA_ID to use a different property, or to an empty string to
-     * disable the tag entirely — useful for local development and for staging,
+     * disable the tag entirely - useful for local development and for staging,
      * where you rarely want traffic landing in the production property.
      */
     public static function analyticsId(): ?string

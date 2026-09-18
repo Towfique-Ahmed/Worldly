@@ -12,7 +12,7 @@ use Worldly\Support\Format;
     <div style="font-size:4.6rem;animation:bob 3.4s ease-in-out infinite">🧭</div>
     <h1 class="hero__title" style="font-size:clamp(1.8rem,4vw,2.6rem)">Off the edge of the map</h1>
     <p class="hero__lede" style="margin-inline:auto">
-      We could not find that <?= Format::e($what) ?>. It may have been renamed, or it may never have existed —
+      We could not find that <?= Format::e($what) ?>. It may have been renamed, or it may never have existed -
       cartography has form here.
     </p>
     <div class="hero__actions" style="justify-content:center">

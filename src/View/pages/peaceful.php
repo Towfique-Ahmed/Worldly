@@ -14,7 +14,7 @@ $conflicted = array_slice($countries, -3);
 <section class="wrap" data-filterable>
   <span class="eyebrow">🕊 <?= count($countries) ?> countries scored</span>
   <h1 class="hero__title" style="font-size:clamp(1.9rem,4.4vw,3rem)">Most Peaceful Countries in the World</h1>
-  <p class="hero__lede">Countries scored 0–100 on peacefulness — armed conflict, militarization and societal stability, in the spirit of the Global Peace Index. This is about war and conflict, not street crime: see <a href="/safest-countries" style="color:inherit;text-decoration:underline">the safest countries</a> for everyday safety instead. Sort, filter by continent, or search by name.</p>
+  <p class="hero__lede">Countries scored 0–100 on peacefulness - armed conflict, militarization and societal stability, in the spirit of the Global Peace Index. This is about war and conflict, not street crime: see <a href="/safest-countries" style="color:inherit;text-decoration:underline">the safest countries</a> for everyday safety instead. Sort, filter by continent, or search by name.</p>
 
   <div class="grid grid--2" style="margin:22px 0">
     <div class="card reveal">
@@ -59,6 +59,6 @@ $conflicted = array_slice($countries, -3);
   ]) ?>
 
   <p style="margin-top:14px;font-size:.82rem;color:var(--text-faint)">
-    Scores are a curated, indicative composite in the spirit of the Institute for Economics &amp; Peace's Global Peace Index — good for comparison, not a live feed or a citation-grade source.
+    Scores are a curated, indicative composite in the spirit of the Institute for Economics &amp; Peace's Global Peace Index - good for comparison, not a live feed or a citation-grade source.
   </p>
 </section>

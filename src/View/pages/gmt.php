@@ -95,7 +95,7 @@ $londonOnGmt = $londonAbbr === 'GMT';
         <?php foreach ($group as $country): ?>
           <tr>
             <th scope="row"><a href="/country/<?= Format::e($country['iso3']) ?>"><?= $country['flag'] ?> <?= Format::e($country['name']) ?></a></th>
-            <td><?= Format::e((string) ($country['capital'] ?? '—')) ?></td>
+            <td><?= Format::e((string) ($country['capital'] ?? '-')) ?></td>
             <td><?= Format::e($when) ?></td>
           </tr>
         <?php endforeach; ?>

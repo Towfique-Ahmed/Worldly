@@ -24,7 +24,7 @@ $snowline = $baseline - (4200 / $maxElevation) * 250;
   <span class="eyebrow">🏔 <?= count($mountains) ?> peaks · all 14 eight-thousanders · Seven Summits</span>
   <h1 class="hero__title" style="font-size:clamp(1.9rem,4.4vw,3rem)">Highest Mountains in the World</h1>
   <p class="hero__lede">
-    The highest ground on the planet, drawn to scale. All 14 eight-thousanders and the Seven Summits — elevation,
+    The highest ground on the planet, drawn to scale. All 14 eight-thousanders and the Seven Summits - elevation,
     prominence, mountain range and first ascent for every peak. Hover any triangle for its name, click to fly the
     map there.
   </p>
@@ -64,7 +64,7 @@ $snowline = $baseline - (4200 / $maxElevation) * 250;
       ?>
         <g class="peak-bar" data-fly-to data-lon="<?= $peak['lon'] ?>" data-lat="<?= $peak['lat'] ?>" data-zoom="6"
            style="animation:land-in .7s var(--ease) both;animation-delay:<?= $index * 45 ?>ms">
-          <title><?= Format::e($peak['name']) ?> — <?= Format::number($peak['elevation']) ?> m</title>
+          <title><?= Format::e($peak['name']) ?> - <?= Format::number($peak['elevation']) ?> m</title>
           <path d="M<?= round($cx - $half, 1) ?> <?= $baseline ?> L<?= round($cx, 1) ?> <?= round($apexY, 1) ?> L<?= round($cx + $half, 1) ?> <?= $baseline ?> Z"
                 fill="url(#rockGrad)" stroke="rgba(180,225,255,.5)" stroke-width="0.6"/>
           <path d="M<?= round($cx - $capHalf, 1) ?> <?= round($apexY + $capHeight, 1) ?> L<?= round($cx, 1) ?> <?= round($apexY, 1) ?> L<?= round($cx + $capHalf, 1) ?> <?= round($apexY + $capHeight, 1) ?> Z"

@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Worldly — front controller.
+ * Worldly - front controller.
  *
  * Serve with:  php -S localhost:8000 -t public public/index.php
  */
@@ -176,7 +176,7 @@ $router->get('/peaceful-countries', static function () use ($atlas, $view): stri
         'nav' => 'peaceful',
         ...Seo::page('peaceful'),
         'breadcrumbs' => [['name' => 'Most peaceful countries', 'path' => '/peaceful-countries']],
-        'jsonLd' => [StructuredData::collection('Most peaceful countries', 'Countries ranked by peacefulness — conflict, militarization and stability.', '/peaceful-countries', count($countries))],
+        'jsonLd' => [StructuredData::collection('Most peaceful countries', 'Countries ranked by peacefulness - conflict, militarization and stability.', '/peaceful-countries', count($countries))],
         'countries' => $countries,
         'continents' => $atlas->continents(),
     ]);
@@ -228,7 +228,7 @@ $router->get('/quiz', static fn (): string => $view->render('quiz', [
         ['question' => 'How does the world geography quiz work?', 'answer' => 'Each round draws eight countries at random from the 242 in the atlas, limited to UN member states with a population above 300,000. Wrong answers are picked from the same continent so the questions stay meaningful.'],
         ['question' => 'What quiz modes are available?', 'answer' => 'There are three modes: Guess the flag (identify a country from its national flag), Guess the capital (name the country given its capital city), and Find it on the map (click the highlighted country on a world map).'],
         ['question' => 'Are scores saved between sessions?', 'answer' => 'Your best score and streak are stored in your browser\'s local storage. Nothing is uploaded and no account is required.'],
-        ['question' => 'Do I learn anything from playing?', 'answer' => 'Every answer, right or wrong, shows a real fact about that country — the same facts found on its country profile page.'],
+        ['question' => 'Do I learn anything from playing?', 'answer' => 'Every answer, right or wrong, shows a real fact about that country - the same facts found on its country profile page.'],
     ])],
     'mapPayload' => $atlas->mapPayload(),
 ]));

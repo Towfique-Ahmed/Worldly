@@ -93,7 +93,7 @@ return array (
     'countries' => array (
       0 => 'China',
     ),
-    'note' => 'The Huang He — cradle of Chinese civilisation, and so laden with loess silt that its bed rises above the surrounding plain.',
+    'note' => 'The Huang He - cradle of Chinese civilisation, and so laden with loess silt that its bed rises above the surrounding plain.',
   ),
   5 => array (
     'name' => 'Paraná',
@@ -182,7 +182,7 @@ return array (
       1 => 'Kazakhstan',
       2 => 'China',
     ),
-    'note' => 'The longest tributary river in the world — longer than the Ob it flows into.',
+    'note' => 'The longest tributary river in the world - longer than the Ob it flows into.',
   ),
   10 => array (
     'name' => 'Mackenzie',
@@ -217,7 +217,7 @@ return array (
       2 => 'Niger',
       3 => 'Nigeria',
     ),
-    'note' => 'Takes a strange boomerang route away from the sea into the Sahara before turning back — a puzzle that confounded European geographers for centuries.',
+    'note' => 'Takes a strange boomerang route away from the sea into the Sahara before turning back - a puzzle that confounded European geographers for centuries.',
   ),
   12 => array (
     'name' => 'Missouri',
@@ -438,7 +438,7 @@ return array (
       3 => 'Serbia',
       4 => 'Romania',
     ),
-    'note' => 'Passes through ten countries and four capital cities — more of each than any other river on Earth.',
+    'note' => 'Passes through ten countries and four capital cities - more of each than any other river on Earth.',
   ),
   25 => array (
     'name' => 'Amur',
@@ -696,7 +696,7 @@ return array (
     'countries' => array (
       0 => 'Myanmar',
     ),
-    'note' => 'The Irrawaddy — Myanmar\'s central artery, home to a rare freshwater dolphin that fishes cooperatively with people.',
+    'note' => 'The Irrawaddy - Myanmar\'s central artery, home to a rare freshwater dolphin that fishes cooperatively with people.',
   ),
   40 => array (
     'name' => 'Kasai',
@@ -730,7 +730,7 @@ return array (
       0 => 'Venezuela',
       1 => 'Colombia',
     ),
-    'note' => 'Connects to the Amazon through the Casiquiare canal — the only natural link between two major river systems on Earth.',
+    'note' => 'Connects to the Amazon through the Casiquiare canal - the only natural link between two major river systems on Earth.',
   ),
   42 => array (
     'name' => 'Columbia',

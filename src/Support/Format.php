@@ -54,7 +54,7 @@ final class Format
         try {
             $zone = new \DateTimeZone($timezone);
         } catch (\Exception) {
-            return '—';
+            return '-';
         }
 
         $moment = ($at ?? new \DateTimeImmutable('now'))->setTimezone($zone);

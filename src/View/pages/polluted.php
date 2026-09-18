@@ -14,7 +14,7 @@ $cleanest = array_slice($countries, -3);
 <section class="wrap" data-filterable>
   <span class="eyebrow">🏭 <?= count($countries) ?> countries with air-quality data</span>
   <h1 class="hero__title" style="font-size:clamp(1.9rem,4.4vw,3rem)">Most Polluted Countries in the World</h1>
-  <p class="hero__lede">Countries ranked by average PM2.5 — fine particulate matter, the pollutant most tied to respiratory and heart disease — measured in micrograms per cubic metre of air. The World Health Organization's guideline is 5 µg/m³ or below. Sort, filter by continent, or search by name.</p>
+  <p class="hero__lede">Countries ranked by average PM2.5 - fine particulate matter, the pollutant most tied to respiratory and heart disease - measured in micrograms per cubic metre of air. The World Health Organization's guideline is 5 µg/m³ or below. Sort, filter by continent, or search by name.</p>
 
   <div class="grid grid--2" style="margin:22px 0">
     <div class="card reveal">
@@ -59,6 +59,6 @@ $cleanest = array_slice($countries, -3);
   ]) ?>
 
   <p style="margin-top:14px;font-size:.82rem;color:var(--text-faint)">
-    Figures are indicative multi-year averages compiled from public air-quality reporting (IQAir and WHO ambient air quality summaries) for countries with reasonably reported monitoring — good for comparison, not a live feed or a citation-grade source.
+    Figures are indicative multi-year averages compiled from public air-quality reporting (IQAir and WHO ambient air quality summaries) for countries with reasonably reported monitoring - good for comparison, not a live feed or a citation-grade source.
   </p>
 </section>

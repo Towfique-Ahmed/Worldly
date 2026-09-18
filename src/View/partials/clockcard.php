@@ -13,8 +13,8 @@ $extras ??= false;
   <p class="timehero__local">Your local time: <span data-hero-local>--:--:--</span> <span data-hero-zone></span></p>
   <?php if ($extras): ?>
     <dl class="timehero__meta">
-      <div><dt>Unix time</dt><dd data-hero-unix>—</dd></div>
-      <div><dt>ISO 8601</dt><dd data-hero-iso>—</dd></div>
+      <div><dt>Unix time</dt><dd data-hero-unix>-</dd></div>
+      <div><dt>ISO 8601</dt><dd data-hero-iso>-</dd></div>
     </dl>
   <?php endif; ?>
   <div class="timehero__tools">

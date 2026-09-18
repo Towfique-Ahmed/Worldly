@@ -10,7 +10,7 @@ namespace Worldly\Support;
  * Search engines use these to understand what a page is about beyond its prose,
  * and they are what drive breadcrumb trails and sitelinks search boxes in the
  * results. Everything emitted here describes content that is genuinely on the
- * page — marking up anything else is a manual-action risk, not a shortcut.
+ * page - marking up anything else is a manual-action risk, not a shortcut.
  */
 final class StructuredData
 {
@@ -149,7 +149,7 @@ final class StructuredData
     }
 
     /**
-     * Site-level organization block — pairs with the WebSite block on the home page.
+     * Site-level organization block - pairs with the WebSite block on the home page.
      */
     public static function organization(): array
     {
