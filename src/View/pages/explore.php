@@ -27,7 +27,7 @@ $trips = array_slice($atlas->places(), 0, 3);
       </p>
 
       <div class="searchbox" data-global-search style="margin-top:20px;max-width:460px">
-        <input type="search" placeholder="Search countries, cities, peaks, rivers, lakes, places…  (press /)" aria-label="Search the atlas" autocomplete="off">
+        <input type="search" placeholder="Search countries, cities, peaks, rivers, lakes…" aria-label="Search the atlas" autocomplete="off">
         <div class="suggest" data-suggest hidden></div>
       </div>
     </div>
@@ -59,8 +59,10 @@ $trips = array_slice($atlas->places(), 0, 3);
       </div>
     </div>
   </div>
+</section>
 
-  <div class="maptools" style="margin-top:28px">
+<section class="wrap map-section">
+  <div class="maptools">
     <div class="chipset" role="group" aria-label="Map style">
       <button class="chip is-on" type="button" data-map-style="physical">🏔 Physical</button>
       <button class="chip" type="button" data-map-style="political">🎨 Political</button>

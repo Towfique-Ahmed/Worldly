@@ -18,72 +18,13 @@
     return String(Math.round(n));
   }
 
-  /* -------------------------------------------------------------- starfield */
-
-  function starfield() {
-    var canvas = document.getElementById('starfield');
-    if (!canvas) { return; }
-
-    var ctx = canvas.getContext('2d');
-    var stars = [];
-    var width = 0;
-    var height = 0;
-
-    function resize() {
-      var dpr = Math.min(window.devicePixelRatio || 1, 2);
-      width = canvas.clientWidth;
-      height = canvas.clientHeight;
-      canvas.width = width * dpr;
-      canvas.height = height * dpr;
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-
-      var count = Math.round((width * height) / 9000);
-      stars = [];
-      for (var i = 0; i < count; i++) {
-        stars.push({
-          x: Math.random() * width,
-          y: Math.random() * height,
-          r: Math.random() * 1.25 + 0.25,
-          a: Math.random() * 0.6 + 0.2,
-          speed: Math.random() * 0.014 + 0.004,
-          phase: Math.random() * Math.PI * 2,
-          drift: (Math.random() - 0.5) * 0.05
-        });
-      }
-    }
-
-    function frame(time) {
-      ctx.clearRect(0, 0, width, height);
-      for (var i = 0; i < stars.length; i++) {
-        var star = stars[i];
-        var twinkle = star.a + Math.sin(time * star.speed + star.phase) * 0.28;
-
-        star.x += star.drift;
-        if (star.x > width + 2) { star.x = -2; }
-        if (star.x < -2) { star.x = width + 2; }
-
-        ctx.globalAlpha = Math.max(0.05, Math.min(1, twinkle));
-        ctx.fillStyle = i % 11 === 0 ? '#9fd8ff' : '#ffffff';
-        ctx.beginPath();
-        ctx.arc(star.x, star.y, star.r, 0, Math.PI * 2);
-        ctx.fill();
-      }
-      ctx.globalAlpha = 1;
-      requestAnimationFrame(frame);
-    }
-
-    resize();
-    window.addEventListener('resize', resize);
-    if (!reduceMotion) { requestAnimationFrame(frame); }
-  }
-
   /* ------------------------------------------------------------------ theme */
 
   function theme() {
     var stored = null;
     try { stored = localStorage.getItem('worldly:theme'); } catch (e) { /* private mode */ }
 
-    var current = stored || 'night';
+    var current = stored === 'night' ? 'night' : 'day';
     document.documentElement.dataset.theme = current;
 
     var icon = $('[data-theme-icon]');
@@ -100,6 +41,37 @@
       document.documentElement.dataset.theme = next;
       paint();
       try { localStorage.setItem('worldly:theme', next); } catch (e) { /* ignore */ }
+    });
+  }
+
+  /* ------------------------------------------------------------ main menu */
+
+  function menus() {
+    var groups = $$('[data-menu]');
+    if (!groups.length) { return; }
+
+    function closeAll(except) {
+      groups.forEach(function (group) {
+        if (group === except) { return; }
+        group.classList.remove('is-open');
+        $('.menu__trigger', group).setAttribute('aria-expanded', 'false');
+      });
+    }
+
+    groups.forEach(function (group) {
+      var trigger = $('.menu__trigger', group);
+      trigger.addEventListener('click', function (event) {
+        event.stopPropagation();
+        var open = !group.classList.contains('is-open');
+        closeAll(group);
+        group.classList.toggle('is-open', open);
+        trigger.setAttribute('aria-expanded', open ? 'true' : 'false');
+      });
+    });
+
+    document.addEventListener('click', function () { closeAll(null); });
+    document.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape') { closeAll(null); }
     });
   }
 
@@ -475,8 +447,8 @@
   /* --------------------------------------------------------------- bootstrap */
 
   document.addEventListener('DOMContentLoaded', function () {
-    starfield();
     theme();
+    menus();
     utcClock();
     reveals();
     counters();

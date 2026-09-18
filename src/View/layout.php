@@ -27,29 +27,42 @@ if ($breadcrumbs !== []) {
     $jsonLd[] = StructuredData::breadcrumbs(array_merge([['name' => 'Home', 'path' => '/']], $breadcrumbs));
 }
 
-$links = [
-    ['href' => '/', 'key' => 'explore', 'label' => 'Explore', 'icon' => '🌍'],
-    ['href' => '/continents', 'key' => 'continents', 'label' => 'Continents', 'icon' => '🗺'],
-    ['href' => '/countries', 'key' => 'countries', 'label' => 'Countries', 'icon' => '🏳'],
-    ['href' => '/mountains', 'key' => 'mountains', 'label' => 'Mountains', 'icon' => '🏔'],
-    ['href' => '/waters', 'key' => 'waters', 'label' => 'Waters', 'icon' => '🌊'],
-    ['href' => '/travel', 'key' => 'travel', 'label' => 'Travel', 'icon' => '🧭'],
-    ['href' => '/clocks', 'key' => 'clocks', 'label' => 'Clocks', 'icon' => '⏱'],
+/** Main menu: single links, or groups that open a dropdown. */
+$menu = [
+    ['label' => 'Explore', 'href' => '/', 'key' => 'explore'],
+    ['label' => 'Countries', 'items' => [
+        ['href' => '/countries', 'key' => 'countries', 'label' => 'All countries', 'hint' => 'Browse, sort and filter every country'],
+        ['href' => '/continents', 'key' => 'continents', 'label' => 'Continents', 'hint' => 'The seven landmasses compared'],
+        ['href' => '/compare', 'key' => 'compare', 'label' => 'Compare countries', 'hint' => 'Any two countries side by side'],
+    ]],
+    ['label' => 'Nature', 'items' => [
+        ['href' => '/mountains', 'key' => 'mountains', 'label' => 'Mountains', 'hint' => 'Highest peaks, drawn to scale'],
+        ['href' => '/waters', 'key' => 'waters', 'label' => 'Waters', 'hint' => 'Rivers, lakes and oceans'],
+    ]],
+    ['label' => 'Travel', 'href' => '/travel', 'key' => 'travel'],
+    ['label' => 'World time', 'items' => [
+        ['href' => '/clocks', 'key' => 'clocks', 'label' => 'World clock', 'hint' => 'Live clocks, timer and stopwatch'],
+        ['href' => '/converter', 'key' => 'converter', 'label' => 'Time converter', 'hint' => 'Convert between any two zones'],
+    ]],
+    ['label' => 'Rankings', 'items' => [
+        ['href' => '/richest-countries', 'key' => 'richest', 'label' => 'Richest countries', 'hint' => 'By GDP per person'],
+        ['href' => '/polluted-countries', 'key' => 'polluted', 'label' => 'Most polluted countries', 'hint' => 'By average PM2.5'],
+        ['href' => '/safest-countries', 'key' => 'safest', 'label' => 'Safest countries', 'hint' => 'Everyday safety from crime'],
+        ['href' => '/peaceful-countries', 'key' => 'peaceful', 'label' => 'Most peaceful countries', 'hint' => 'Conflict and stability'],
+    ]],
+    ['label' => 'Quiz', 'href' => '/quiz', 'key' => 'quiz'],
 ];
 
-$moreLinks = [
-    ['href' => '/compare', 'key' => 'compare', 'label' => 'Compare countries', 'icon' => '⚖️'],
-    ['href' => '/quiz', 'key' => 'quiz', 'label' => 'Atlas quiz', 'icon' => '🎯'],
-    ['href' => '/converter', 'key' => 'converter', 'label' => 'Time converter', 'icon' => '🔁'],
-    ['href' => '/bookmarks', 'key' => 'bookmarks', 'label' => 'Bookmarks', 'icon' => '★'],
-    ['href' => '/richest-countries', 'key' => 'richest', 'label' => 'Richest countries', 'icon' => '💰'],
-    ['href' => '/polluted-countries', 'key' => 'polluted', 'label' => 'Most polluted countries', 'icon' => '🏭'],
-    ['href' => '/safest-countries', 'key' => 'safest', 'label' => 'Safest countries', 'icon' => '🛡'],
-    ['href' => '/peaceful-countries', 'key' => 'peaceful', 'label' => 'Most peaceful countries', 'icon' => '🕊'],
+/** Footer columns, one per menu theme. Every href already exists as a route. */
+$footerColumns = [
+    'Atlas' => [['/', 'Explore the map'], ['/countries', 'Countries'], ['/continents', 'Continents'], ['/compare', 'Compare countries']],
+    'Nature & travel' => [['/mountains', 'Mountains'], ['/waters', 'Rivers, lakes & oceans'], ['/travel', 'Travel places'], ['/quiz', 'Atlas quiz']],
+    'World time' => [['/clocks', 'World clock'], ['/converter', 'Time converter'], ['/bookmarks', 'Bookmarks']],
+    'Rankings' => [['/richest-countries', 'Richest countries'], ['/polluted-countries', 'Most polluted countries'], ['/safest-countries', 'Safest countries'], ['/peaceful-countries', 'Most peaceful countries']],
 ];
 ?>
 <!doctype html>
-<html lang="en" data-theme="night">
+<html lang="en" data-theme="day">
 <head>
 <?php $analyticsId = Site::analyticsId(); ?>
 <?php if ($analyticsId !== null): ?>
@@ -84,7 +97,7 @@ $moreLinks = [
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Worldly — an interactive world map and atlas">
 <meta property="og:locale" content="en">
-<meta name="theme-color" content="#0d1117">
+<meta name="theme-color" content="#ffffff">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="<?= Format::e(Site::url('/assets/og-cover.png')) ?>">
 <meta name="twitter:title" content="<?= Format::e($title) ?>">
@@ -96,28 +109,16 @@ $moreLinks = [
 </head>
 <body>
 
-<div class="sky" aria-hidden="true">
-  <div class="sky__aurora sky__aurora--a"></div>
-  <div class="sky__aurora sky__aurora--b"></div>
-  <div class="sky__aurora sky__aurora--c"></div>
-  <canvas class="sky__stars" id="starfield"></canvas>
-  <div class="sky__grain"></div>
-</div>
-
 <a class="skip" href="#main">Skip to content</a>
 
 <header class="topbar">
   <a class="brand" href="/">
     <span class="brand__globe" aria-hidden="true">
       <svg viewBox="0 0 48 48" width="34" height="34">
-        <defs>
-          <linearGradient id="brandGrad" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stop-color="#7ef0d0"/><stop offset="55%" stop-color="#5aa9ff"/><stop offset="100%" stop-color="#b47cff"/>
-          </linearGradient>
-        </defs>
-        <circle cx="24" cy="24" r="21" fill="none" stroke="url(#brandGrad)" stroke-width="2.5"/>
-        <ellipse cx="24" cy="24" rx="9" ry="21" fill="none" stroke="url(#brandGrad)" stroke-width="1.6" opacity=".8"/>
-        <path d="M3.6 17.5h40.8M3.6 30.5h40.8" stroke="url(#brandGrad)" stroke-width="1.6" opacity=".8"/>
+        <circle cx="24" cy="24" r="21" fill="none" stroke="#006dca" stroke-width="3"/>
+        <ellipse cx="24" cy="24" rx="9" ry="21" fill="none" stroke="#006dca" stroke-width="2"/>
+        <path d="M3.6 17.5h40.8M3.6 30.5h40.8" stroke="#006dca" stroke-width="2"/>
+        <circle cx="38" cy="10" r="5" fill="#ff642d"/>
       </svg>
     </span>
     <span class="brand__text">
@@ -126,17 +127,13 @@ $moreLinks = [
     </span>
   </a>
 
-  <nav class="nav" aria-label="Primary">
-    <?php foreach ($links as $link): ?>
-      <a class="nav__link<?= $nav === $link['key'] ? ' is-active' : '' ?>" href="<?= Format::e($link['href']) ?>">
-        <span class="nav__icon" aria-hidden="true"><?= $link['icon'] ?></span><?= Format::e($link['label']) ?>
-      </a>
-    <?php endforeach; ?>
-  </nav>
+  <button class="topsearch" type="button" data-palette-open aria-label="Search the atlas">
+    <span aria-hidden="true">⌕</span>
+    <span>Search countries, cities, peaks, rivers…</span>
+    <span class="topsearch__hint" aria-hidden="true">Ctrl K</span>
+  </button>
 
   <div class="topbar__right">
-    <button class="ghost-btn" type="button" data-palette-open title="Search everything (Ctrl/⌘ + K)" aria-label="Open the command palette">⌕</button>
-
     <a class="ghost-btn" href="/bookmarks" title="Your bookmarks" aria-label="Your bookmarks" style="position:relative;text-decoration:none">
       ★<span class="bookmark-count" data-bookmark-count style="position:absolute;top:-6px;right:-6px" hidden>0</span>
     </a>
@@ -148,10 +145,38 @@ $moreLinks = [
     </div>
 
     <button class="ghost-btn" type="button" data-theme-toggle aria-label="Switch colour theme">
-      <span data-theme-icon>◐</span>
+      <span data-theme-icon>☀</span>
     </button>
   </div>
 </header>
+
+<nav class="mainnav" aria-label="Primary">
+  <div class="mainnav__inner">
+    <?php foreach ($menu as $entry): ?>
+      <?php if (isset($entry['items'])): ?>
+        <?php $groupActive = in_array($nav, array_column($entry['items'], 'key'), true); ?>
+        <div class="menu<?= $groupActive ? ' is-active' : '' ?>" data-menu>
+          <button class="menu__trigger" type="button" aria-expanded="false" aria-haspopup="true">
+            <?= Format::e($entry['label']) ?>
+            <svg class="menu__caret" viewBox="0 0 10 10" aria-hidden="true"><path d="M1.5 3.5 5 7l3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="menu__panel">
+            <?php foreach ($entry['items'] as $item): ?>
+              <a class="menu__item<?= $nav === $item['key'] ? ' is-active' : '' ?>" href="<?= Format::e($item['href']) ?>">
+                <strong><?= Format::e($item['label']) ?></strong>
+                <span><?= Format::e($item['hint']) ?></span>
+              </a>
+            <?php endforeach; ?>
+          </div>
+        </div>
+      <?php else: ?>
+        <div class="menu<?= $nav === $entry['key'] ? ' is-active' : '' ?>">
+          <a class="menu__trigger" href="<?= Format::e($entry['href']) ?>"><?= Format::e($entry['label']) ?></a>
+        </div>
+      <?php endif; ?>
+    <?php endforeach; ?>
+  </div>
+</nav>
 
 <?php if ($breadcrumbs !== []): ?>
 <nav class="crumbs wrap" aria-label="Breadcrumb">
@@ -174,22 +199,29 @@ $moreLinks = [
 
 <footer class="footer">
   <div class="footer__inner">
-    <p class="footer__brand">🌍 <strong>Worldly</strong></p>
+    <div class="footer__cols">
+      <div>
+        <p class="footer__brand"><strong>Worldly</strong></p>
+        <p class="footer__about">An interactive world atlas: a live map and 3D globe, country facts, mountains, rivers, travel places, world clocks and a time converter.</p>
+      </div>
+      <?php foreach ($footerColumns as $heading => $items): ?>
+        <div class="footer__col">
+          <h3><?= Format::e($heading) ?></h3>
+          <ul>
+            <?php foreach ($items as [$href, $label]): ?>
+              <li><a href="<?= Format::e($href) ?>"><?= Format::e($label) ?></a></li>
+            <?php endforeach; ?>
+          </ul>
+        </div>
+      <?php endforeach; ?>
+    </div>
+
     <p class="footer__meta">
       Coastlines, rivers, lakes and terrain come from <a href="https://www.naturalearthdata.com/" rel="noopener">Natural Earth</a> (public domain) at 1:50m,
       simplified and projected into a Robinson projection server-side. Country attributes come from
       <a href="https://github.com/mledoze/countries" rel="noopener">mledoze/countries</a>, and time zone data from PHP's bundled IANA database.
       Population and GDP figures are estimates a few years old — good for comparison, not for citation.
-    </p>
-    <nav class="footer__links" aria-label="Footer">
-      <?php foreach (array_merge($links, $moreLinks) as $link): ?>
-        <a href="<?= Format::e($link['href']) ?>"><?= Format::e($link['label']) ?></a>
-      <?php endforeach; ?>
-    </nav>
-
-    <p class="footer__rights">
-      &copy; <?= date('Y') ?> All rights reserved by
-      <a href="https://towfique.com" rel="noopener">towfique.com</a>
+      &copy; <?= date('Y') ?> All rights reserved by <a href="https://towfique.com" rel="noopener">towfique.com</a>
     </p>
   </div>
 </footer>

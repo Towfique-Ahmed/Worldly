@@ -6,16 +6,75 @@ use Worldly\Support\Format;
 
 /** @var array $zones */
 /** @var array $wall */
+/** @var list<array{zone: string, abbr: string}> $utcZones */
 ?>
 
+<section class="hero wrap">
+  <div class="timehero">
+    <div>
+      <span class="eyebrow">⏱ Live · <?= count(DateTimeZone::listIdentifiers()) ?> IANA time zones</span>
+      <h1 class="hero__title">World Clock, Countdown Timer &amp; Stopwatch</h1>
+      <p class="hero__lede">
+        Live analog clocks for any city worldwide, each tinting with the local hour so you can see at a glance
+        who is awake. Add cities to build your own clock wall, set a countdown timer that rings when it hits zero,
+        or use the stopwatch with lap tracking. Your wall is saved in this browser.
+      </p>
+    </div>
+
+    <div class="card" aria-live="off">
+      <p class="timehero__label">Current UTC time</p>
+      <div class="timehero__clock" data-hero-clock>--:--:--</div>
+      <p class="timehero__date" data-hero-date>&nbsp;</p>
+      <p class="timehero__local">Your local time: <span data-hero-local>--:--:--</span> <span data-hero-zone></span></p>
+      <div class="timehero__tools">
+        <div class="segmented" role="group" aria-label="Time format">
+          <button type="button" data-hour-format="24" aria-pressed="true">24-hour</button>
+          <button type="button" data-hour-format="12" aria-pressed="false">AM / PM</button>
+        </div>
+        <span>Applies to every clock below</span>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section class="wrap">
-  <span class="eyebrow">⏱ Live · <?= count(DateTimeZone::listIdentifiers()) ?> IANA time zones</span>
-  <h1 class="hero__title" style="font-size:clamp(1.9rem,4.4vw,3rem)">World Clock, Countdown Timer &amp; Stopwatch</h1>
-  <p class="hero__lede">
-    Live analog clocks for any city worldwide, each tinting with the local hour so you can see at a glance
-    who is awake. Add cities to build your own clock wall, set a countdown timer that rings when it hits zero,
-    or use the stopwatch with lap tracking. Your wall is saved in this browser.
-  </p>
+  <div class="article">
+    <div class="article__main">
+      <h2>What is UTC?</h2>
+      <p>
+        UTC — Coordinated Universal Time — is the reference every other time zone is measured against. It is the
+        same everywhere on Earth and never changes for daylight saving. GMT, Greenwich Mean Time, runs at the same
+        offset (UTC+00:00) and is the name used in the United Kingdom and much of West Africa in winter.
+      </p>
+      <h2>How to read a time zone</h2>
+      <p>
+        Every zone is written as an offset from UTC. Tokyo at UTC+09:00 is nine hours ahead, New York at UTC−05:00
+        is five hours behind, and a few places — India, Nepal, parts of Australia — sit on half-hour or 45-minute
+        offsets. The tables below show each zone's offset and abbreviation as of right now, with daylight saving
+        already applied.
+      </p>
+    </div>
+
+    <aside class="article__side">
+      <div class="card">
+        <span class="eyebrow">More time tools</span>
+        <ul class="sidelinks">
+          <li><a href="/converter">Time converter <small>→</small></a></li>
+          <li><a href="/countries">Countries <small>→</small></a></li>
+          <li><a href="/">World map &amp; day/night line <small>→</small></a></li>
+        </ul>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<section class="wrap">
+  <div class="section-head">
+    <div>
+      <h2>Your world clock wall</h2>
+      <p>Add any city; each clock face tints with the local hour. Saved in this browser.</p>
+    </div>
+  </div>
 
   <script type="application/json" data-zone-catalogue><?= json_encode(array_map(
       static fn (array $z): array => ['zone' => $z['zone'], 'city' => $z['city'], 'country' => $z['country'], 'flag' => $z['flag']],
@@ -48,7 +107,7 @@ use Worldly\Support\Format;
           <svg viewBox="0 0 200 200" width="176" height="176" class="timer-ring">
             <defs>
               <linearGradient id="timerGrad" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0%" stop-color="#4fe3c1"/><stop offset="50%" stop-color="#5aa9ff"/><stop offset="100%" stop-color="#b47cff"/>
+                <stop offset="0%" stop-color="#006dca"/><stop offset="100%" stop-color="#2b94e1"/>
               </linearGradient>
             </defs>
             <circle class="timer-ring__track" cx="100" cy="100" r="86"/>
@@ -107,34 +166,95 @@ use Worldly\Support\Format;
     <a class="btn btn--sm" href="/converter">Convert a specific time →</a>
   </div>
 
-  <div class="card table-card reveal">
-    <div class="rowlist">
+  <table class="ref-table reveal">
+    <thead>
+      <tr><th>City</th><th>IANA time zone</th><th>Abbr.</th><th class="num">UTC offset</th><th class="num">Time now</th></tr>
+    </thead>
+    <tbody>
       <?php foreach ($zones as $zone): ?>
-        <div class="row" style="grid-template-columns:34px minmax(0,1.4fr) minmax(0,1fr) auto auto">
-          <span class="row__rank" style="font-size:1.2rem"><?= $zone['flag'] ?></span>
-          <span class="row__title"><span><?= Format::e($zone['city']) ?></span></span>
-          <span class="row__sub"><?= Format::e($zone['zone']) ?></span>
-          <span class="row__sub">UTC<?= Format::e($zone['offset']) ?></span>
-          <span class="row__num" data-live-clock="<?= Format::e($zone['zone']) ?>">--:--:--</span>
-        </div>
+        <tr>
+          <th scope="row"><?= $zone['flag'] ?> <?= Format::e($zone['city']) ?></th>
+          <td><?= Format::e($zone['zone']) ?></td>
+          <td><?= Format::e($zone['abbr']) ?></td>
+          <td class="num">UTC<?= Format::e($zone['offset']) ?></td>
+          <td class="num live" data-live-clock="<?= Format::e($zone['zone']) ?>">--:--:--</td>
+        </tr>
       <?php endforeach; ?>
+    </tbody>
+  </table>
+</section>
+
+<section class="wrap">
+  <div class="section-head reveal">
+    <div>
+      <h2>Time zones at UTC+00:00 right now</h2>
+      <p>
+        <?= count($utcZones) ?> IANA zones share UTC's offset at this moment. Some — Iceland, Ghana, Senegal —
+        stay on it all year; others, like London and Lisbon, only do in winter.
+      </p>
     </div>
   </div>
+
+  <ul class="zone-list reveal">
+    <?php foreach ($utcZones as $entry): ?>
+      <li><?= Format::e(str_replace('_', ' ', $entry['zone'])) ?> <small>· <?= Format::e($entry['abbr']) ?></small></li>
+    <?php endforeach; ?>
+  </ul>
 </section>
 
 <script>
 (function () {
-  var nodes = Array.prototype.slice.call(document.querySelectorAll('[data-live-clock]'));
+  var hour12 = false;
+  try { hour12 = localStorage.getItem('worldly:hour12') === '1'; } catch (e) { /* private mode */ }
+
+  var liveNodes = Array.prototype.slice.call(document.querySelectorAll('[data-live-clock]'));
+  var heroClock = document.querySelector('[data-hero-clock]');
+  var heroDate = document.querySelector('[data-hero-date]');
+  var heroLocal = document.querySelector('[data-hero-local]');
+  var heroZone = document.querySelector('[data-hero-zone]');
+  var buttons = Array.prototype.slice.call(document.querySelectorAll('[data-hour-format]'));
+
+  function time(now, zone, seconds) {
+    var options = { hour: '2-digit', minute: '2-digit', hour12: hour12 };
+    if (seconds) { options.second = '2-digit'; }
+    if (zone) { options.timeZone = zone; }
+    return new Intl.DateTimeFormat('en-GB', options).format(now).toUpperCase();
+  }
+
   function tick() {
     var now = new Date();
-    nodes.forEach(function (node) {
-      try {
-        node.textContent = new Intl.DateTimeFormat('en-GB', {
-          timeZone: node.dataset.liveClock, hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false
-        }).format(now);
-      } catch (e) { node.textContent = '--:--:--'; }
+
+    liveNodes.forEach(function (node) {
+      try { node.textContent = time(now, node.dataset.liveClock, true); }
+      catch (e) { node.textContent = '--:--:--'; }
+    });
+
+    if (heroClock) {
+      heroClock.textContent = time(now, 'UTC', true);
+      heroDate.textContent = new Intl.DateTimeFormat('en-GB', {
+        timeZone: 'UTC', weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
+      }).format(now);
+      heroLocal.textContent = time(now, null, true);
+      heroZone.textContent = '(' + (Intl.DateTimeFormat().resolvedOptions().timeZone || 'local') + ')';
+    }
+  }
+
+  buttons.forEach(function (button) {
+    button.addEventListener('click', function () {
+      hour12 = button.dataset.hourFormat === '12';
+      try { localStorage.setItem('worldly:hour12', hour12 ? '1' : '0'); } catch (e) { /* ignore */ }
+      paint();
+      tick();
+    });
+  });
+
+  function paint() {
+    buttons.forEach(function (button) {
+      button.setAttribute('aria-pressed', String((button.dataset.hourFormat === '12') === hour12));
     });
   }
+
+  paint();
   tick();
   setInterval(tick, 1000);
 }());
