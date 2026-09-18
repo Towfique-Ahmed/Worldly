@@ -247,6 +247,61 @@ $router->get('/clocks', static fn (): string => $view->render('clocks', [
     'utcZones' => Timezones::atOffset(0),
 ]));
 
+$router->get('/time-zone/gmt', static function () use ($view, $atlas): string {
+    $pick = static function (array $codes) use ($atlas): array {
+        $rows = [];
+        foreach ($codes as $iso3) {
+            $country = $atlas->country($iso3);
+            if ($country !== null) {
+                $rows[] = $country + ['capital' => $atlas->capitalOf($iso3)['name'] ?? null];
+            }
+        }
+
+        return $rows;
+    };
+
+    $london = new DateTimeImmutable('now', new DateTimeZone('Europe/London'));
+
+    $data = [
+        'nav' => 'gmt',
+        ...Seo::page('gmt'),
+        'breadcrumbs' => [['name' => 'World clock', 'path' => '/clocks'], ['name' => 'GMT time', 'path' => '/time-zone/gmt']],
+        'utcZones' => Timezones::atOffset(0),
+        'yearRound' => $pick(['ISL', 'GHA', 'SEN', 'CIV', 'MLI', 'BFA', 'GIN', 'SLE', 'LBR', 'GMB', 'TGO', 'MRT']),
+        'winterOnly' => $pick(['GBR', 'IRL', 'PRT']),
+        'londonAbbr' => $london->format('T'),
+        'faq' => [
+            ['question' => 'What is GMT?', 'answer' => 'GMT, Greenwich Mean Time, is the mean solar time at the Royal Observatory in Greenwich, London. It is the time zone at UTC+00:00 and was the world\'s time reference before UTC replaced it for scientific use.'],
+            ['question' => 'What is the difference between GMT and UTC?', 'answer' => 'For everyday purposes there is none: both are at UTC+00:00. GMT is a time zone used by countries and observers, while UTC is the atomic-clock standard that all time zones are defined from.'],
+            ['question' => 'Is London on GMT all year?', 'answer' => 'No. London uses GMT in winter and British Summer Time (BST, UTC+01:00) from the last Sunday of March to the last Sunday of October.'],
+            ['question' => 'Which countries use GMT all year?', 'answer' => 'Iceland, Ghana, Senegal, Côte d\'Ivoire, Mali, Burkina Faso, Guinea, Sierra Leone, Liberia, The Gambia, Togo and Mauritania stay on GMT all year and do not change their clocks.'],
+            ['question' => 'Does GMT change for daylight saving?', 'answer' => 'No. GMT itself never changes. Countries that observe daylight saving, such as the United Kingdom, Ireland and Portugal, move to a different zone in summer and return to GMT in winter.'],
+        ],
+    ];
+    $data['jsonLd'] = [StructuredData::faq($data['faq'])];
+
+    return $view->render('gmt', $data);
+});
+
+$router->get('/time-zone/utc', static function () use ($view): string {
+    $data = [
+        'nav' => 'utc',
+        ...Seo::page('utc'),
+        'breadcrumbs' => [['name' => 'World clock', 'path' => '/clocks'], ['name' => 'UTC time', 'path' => '/time-zone/utc']],
+        'zones' => Timezones::featured(),
+        'faq' => [
+            ['question' => 'What is UTC?', 'answer' => 'UTC, Coordinated Universal Time, is the primary time standard the world regulates clocks by. It is kept by atomic clocks, does not change for daylight saving and is the same everywhere on Earth.'],
+            ['question' => 'Is UTC the same as GMT?', 'answer' => 'They show the same time, UTC+00:00. UTC is the precise atomic standard; GMT is a time zone based on the sun over Greenwich that countries such as the United Kingdom use in winter.'],
+            ['question' => 'What is Unix time?', 'answer' => 'Unix time is the number of seconds that have passed since 00:00:00 UTC on 1 January 1970, not counting leap seconds. It is the same number on every computer regardless of time zone.'],
+            ['question' => 'Why is UTC written with a Z?', 'answer' => 'In ISO 8601 timestamps such as 2026-09-18T15:44:20Z the letter Z stands for zero offset, also called Zulu time, and marks the time as UTC.'],
+            ['question' => 'How do I convert UTC to my local time?', 'answer' => 'Add your zone\'s offset to UTC: Tokyo is UTC+09:00, so 12:00 UTC is 21:00 there, and New York is UTC−05:00 (UTC−04:00 in summer), so 12:00 UTC is 07:00 there. The time converter does this for any zone.'],
+        ],
+    ];
+    $data['jsonLd'] = [StructuredData::faq($data['faq'])];
+
+    return $view->render('utc', $data);
+});
+
 $router->get('/converter', static fn (): string => $view->render('converter', [
     'nav' => 'converter',
     ...Seo::page('converter'),

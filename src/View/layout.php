@@ -42,6 +42,8 @@ $menu = [
     ['label' => 'Travel', 'href' => '/travel', 'key' => 'travel'],
     ['label' => 'World time', 'items' => [
         ['href' => '/clocks', 'key' => 'clocks', 'label' => 'World clock', 'hint' => 'Live clocks, timer and stopwatch'],
+        ['href' => '/time-zone/gmt', 'key' => 'gmt', 'label' => 'GMT time', 'hint' => 'Current Greenwich Mean Time'],
+        ['href' => '/time-zone/utc', 'key' => 'utc', 'label' => 'UTC time', 'hint' => 'Current Coordinated Universal Time'],
         ['href' => '/converter', 'key' => 'converter', 'label' => 'Time converter', 'hint' => 'Convert between any two zones'],
     ]],
     ['label' => 'Rankings', 'items' => [
@@ -57,7 +59,7 @@ $menu = [
 $footerColumns = [
     'Atlas' => [['/', 'Explore the map'], ['/countries', 'Countries'], ['/continents', 'Continents'], ['/compare', 'Compare countries']],
     'Nature & travel' => [['/mountains', 'Mountains'], ['/waters', 'Rivers, lakes & oceans'], ['/travel', 'Travel places'], ['/quiz', 'Atlas quiz']],
-    'World time' => [['/clocks', 'World clock'], ['/converter', 'Time converter'], ['/bookmarks', 'Bookmarks']],
+    'World time' => [['/clocks', 'World clock'], ['/time-zone/gmt', 'GMT time'], ['/time-zone/utc', 'UTC time'], ['/converter', 'Time converter'], ['/bookmarks', 'Bookmarks']],
     'Rankings' => [['/richest-countries', 'Richest countries'], ['/polluted-countries', 'Most polluted countries'], ['/safest-countries', 'Safest countries'], ['/peaceful-countries', 'Most peaceful countries']],
 ];
 ?>
@@ -246,6 +248,9 @@ $footerColumns = [
 <script src="/assets/js/atlas.js?v=<?= Format::e($assetVersion) ?>"></script>
 <?php if (in_array($nav, ['clocks', 'converter'], true)): ?>
 <script src="/assets/js/time.js?v=<?= Format::e($assetVersion) ?>"></script>
+<?php endif; ?>
+<?php if (in_array($nav, ['clocks', 'gmt', 'utc'], true)): ?>
+<script src="/assets/js/livetime.js?v=<?= Format::e($assetVersion) ?>"></script>
 <?php endif; ?>
 </body>
 </html>

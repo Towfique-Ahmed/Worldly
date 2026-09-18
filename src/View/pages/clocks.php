@@ -21,19 +21,7 @@ use Worldly\Support\Format;
       </p>
     </div>
 
-    <div class="card" aria-live="off">
-      <p class="timehero__label">Current UTC time</p>
-      <div class="timehero__clock" data-hero-clock>--:--:--</div>
-      <p class="timehero__date" data-hero-date>&nbsp;</p>
-      <p class="timehero__local">Your local time: <span data-hero-local>--:--:--</span> <span data-hero-zone></span></p>
-      <div class="timehero__tools">
-        <div class="segmented" role="group" aria-label="Time format">
-          <button type="button" data-hour-format="24" aria-pressed="true">24-hour</button>
-          <button type="button" data-hour-format="12" aria-pressed="false">AM / PM</button>
-        </div>
-        <span>Applies to every clock below</span>
-      </div>
-    </div>
+    <?= $this->partial('clockcard', ['label' => 'Current UTC time']) ?>
   </div>
 </section>
 
@@ -59,6 +47,8 @@ use Worldly\Support\Format;
       <div class="card">
         <span class="eyebrow">More time tools</span>
         <ul class="sidelinks">
+          <li><a href="/time-zone/gmt">GMT time <small>→</small></a></li>
+          <li><a href="/time-zone/utc">UTC time <small>→</small></a></li>
           <li><a href="/converter">Time converter <small>→</small></a></li>
           <li><a href="/countries">Countries <small>→</small></a></li>
           <li><a href="/">World map &amp; day/night line <small>→</small></a></li>
@@ -201,61 +191,3 @@ use Worldly\Support\Format;
     <?php endforeach; ?>
   </ul>
 </section>
-
-<script>
-(function () {
-  var hour12 = false;
-  try { hour12 = localStorage.getItem('worldly:hour12') === '1'; } catch (e) { /* private mode */ }
-
-  var liveNodes = Array.prototype.slice.call(document.querySelectorAll('[data-live-clock]'));
-  var heroClock = document.querySelector('[data-hero-clock]');
-  var heroDate = document.querySelector('[data-hero-date]');
-  var heroLocal = document.querySelector('[data-hero-local]');
-  var heroZone = document.querySelector('[data-hero-zone]');
-  var buttons = Array.prototype.slice.call(document.querySelectorAll('[data-hour-format]'));
-
-  function time(now, zone, seconds) {
-    var options = { hour: '2-digit', minute: '2-digit', hour12: hour12 };
-    if (seconds) { options.second = '2-digit'; }
-    if (zone) { options.timeZone = zone; }
-    return new Intl.DateTimeFormat('en-GB', options).format(now).toUpperCase();
-  }
-
-  function tick() {
-    var now = new Date();
-
-    liveNodes.forEach(function (node) {
-      try { node.textContent = time(now, node.dataset.liveClock, true); }
-      catch (e) { node.textContent = '--:--:--'; }
-    });
-
-    if (heroClock) {
-      heroClock.textContent = time(now, 'UTC', true);
-      heroDate.textContent = new Intl.DateTimeFormat('en-GB', {
-        timeZone: 'UTC', weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
-      }).format(now);
-      heroLocal.textContent = time(now, null, true);
-      heroZone.textContent = '(' + (Intl.DateTimeFormat().resolvedOptions().timeZone || 'local') + ')';
-    }
-  }
-
-  buttons.forEach(function (button) {
-    button.addEventListener('click', function () {
-      hour12 = button.dataset.hourFormat === '12';
-      try { localStorage.setItem('worldly:hour12', hour12 ? '1' : '0'); } catch (e) { /* ignore */ }
-      paint();
-      tick();
-    });
-  });
-
-  function paint() {
-    buttons.forEach(function (button) {
-      button.setAttribute('aria-pressed', String((button.dataset.hourFormat === '12') === hour12));
-    });
-  }
-
-  paint();
-  tick();
-  setInterval(tick, 1000);
-}());
-</script>

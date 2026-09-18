@@ -28,6 +28,8 @@ repository; the only third-party script is Google Analytics, which is
 | **Bookmarks** (`/bookmarks`) | Everything you have starred, kept in this browser |
 | **Clocks** (`/clocks`) | Analog clock wall that tints with the local hour, a countdown timer that rings, and a stopwatch with laps |
 | **Converter** (`/converter`) | Convert any moment between any two IANA zones, with a day/night bar and the same instant across twelve cities |
+| **GMT time** (`/time-zone/gmt`) | Live Greenwich Mean Time with a 12/24-hour toggle, London's current zone (GMT or BST), the countries that use GMT and every IANA zone at UTC+00:00 right now |
+| **UTC time** (`/time-zone/utc`) | Live UTC time with Unix timestamp and ISO 8601 string, UTC vs GMT, and a table of the UTC offsets in use around the world |
 
 Press <kbd>Ctrl</kbd>/<kbd>⌘</kbd> + <kbd>K</kbd> anywhere for the command
 palette, which searches countries, cities, peaks, rivers, lakes and destinations
