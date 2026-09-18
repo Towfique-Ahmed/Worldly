@@ -244,6 +244,7 @@ $router->get('/clocks', static fn (): string => $view->render('clocks', [
     'breadcrumbs' => [['name' => 'World clock', 'path' => '/clocks']],
     'zones' => Timezones::featured(),
     'wall' => Timezones::defaultWall(),
+    'utcZones' => Timezones::atOffset(0),
 ]));
 
 $router->get('/converter', static fn (): string => $view->render('converter', [

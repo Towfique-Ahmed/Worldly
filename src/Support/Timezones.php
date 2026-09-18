@@ -76,6 +76,30 @@ final class Timezones
         return $zones;
     }
 
+    /**
+     * IANA identifiers whose offset from UTC is exactly $seconds right now,
+     * with the abbreviation each currently uses — the "zones observing GMT"
+     * style reference table.
+     *
+     * @return list<array{zone: string, abbr: string}>
+     */
+    public static function atOffset(int $seconds = 0): array
+    {
+        $now = new \DateTimeImmutable('now');
+        $matches = [];
+
+        foreach (\DateTimeZone::listIdentifiers() as $identifier) {
+            $tz = new \DateTimeZone($identifier);
+            $moment = $now->setTimezone($tz);
+
+            if ($tz->getOffset($moment) === $seconds) {
+                $matches[] = ['zone' => $identifier, 'abbr' => $moment->format('T')];
+            }
+        }
+
+        return $matches;
+    }
+
     /** @return list<string> */
     public static function defaultWall(): array
     {
