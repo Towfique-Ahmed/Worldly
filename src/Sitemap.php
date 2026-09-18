@@ -9,7 +9,7 @@ use Worldly\Support\Site;
 /**
  * Builds the XML sitemap and robots.txt.
  *
- * Every page the app can render is listed, which is currently around 260 URLs —
+ * Every page the app can render is listed, which is currently around 260 URLs -
  * well inside the 50,000 URL / 50 MB limit for a single sitemap file, so no
  * sitemap index is needed. Pages that are personal to the visitor or that
  * generate fresh content on every load are deliberately left out.
@@ -60,7 +60,7 @@ final class Sitemap
             $add('/continent/' . Support\Format::slug((string) $name), 'monthly', '0.7');
         }
 
-        // One page per country — the bulk of the sitemap, and the pages that
+        // One page per country - the bulk of the sitemap, and the pages that
         // carry the ten facts.
         foreach ($this->atlas->countries() as $country) {
             $add('/country/' . $country['iso3'], 'monthly', '0.6');

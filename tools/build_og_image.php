@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Renders public/assets/og-cover.png — the 1200x630 card shown when a Worldly
+ * Renders public/assets/og-cover.png - the 1200x630 card shown when a Worldly
  * link is shared on social platforms or in chat.
  *
  * Usage: php tools/build_og_image.php
@@ -47,7 +47,7 @@ for ($y = 0; $y < H; $y++) {
 }
 
 // ---------------------------------------------------------------------------
-// The map — the whole world, uncropped, sitting below the wordmark
+// The map - the whole world, uncropped, sitting below the wordmark
 // ---------------------------------------------------------------------------
 
 $mapWidth = 830.0;

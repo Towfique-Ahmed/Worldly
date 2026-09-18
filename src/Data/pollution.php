@@ -6,7 +6,7 @@ declare(strict_types=1);
  * Average annual fine particulate matter (PM2.5) concentration, in µg/m³,
  * curated from public air-quality reporting (IQAir and WHO ambient air
  * quality summaries). Figures are indicative multi-year averages for
- * comparison across countries, not a live feed — treat them the same way
+ * comparison across countries, not a live feed - treat them the same way
  * as this app's other curated figures: good for ranking, not for citation.
  *
  * Only countries with reasonably reported monitoring data are included.

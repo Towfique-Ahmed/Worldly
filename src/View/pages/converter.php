@@ -10,7 +10,7 @@ use Worldly\Support\Format;
 
 <section class="wrap">
   <span class="eyebrow">🔁 Time zone converter · all IANA zones supported</span>
-  <h1 class="hero__title" style="font-size:clamp(1.9rem,4.4vw,3rem)">Time Zone Converter — Any City, Any Date</h1>
+  <h1 class="hero__title" style="font-size:clamp(1.9rem,4.4vw,3rem)">Time Zone Converter - Any City, Any Date</h1>
   <p class="hero__lede">
     Pick any date and time in one zone and instantly read it in any other. Daylight saving is handled
     automatically from your browser's IANA database, including half-hour and 45-minute offsets. Use the city

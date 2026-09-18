@@ -5,7 +5,7 @@ declare(strict_types=1);
 /**
  * A composite everyday-safety score, 0-100 (higher is safer), curated from
  * public crime-perception and crime-rate reporting (in the vein of Numbeo's
- * Safety Index). This measures street crime and personal safety day to day —
+ * Safety Index). This measures street crime and personal safety day to day -
  * it is deliberately a different lens from the peace.php dataset, which
  * scores war, conflict and militarization instead. Indicative for ranking
  * and comparison, not a live feed or an authoritative source.

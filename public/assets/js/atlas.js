@@ -1,5 +1,5 @@
 /**
- * Worldly — bookmarks, command palette, map style controls, the compare tool
+ * Worldly - bookmarks, command palette, map style controls, the compare tool
  * and the quiz. Everything here is progressive: each block returns early when
  * its hooks are not on the page.
  */
@@ -329,7 +329,7 @@
 
       if (!detail.to) {
         readout.hidden = false;
-        readout.innerHTML = '<span>📍 From <strong style="font-size:1rem">' + detail.from.label + '</strong> — now pick a second point.</span>';
+        readout.innerHTML = '<span>📍 From <strong style="font-size:1rem">' + detail.from.label + '</strong> - now pick a second point.</span>';
         return;
       }
 
@@ -389,17 +389,17 @@
           '<div class="compare-grid__head"><span class="compare-grid__flag">' + a.flag + '</span><strong>' + a.name + '</strong></div>' +
           '<div class="compare-grid__head"><span class="compare-grid__flag">' + b.flag + '</span><strong>' + b.name + '</strong></div>' +
           row('Continent', a.continent, b.continent, null, null, null) +
-          row('Capital', capA ? capA.name : '—', capB ? capB.name : '—', null, null, null) +
+          row('Capital', capA ? capA.name : '-', capB ? capB.name : '-', null, null, null) +
           row('Population', a.population.toLocaleString(), b.population.toLocaleString(), a.population, b.population, true) +
-          row('Area', a.area ? a.area.toLocaleString() + ' km²' : '—', b.area ? b.area.toLocaleString() + ' km²' : '—', a.area, b.area, true) +
-          row('Density', a.density ? a.density.toLocaleString() + ' /km²' : '—', b.density ? b.density.toLocaleString() + ' /km²' : '—', a.density, b.density, false) +
+          row('Area', a.area ? a.area.toLocaleString() + ' km²' : '-', b.area ? b.area.toLocaleString() + ' km²' : '-', a.area, b.area, true) +
+          row('Density', a.density ? a.density.toLocaleString() + ' /km²' : '-', b.density ? b.density.toLocaleString() + ' /km²' : '-', a.density, b.density, false) +
           row('GDP', '$' + compact(a.gdp * 1e6), '$' + compact(b.gdp * 1e6), a.gdp, b.gdp, true) +
           row('GDP per person', '$' + a.gdpPerCapita.toLocaleString(), '$' + b.gdpPerCapita.toLocaleString(), a.gdpPerCapita, b.gdpPerCapita, true) +
           row('Land borders', String(a.borders.length), String(b.borders.length), a.borders.length, b.borders.length, true) +
           row('Time zones', String(a.timezones.length), String(b.timezones.length), a.timezones.length, b.timezones.length, true) +
-          row('Languages', a.languages.join(', ') || '—', b.languages.join(', ') || '—', null, null, null) +
-          row('Currency', a.currencies.length ? a.currencies[0].name : '—', b.currencies.length ? b.currencies[0].name : '—', null, null, null) +
-          row('Dial code', a.calling || '—', b.calling || '—', null, null, null) +
+          row('Languages', a.languages.join(', ') || '-', b.languages.join(', ') || '-', null, null, null) +
+          row('Currency', a.currencies.length ? a.currencies[0].name : '-', b.currencies.length ? b.currencies[0].name : '-', null, null, null) +
+          row('Dial code', a.calling || '-', b.calling || '-', null, null, null) +
           row('Coastline', a.landlocked ? 'Landlocked' : 'Has a coast', b.landlocked ? 'Landlocked' : 'Has a coast', null, null, null) +
         '</div>';
 

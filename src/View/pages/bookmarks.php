@@ -9,7 +9,7 @@ declare(strict_types=1);
       <span class="eyebrow">★ Saved in this browser</span>
       <h1 class="hero__title" style="font-size:clamp(1.9rem,4.4vw,3rem)">Your bookmarks</h1>
       <p class="hero__lede">
-        Countries, peaks, rivers, lakes and destinations you have starred. Kept in this browser's local storage —
+        Countries, peaks, rivers, lakes and destinations you have starred. Kept in this browser's local storage -
         nothing is sent anywhere, and clearing your site data clears these.
       </p>
     </div>

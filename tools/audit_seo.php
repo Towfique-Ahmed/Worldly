@@ -9,7 +9,7 @@ declare(strict_types=1);
  *
  * Runs against the Seo class directly rather than over HTTP, so it is fast and
  * needs no server. Fails with a non-zero exit code if any page is missing
- * metadata, blows the length budget, or duplicates another page — the three
+ * metadata, blows the length budget, or duplicates another page - the three
  * things Search Console will otherwise report back at you.
  */
 
@@ -110,7 +110,7 @@ foreach ($descriptions as $description => $paths) {
 $titleLengths = array_map(static fn (array $p): int => strlen($p['title']), $pages);
 $descriptionLengths = array_map(static fn (array $p): int => strlen($p['description']), $pages);
 
-printf("\nSEO audit — %d pages\n", count($pages));
+printf("\nSEO audit - %d pages\n", count($pages));
 printf("  unique titles        %d / %d\n", count($titles), count($pages));
 printf("  unique descriptions  %d / %d\n", count($descriptions), count($pages));
 printf("  title length         %d–%d (budget %d–%d)\n", min($titleLengths), max($titleLengths), Seo::TITLE_MIN, Seo::TITLE_MAX);

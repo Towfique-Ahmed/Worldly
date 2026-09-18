@@ -11,7 +11,7 @@ namespace Worldly\Support;
  * budgets are a reliable proxy: roughly 60 for a title and 160 for a
  * description before Google starts cutting. Everything here is built to sit
  * inside those, front-load the words people actually search for, and stay
- * unique across every page — `php tools/audit_seo.php` proves it.
+ * unique across every page - `php tools/audit_seo.php` proves it.
  */
 final class Seo
 {
@@ -94,10 +94,10 @@ final class Seo
         ],
         'peaceful' => [
             'title' => 'Most Peaceful Countries in the World',
-            'description' => 'Countries ranked by peacefulness — conflict, militarization and stability — from the calmest nations on Earth to the most war-torn, sortable live.',
+            'description' => 'Countries ranked by peacefulness - conflict, militarization and stability - from the calmest nations on Earth to the most war-torn, sortable live.',
         ],
         'not-found' => [
-            'title' => 'Page Not Found — Off the Edge of the Map',
+            'title' => 'Page Not Found - Off the Edge of the Map',
             'description' => 'That page is off the edge of the map. Head back to the interactive world atlas to explore countries, mountains, rivers and travel destinations.',
         ],
     ];
@@ -206,7 +206,7 @@ final class Seo
     }
 
     /**
-     * "1.4 billion", "163 million", "5.6 million", "892,000" — friendlier in a
+     * "1.4 billion", "163 million", "5.6 million", "892,000" - friendlier in a
      * search snippet than either raw digits or a terse 163M.
      */
     public static function people(int $population): string
@@ -237,7 +237,7 @@ final class Seo
             $cut = substr($cut, 0, $lastSpace);
         }
 
-        return rtrim($cut, " ,.;:-—") . '…';
+        return rtrim($cut, " ,.;:--") . '…';
     }
 
     /**

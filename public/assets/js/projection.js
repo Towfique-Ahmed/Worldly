@@ -1,5 +1,5 @@
 /**
- * Robinson projection — the browser-side twin of src/Support/Projection.php.
+ * Robinson projection - the browser-side twin of src/Support/Projection.php.
  *
  * Both must agree exactly, otherwise markers drift off the coastlines that PHP
  * rendered into the SVG.

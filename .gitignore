@@ -1,4 +1,4 @@
-# Cached Natural Earth downloads — regenerate with `php tools/build_geodata.php`
+# Cached Natural Earth downloads - regenerate with `php tools/build_geodata.php`
 /storage/raw/*
 !/storage/raw/.gitkeep
 

@@ -1,5 +1,5 @@
 /**
- * Worldly — shared UI behaviour: backdrop, theme, live UTC clock, scroll
+ * Worldly - shared UI behaviour: backdrop, theme, live UTC clock, scroll
  * reveals, global search, and the per-page wiring for the map-driven views.
  */
 (function () {
@@ -299,11 +299,11 @@
     var rows = [
       ['Continent', country.continent],
       ['Sub-region', country.subregion],
-      ['Capital', capital ? capital.name : '—'],
+      ['Capital', capital ? capital.name : '-'],
       ['Population', Number(country.population).toLocaleString()],
       ['GDP', '$' + compact(country.gdp * 1e6)],
       ['GDP per person', '$' + Number(country.gdpPerCapita).toLocaleString()],
-      ['Economy', country.economy || '—'],
+      ['Economy', country.economy || '-'],
       ['ISO codes', country.iso2 + ' · ' + country.iso3]
     ];
 

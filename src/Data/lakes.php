@@ -24,7 +24,7 @@ return array (
       0 => 'Canada',
       1 => 'United States',
     ),
-    'note' => 'The largest freshwater lake in the world by surface area — enough water to cover both North and South America a foot deep.',
+    'note' => 'The largest freshwater lake in the world by surface area - enough water to cover both North and South America a foot deep.',
   ),
   1 => array (
     'name' => 'Nyanza',
@@ -57,7 +57,7 @@ return array (
       0 => 'Canada',
       1 => 'United States',
     ),
-    'note' => 'Holds Manitoulin, the largest island in any lake on Earth — which itself contains lakes with islands in them.',
+    'note' => 'Holds Manitoulin, the largest island in any lake on Earth - which itself contains lakes with islands in them.',
   ),
   3 => array (
     'name' => 'Michigan',
@@ -137,7 +137,7 @@ return array (
       1 => 'Mozambique',
       2 => 'Tanzania',
     ),
-    'note' => 'Home to more fish species than any other lake — over a thousand cichlids, most found nowhere else.',
+    'note' => 'Home to more fish species than any other lake - over a thousand cichlids, most found nowhere else.',
   ),
   8 => array (
     'name' => 'Great Slave',
@@ -229,7 +229,7 @@ return array (
     'countries' => array (
       0 => 'Kazakhstan',
     ),
-    'note' => 'Fresh at its western end and saline at its eastern — a narrow strait keeps the two halves from mixing.',
+    'note' => 'Fresh at its western end and saline at its eastern - a narrow strait keeps the two halves from mixing.',
   ),
   14 => array (
     'name' => 'Bangweulu',
@@ -381,7 +381,7 @@ return array (
     'countries' => array (
       0 => 'Kyrgyzstan',
     ),
-    'note' => 'Its name means warm lake — despite sitting at 1,600 m in the Tian Shan, it never freezes.',
+    'note' => 'Its name means warm lake - despite sitting at 1,600 m in the Tian Shan, it never freezes.',
   ),
   24 => array (
     'name' => 'Vänern',
@@ -627,7 +627,7 @@ return array (
       0 => 'Rwanda',
       1 => 'DR Congo',
     ),
-    'note' => 'Holds enormous dissolved methane and carbon dioxide at depth — a hazard, and now a power source.',
+    'note' => 'Holds enormous dissolved methane and carbon dioxide at depth - a hazard, and now a power source.',
   ),
   40 => array (
     'name' => 'Chad',
@@ -645,7 +645,7 @@ return array (
       2 => 'Nigeria',
       3 => 'Niger',
     ),
-    'note' => 'Covered around 25,000 km² in the 1960s and has lost roughly 90 per cent of that since — one of the starkest shrinkages on record.',
+    'note' => 'Covered around 25,000 km² in the 1960s and has lost roughly 90 per cent of that since - one of the starkest shrinkages on record.',
   ),
   41 => array (
     'name' => 'Sevan',
@@ -725,7 +725,7 @@ return array (
       1 => 'Switzerland',
       2 => 'Austria',
     ),
-    'note' => 'Has no formally agreed border across it — the three countries never settled where their lines run.',
+    'note' => 'Has no formally agreed border across it - the three countries never settled where their lines run.',
   ),
   46 => array (
     'name' => 'Mälaren',

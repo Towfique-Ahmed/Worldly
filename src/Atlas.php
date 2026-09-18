@@ -14,7 +14,7 @@ namespace Worldly;
 final class Atlas
 {
     /**
-     * Natural Earth admin-0 entries with no permanent civilian population —
+     * Natural Earth admin-0 entries with no permanent civilian population -
      * research stations, a military base, a glacier. Their tiny population
      * estimate makes GDP per capita a meaningless outlier, so wealth rankings
      * leave them out rather than crown Antarctica the richest place on Earth.

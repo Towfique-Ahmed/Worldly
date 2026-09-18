@@ -1,5 +1,5 @@
 /**
- * WorldMap — pan, zoom, map styles, layer control, a live day/night terminator,
+ * WorldMap - pan, zoom, map styles, layer control, a live day/night terminator,
  * marker overlays and a canvas globe, over the server-rendered Robinson SVG.
  *
  * Emits on its root element:
@@ -45,7 +45,7 @@
 
   /* ------------------------------------------------------------ solar maths */
 
-  /** Subsolar point — where the sun is directly overhead right now. */
+  /** Subsolar point - where the sun is directly overhead right now. */
   function subsolarPoint(date) {
     var rad = Math.PI / 180;
     var jd = date.getTime() / 86400000 + 2440587.5;

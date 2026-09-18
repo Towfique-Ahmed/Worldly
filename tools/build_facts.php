@@ -189,7 +189,7 @@ foreach ($countries as $country) {
         $share = $worldPopulation > 0 ? $country['population'] / $worldPopulation * 100 : 0;
         $rank = $populationRank[$iso3] ?? null;
         $candidates[] = sprintf(
-            'Population is about %s people%s — roughly %s of everyone alive.',
+            'Population is about %s people%s - roughly %s of everyone alive.',
             humanNumber($country['population']),
             $rank ? ', the ' . ordinal($rank) . ' largest of the ' . $rankedCount . ' countries mapped here' : '',
             $share >= 0.1 ? round($share, 2) . ' per cent' : 'one in ' . humanNumber(round(100 / max($share, 0.0001))),
@@ -204,7 +204,7 @@ foreach ($countries as $country) {
             'Covers %s km²%s%s.',
             humanNumber($country['area']),
             $rank ? ', making it the ' . ordinal($rank) . ' largest country here' : '',
-            $comparison ? ' — ' . $comparison : '',
+            $comparison ? ' - ' . $comparison : '',
         );
     }
 
@@ -252,7 +252,7 @@ foreach ($countries as $country) {
     } elseif ($country['landlocked']) {
         $candidates[] = 'Landlocked, with no coastline at all.';
     } else {
-        $candidates[] = 'Has no land neighbours — it is an island nation, surrounded entirely by water.';
+        $candidates[] = 'Has no land neighbours - it is an island nation, surrounded entirely by water.';
     }
 
     // Coast or no coast.
@@ -311,7 +311,7 @@ foreach ($countries as $country) {
         $candidates[] = sprintf(
             'Annual GDP is around $%s billion%s, or about $%s per person.',
             humanNumber(round($country['gdp'] / 1000)),
-            $rank ? ' — the ' . ordinal($rank) . ' largest economy here' : '',
+            $rank ? ' - the ' . ordinal($rank) . ' largest economy here' : '',
             humanNumber($country['gdpPerCapita']),
         );
     }
@@ -342,7 +342,7 @@ foreach ($countries as $country) {
     $largest = $citiesByIso3[$iso3][0] ?? null;
     if ($largest && (!$capital || $largest['name'] !== $capital['name'])) {
         $candidates[] = sprintf(
-            'The largest city is %s, with about %s people — bigger than the capital.',
+            'The largest city is %s, with about %s people - bigger than the capital.',
             $largest['name'],
             humanNumber($largest['population']),
         );

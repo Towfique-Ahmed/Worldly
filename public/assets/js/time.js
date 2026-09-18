@@ -1,5 +1,5 @@
 /**
- * Worldly — clock wall, countdown timer, stopwatch and time converter.
+ * Worldly - clock wall, countdown timer, stopwatch and time converter.
  *
  * All zone arithmetic goes through Intl.DateTimeFormat with an explicit
  * timeZone, so daylight saving is handled by the browser's own tz database
@@ -525,7 +525,7 @@
       var dayNote = '';
       if (from.date !== to.date) {
         dayNote = new Date(to.year, 0, 1) && (to.day + to.month) !== (from.day + from.month)
-          ? '<span class="tag">' + to.date.split(',')[0] + ' — different day</span>'
+          ? '<span class="tag">' + to.date.split(',')[0] + ' - different day</span>'
           : '';
       }
 

@@ -34,7 +34,7 @@ $slot = $deepest ? $chartWidth / count($deepest) : $chartWidth;
   <span class="eyebrow">🌊 <?= count($rivers) ?> rivers · <?= count($lakes) ?> lakes · <?= count($uniqueOceans) ?> oceans &amp; seas</span>
   <h1 class="hero__title" style="font-size:clamp(1.9rem,4.4vw,3rem)">Longest Rivers, Largest Lakes &amp; Deepest Oceans</h1>
   <p class="hero__lede">
-    Every river centreline and lake outline drawn as real geometry on the world map — length, basin size, depth and
+    Every river centreline and lake outline drawn as real geometry on the world map - length, basin size, depth and
     discharge for each. Includes all five oceans and the major seas, with depths drawn to scale.
     Hover any blue line to name it; click a card to fly there.
   </p>
@@ -80,7 +80,7 @@ $slot = $deepest ? $chartWidth / count($deepest) : $chartWidth;
       <!-- Everest, flipped, as a scale reference. -->
       <?php $everestY = 28 + (8849 / $maxDepth) * 240; ?>
       <line x1="0" y1="<?= round($everestY, 1) ?>" x2="<?= $chartWidth ?>" y2="<?= round($everestY, 1) ?>" stroke="rgba(255,200,87,.45)" stroke-dasharray="5 4" stroke-width="1"/>
-      <text x="6" y="<?= round($everestY - 5, 1) ?>" class="depth-label" style="fill:rgba(255,200,87,.8)">Everest upside down — 8,849 m</text>
+      <text x="6" y="<?= round($everestY - 5, 1) ?>" class="depth-label" style="fill:rgba(255,200,87,.8)">Everest upside down - 8,849 m</text>
 
       <?php foreach ($deepest as $index => $ocean):
           $depth = ($ocean['maxDepth'] / $maxDepth) * 240;
@@ -89,7 +89,7 @@ $slot = $deepest ? $chartWidth / count($deepest) : $chartWidth;
       ?>
         <g class="depth-bar" data-fly-to data-lon="<?= $ocean['lon'] ?>" data-lat="<?= $ocean['lat'] ?>" data-zoom="2.4"
            style="animation:land-in .7s var(--ease) both;animation-delay:<?= $index * 55 ?>ms">
-          <title><?= Format::e($ocean['name']) ?> — <?= Format::number($ocean['maxDepth']) ?> m deep</title>
+          <title><?= Format::e($ocean['name']) ?> - <?= Format::number($ocean['maxDepth']) ?> m deep</title>
           <rect x="<?= round($x, 1) ?>" y="28" width="<?= round($barWidth, 1) ?>" height="<?= round($depth, 1) ?>" rx="3" fill="url(#depthGrad)"/>
         </g>
       <?php endforeach; ?>

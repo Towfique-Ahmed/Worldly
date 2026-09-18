@@ -20,7 +20,7 @@ return [
         'blurb' => 'The second largest and second most populous continent, straddling the equator so evenly that it reaches almost equally far into both hemispheres. It holds the longest river, the largest hot desert and the oldest human fossils yet found.',
         'facts' => [
             'The Sahara alone is close to the size of the United States.',
-            'Africa has the youngest population of any continent — a median age around 19.',
+            'Africa has the youngest population of any continent - a median age around 19.',
             'The Great Rift Valley is splitting the continent apart at a few millimetres a year.',
         ],
     ],
@@ -65,7 +65,7 @@ return [
         'lowest' => 'Badwater Basin, −86 m',
         'countries' => 23,
         'focus' => ['lon' => -100, 'lat' => 45, 'zoom' => 2.4],
-        'blurb' => 'Stretching from the Arctic ice to the Panama isthmus, this continent packs boreal forest, prairie, desert and rainforest into a single north-south sweep — and holds the largest freshwater system on Earth.',
+        'blurb' => 'Stretching from the Arctic ice to the Panama isthmus, this continent packs boreal forest, prairie, desert and rainforest into a single north-south sweep - and holds the largest freshwater system on Earth.',
         'facts' => [
             'The Great Lakes contain about 21 per cent of the world\'s surface fresh water.',
             'Greenland is the largest island on Earth and part of North America.',
@@ -85,7 +85,7 @@ return [
         'facts' => [
             'The Amazon discharges more water than the next seven largest rivers combined.',
             'The Atacama Desert has weather stations that have never recorded rain.',
-            'Angel Falls drops 979 m — so far that much of it becomes mist before landing.',
+            'Angel Falls drops 979 m - so far that much of it becomes mist before landing.',
         ],
     ],
     'Oceania' => [
@@ -113,7 +113,7 @@ return [
         'lowest' => 'Bentley Subglacial Trench, −2,540 m',
         'countries' => 0,
         'focus' => ['lon' => 0, 'lat' => -75, 'zoom' => 2.0],
-        'blurb' => 'A desert of ice with no permanent residents and no government — only research stations under a treaty that reserves the whole continent for science.',
+        'blurb' => 'A desert of ice with no permanent residents and no government - only research stations under a treaty that reserves the whole continent for science.',
         'facts' => [
             'It holds roughly 70 per cent of the world\'s fresh water as ice.',
             '−89.2 °C was recorded at Vostok Station, the coldest air temperature on record.',

@@ -97,7 +97,7 @@ $footerColumns = [
 <meta property="og:image:type" content="image/png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Worldly — an interactive world map and atlas">
+<meta property="og:image:alt" content="Worldly - an interactive world map and atlas">
 <meta property="og:locale" content="en">
 <meta name="theme-color" content="#ffffff">
 <meta name="twitter:card" content="summary_large_image">
@@ -222,7 +222,7 @@ $footerColumns = [
       Coastlines, rivers, lakes and terrain come from <a href="https://www.naturalearthdata.com/" rel="noopener">Natural Earth</a> (public domain) at 1:50m,
       simplified and projected into a Robinson projection server-side. Country attributes come from
       <a href="https://github.com/mledoze/countries" rel="noopener">mledoze/countries</a>, and time zone data from PHP's bundled IANA database.
-      Population and GDP figures are estimates a few years old — good for comparison, not for citation.
+      Population and GDP figures are estimates a few years old - good for comparison, not for citation.
       &copy; <?= date('Y') ?> All rights reserved by <a href="https://towfique.com" rel="noopener">towfique.com</a>
     </p>
   </div>

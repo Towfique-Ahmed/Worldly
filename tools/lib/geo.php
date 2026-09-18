@@ -227,7 +227,7 @@ function geometryCentroid(array $geometry): array
 /**
  * Natural Earth writes a double space after abbreviations ("Washington,  D.C.",
  * "Amu  Darya"). Collapse runs of whitespace so names read correctly wherever
- * they end up — page copy, tooltips and meta descriptions alike.
+ * they end up - page copy, tooltips and meta descriptions alike.
  */
 function cleanName(?string $name): ?string
 {

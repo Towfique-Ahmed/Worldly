@@ -158,7 +158,7 @@ $id = Format::e($mapId);
 
   <div class="wm-hud" aria-hidden="true">
     <span class="wm-hud__pill" data-scale>1.0×</span>
-    <span class="wm-hud__pill" data-coords>—</span>
+    <span class="wm-hud__pill" data-coords>-</span>
   </div>
   <?php endif; ?>
 </div>

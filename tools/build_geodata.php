@@ -23,7 +23,7 @@ $geometry = $data . '/geometry';
 echo "Worldly geodata build\n\n";
 
 // ---------------------------------------------------------------------------
-// Countries — 1:50m outlines, ~5x the coastline detail of the previous 1:110m
+// Countries - 1:50m outlines, ~5x the coastline detail of the previous 1:110m
 // ---------------------------------------------------------------------------
 
 echo "Countries\n";
@@ -360,7 +360,7 @@ usort($oceans, static fn (array $a, array $b): int => $b["area"] <=> $a["area"])
 emitData($data . '/oceans.php', 'Oceans and major seas with label anchors and curated statistics.', $oceans);
 
 // ---------------------------------------------------------------------------
-// Terrain — deserts, ranges, plateaus and tundra drive the physical map style
+// Terrain - deserts, ranges, plateaus and tundra drive the physical map style
 // ---------------------------------------------------------------------------
 
 echo "\nTerrain\n";

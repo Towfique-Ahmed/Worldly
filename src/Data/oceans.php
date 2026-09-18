@@ -99,7 +99,7 @@ return array (
     'maxDepth' => 5550,
     'avgDepth' => 1205,
     'deepest' => 'Molloy Deep, Fram Strait',
-    'note' => 'The smallest and shallowest ocean, and the only one with a permanent — though rapidly shrinking — ice cover.',
+    'note' => 'The smallest and shallowest ocean, and the only one with a permanent - though rapidly shrinking - ice cover.',
   ),
   7 => array (
     'name' => 'Philippine Sea',
@@ -359,7 +359,7 @@ return array (
     'maxDepth' => 2212,
     'avgDepth' => 1253,
     'deepest' => 'Central basin',
-    'note' => 'Below about 150 m it is anoxic — the largest body of oxygen-free water in the world, which preserves ancient shipwrecks almost intact.',
+    'note' => 'Below about 150 m it is anoxic - the largest body of oxygen-free water in the world, which preserves ancient shipwrecks almost intact.',
   ),
   27 => array (
     'name' => 'Caspian Sea',
@@ -372,7 +372,7 @@ return array (
     'maxDepth' => 1025,
     'avgDepth' => 211,
     'deepest' => 'South Caspian Basin',
-    'note' => 'Despite the name it is the largest lake in the world — landlocked, brackish, and larger than Germany.',
+    'note' => 'Despite the name it is the largest lake in the world - landlocked, brackish, and larger than Germany.',
   ),
   28 => array (
     'name' => 'Persian Gulf',

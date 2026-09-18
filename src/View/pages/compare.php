@@ -19,7 +19,7 @@ $defaultB = $_GET['b'] ?? 'JPN';
   <p class="hero__lede">
     Put any two of the <?= count($countries) ?> mapped countries next to each other and compare population,
     land area, density, GDP per person, borders, time zones, languages and currency. The winning side of each
-    numeric row is highlighted — bigger is better, except for density, where lower means more room.
+    numeric row is highlighted - bigger is better, except for density, where lower means more room.
   </p>
 
   <div class="compare-pick" style="margin-top:24px">
